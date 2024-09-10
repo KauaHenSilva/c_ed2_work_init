@@ -1,0 +1,52 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+      {
+          "label": "Configure Meson",
+          "type": "shell",
+          "command": "meson setup builddir",
+          "group": "build",
+          "problemMatcher": [
+              "$gcc"
+          ],
+          "detail": "Configura o Meson build system"
+      },
+      {
+          "label": "Build com Meson",
+          "type": "shell",
+          "command": "ninja -C builddir",
+          "group": "build",
+          "dependsOn": "Configure Meson",
+          "problemMatcher": [
+              "$gcc"
+          ],
+          "detail": "Compila o projeto usando Ninja"
+      },
+      {
+          "label": "Run Tests",
+          "type": "shell",
+          "command": "meson test -C builddir",
+          "group": {
+              "kind": "test",
+              "isDefault": true
+          },
+          "dependsOn": "Build com Meson",
+          "problemMatcher": [
+              "$gcc"
+          ],
+          "detail": "Executa os testes do projeto"
+      },
+      // Build + testes
+      {
+          "label": "Build e testes",
+          "dependsOn": [
+              "Build com Meson",
+              "Run Tests"
+          ],
+          "group": {
+              "kind": "build",
+              "isDefault": true
+          }
+      }
+  ]
+}
