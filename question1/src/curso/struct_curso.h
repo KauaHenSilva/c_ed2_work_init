@@ -1,12 +1,13 @@
 #pragma once
 
+#include <struct_disciplina.h>
+
 typedef struct NodeCurso
 {
   int codigo;
   char *nomeDoCurso;
   int quantidadeDePeriodo;
-  // Arvore das disciplinas;
-
+  NodeDisciplina *nodeDisciplina;
   struct NodeCurso *esq;
   struct NodeCurso *dir;
 } NodeCurso;
