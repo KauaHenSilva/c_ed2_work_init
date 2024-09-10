@@ -3,23 +3,25 @@
 
 #include <curso_crud.h>
 #include <struct_curso.h>
+#include <disciplina_crud.h>
 #include <utils.h>
 
 NodeCurso *alocCurso()
 {
   NodeCurso *new = (NodeCurso *)malloc(sizeof(NodeCurso));
   new->codigo = -1;
-  new->quantidadeDePeriodo = 1;
-  new->dir = NULL;
-  new->esq = NULL;
+  new->quantidadeDePeriodo = -1;
   new->nodeDisciplina = NULL;
   new->nomeDoCurso = NULL;
+  new->dir = NULL;
+  new->esq = NULL;
   return new;
 }
 
 void freeNodeCurso(NodeCurso *node)
 {
   free(node->nomeDoCurso);
+  freeNodeDisciplinas(node->nodeDisciplina);
   free(node);
 }
 
@@ -64,6 +66,7 @@ void showCurso(NodeCurso *curso)
   printf("Curso: \n");
   printf("\tid: %d\n", curso->codigo);
   printf("\tNome: %s\n", curso->nomeDoCurso);
+  showAllDisciplina(curso->nodeDisciplina);
 }
 
 void showAllCurso(NodeCurso *curso)
@@ -71,8 +74,8 @@ void showAllCurso(NodeCurso *curso)
   if (!curso)
     return;
 
-  showAllCurso(curso->dir);
   showAllCurso(curso->esq);
+  showAllCurso(curso->dir);
   showCurso(curso);
 }
 

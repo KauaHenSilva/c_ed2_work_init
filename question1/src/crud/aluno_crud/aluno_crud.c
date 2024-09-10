@@ -11,11 +11,11 @@ ListAluno *alocAluno()
   ListAluno *aluno = (ListAluno *)malloc(sizeof(ListAluno));
   aluno->codigoDoCurso = -1;
   aluno->matricula = -1;
+  aluno->nome = NULL;
   aluno->nodeMatricula = NULL;
+  aluno->nodeNota = NULL;
   aluno->ant = NULL;
   aluno->prox = NULL;
-  aluno->nodeNota = NULL;
-  aluno->nome = NULL;
   return aluno;
 }
 
@@ -40,8 +40,10 @@ int prencherAluno(ListAluno *aluno, NodeCurso *cursos)
 {
   printf("Para sair só digite 'sair'.\n");
 
-  int confirm = 0;
-  confirm = getInt(&aluno->codigoDoCurso, "Digite o codigo do Curso: ");
+  int confirm = 1;
+
+  if (confirm)
+    confirm = getInt(&aluno->codigoDoCurso, "Digite o codigo do Curso: ");
 
 #if DEBUG_MODE
   if (isCurseOpen(cursos, aluno->codigoDoCurso) == 0)
