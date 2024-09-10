@@ -4,13 +4,13 @@
 #include <struct_matricula.h>
 
 // - **Ordem:** Alfabética por Nome do Aluno
-typedef struct stAluno
+typedef struct stListAluno
 {
   int matricula;
   char *nome;
-  int codicoDoCurso;
+  int codigoDoCurso;
   NodeNota *nodeNota;
   NodeMatricula *nodeMatricula;
-  struct stAluno *prox;
-  struct stAluno *ant;
-} Aluno;
+  struct stListAluno *prox;
+  struct stListAluno *ant;
+} ListAluno;
