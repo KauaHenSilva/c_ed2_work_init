@@ -2,6 +2,7 @@
 
 #include <struct_disciplina.h>
 
+// - **Ordem:** Código do Curso
 typedef struct NodeCurso
 {
   int codigo;
