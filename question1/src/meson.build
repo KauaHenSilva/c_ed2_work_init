@@ -1,15 +1,15 @@
 structs = include_directories('structs')
 
 subdir('crud')
-subdir('buscas')
+subdir('actions')
 
 libs = [
   lib_crud,
-  lib_buscas
+  lib_actions,
 ]
 
 incs = [
-  structs
+  structs,
   inc_crud,
-  inc_buscas,
+  inc_actions,
 ]

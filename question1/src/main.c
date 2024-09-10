@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <struct_aluno.h>
+#include <actions.h>
 
 int main()
 {
