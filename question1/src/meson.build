@@ -1,27 +1,15 @@
-inc_aluno = include_directories('aluno')
-inc_curso = include_directories('curso')
-inc_disciplina = include_directories('disciplina')
-inc_matricula = include_directories('matricula')
-inc_nota = include_directories('nota')
+structs = include_directories('structs')
 
-subdir('aluno')
-subdir('curso')
-subdir('disciplina')
-subdir('matricula')
-subdir('nota')
-
-incs = [
-  inc_aluno,
-  inc_curso,
-  inc_disciplina,
-  inc_matricula,
-  inc_nota,
-]
+subdir('crud')
+subdir('buscas')
 
 libs = [
-  lib_aluno,
-  lib_curso,
-  lib_disciplina,
-  lib_matricula,
-  lib_nota,
+  lib_crud,
+  lib_buscas
+]
+
+incs = [
+  structs
+  inc_crud,
+  inc_buscas,
 ]
