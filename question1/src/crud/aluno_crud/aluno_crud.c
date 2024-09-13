@@ -4,36 +4,39 @@
 
 #include <aluno_crud.h>
 #include <curso_crud.h>
+#include <matricula_crud.h>
+
 #include <utils.h>
 
-ListAluno *alocAluno()
+void alocAluno(ListAluno **new)
 {
-  ListAluno *aluno = (ListAluno *)malloc(sizeof(ListAluno));
-  aluno->codigoDoCurso = -1;
-  aluno->matricula = -1;
-  aluno->nome = NULL;
-  aluno->nodeMatricula = NULL;
-  aluno->nodeNota = NULL;
-  aluno->ant = NULL;
-  aluno->prox = NULL;
-  return aluno;
+  *new = (ListAluno *)malloc(sizeof(ListAluno));
+  (*new)->codigoDoCurso = -1;
+  (*new)->matricula = -1;
+  (*new)->nome = NULL;
+  (*new)->nodeMatricula = NULL;
+  (*new)->nodeNota = NULL;
+  (*new)->ant = NULL;
+  (*new)->prox = NULL;
 }
 
 void freeAluno(ListAluno *aluno)
 {
-  free(aluno->nome);
+  if (aluno->nome)
+    free(aluno->nome);
+
+  freeNodeMatriculas(aluno->nodeMatricula);
+
   free(aluno);
-  aluno = NULL;
 }
 
 void freeAlunosList(ListAluno *alunos)
 {
-  if (!alunos)
-    return;
-
-  freeAlunosList(alunos->prox);
-
-  freeAluno(alunos);
+  if (alunos)
+  {
+    freeAlunosList(alunos->prox);
+    freeAluno(alunos);
+  }
 }
 
 int prencherAluno(ListAluno *aluno, NodeCurso *cursos)
@@ -41,9 +44,10 @@ int prencherAluno(ListAluno *aluno, NodeCurso *cursos)
   printf("Para sair só digite 'sair'.\n");
 
   int confirm = 1;
+  char *enunciado;
 
-  if (confirm)
-    confirm = getInt(&aluno->codigoDoCurso, "Digite o codigo do Curso: ");
+  enunciado = "Digite o codigo do Curso: ";
+  confirm = getInt(&aluno->codigoDoCurso, enunciado);
 
 #if DEBUG_MODE
   if (isCurseOpen(cursos, aluno->codigoDoCurso) == 0)
@@ -51,65 +55,97 @@ int prencherAluno(ListAluno *aluno, NodeCurso *cursos)
     printf("Curso não cadastrado!\n");
     return 1;
   }
+#else
+  (void)cursos;
 #endif
 
   if (confirm)
-    confirm = getInt(&aluno->matricula, "Digite a matricula do aluno: ");
+  {
+    enunciado = "Digite a matricula do aluno: ";
+    confirm = getInt(&aluno->matricula, enunciado);
+  }
 
   if (confirm)
-    confirm = getString(&aluno->nome, "Digite o nome do aluno: ");
+  {
+    enunciado = "Digite o nome do aluno: ";
+    confirm = getString(&aluno->nome, enunciado);
+  }
 
   // Falta alguns.
 
   if (!confirm)
-  {
     printf("Não foi possivel execultar o prencher aluno!");
-    return 1;
-  }
-  return 0;
+
+  return !confirm;
 }
 
 void showAluno(ListAluno *aluno)
 {
   printf("Aluno: \n");
   printf("\tid: %d\n", aluno->codigoDoCurso);
+  printf("\tMatricula: %d\n", aluno->matricula);
   printf("\tNome: %s\n", aluno->nome);
+
+  showAllMatriculas(aluno->nodeMatricula);
 }
 
 void showAllAlunos(ListAluno *alunos)
 {
-  if (!alunos)
-    return;
-
-  showAllAlunos(alunos->prox);
-  showAluno(alunos);
+  if (alunos)
+  {
+    showAllAlunos(alunos->prox);
+    showAluno(alunos);
+  }
 }
 
-static ListAluno *inserction(ListAluno *alunos, ListAluno *new)
+void inserctionAluno(ListAluno **alunos, ListAluno *new)
 {
-  if (!alunos)
-    return new;
+  if (!*alunos)
+    *alunos = new;
   else
   {
-    ListAluno *aux = alunos;
-    while (aux->prox && strcmp(new->nome, aux->prox->nome))
-      aux = aux->prox;
+    // Adidiconar no inicio
+    if (new->codigoDoCurso < (*alunos)->codigoDoCurso)
+    {
+      new->prox = *alunos;
+      (*alunos)->ant = new;
+      *alunos = new;
+    }
+    else
+    {
+      // Adicionar no final
+      if (!(*alunos)->prox)
+      {
+        new->ant = *alunos;
+        (*alunos)->prox = new;
+      }
 
-    new->prox = aux->prox;
-    aux->prox = new;
-    return alunos;
+      // Adicionar no meio
+      else
+      {
+        ListAluno *aux = *alunos;
+        while (aux->prox && strcmp(new->nome, aux->prox->nome))
+          aux = aux->prox;
+
+        new->prox = aux;
+        new->ant = aux->ant;
+        aux->ant->prox = new;
+        aux->ant = new;
+      }
+    }
   }
 }
 
 int cadastrarAlunos(ListAluno **alunos, NodeCurso *cursos)
 {
-  ListAluno *new = alocAluno();
-  if (prencherAluno(new, cursos))
-  {
-    freeAluno(new);
-    return 1;
-  }
+  ListAluno *new;
+  alocAluno(&new);
 
-  *alunos = inserction(*alunos, new);
-  return 0;
+  if (prencherAluno(new, cursos))
+    freeAluno(new);
+
+  if (new)
+    inserctionAluno(alunos, new);
+
+  return new ? 1 : 0;
 }

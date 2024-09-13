@@ -4,12 +4,9 @@
 
 // Auxs
 
-NodeCurso *alocCurso();
-void freeNodeCurso(NodeCurso *node);
 void freeNodeCursos(NodeCurso *node);
-int prencherCurso(NodeCurso *node);
 void showAllCurso(NodeCurso *curso);
-int isCurseOpen(NodeCurso *curso, int id);
+void isCurseOpen(NodeCurso *curso, int id, int *bool);
 
 // ---------------------------------------------------------------------------------------
 

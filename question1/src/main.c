@@ -3,6 +3,7 @@
 #include <aluno_crud.h>
 #include <curso_crud.h>
 #include <disciplina_crud.h>
+#include <matricula_crud.h>
 
 #include <utils.h>
 
@@ -12,17 +13,20 @@ int main()
   NodeCurso *cursos = NULL;
 
   cadastrarCursos(&cursos);
-  cadastrarAlunos(&alunos, cursos);
-
   cadastrarCursos(&cursos);
-  cadastrarAlunos(&alunos, cursos);
-
   cadastrarCursos(&cursos);
+
+  cadastrarAlunos(&alunos, cursos);
+  cadastrarAlunos(&alunos, cursos);
   cadastrarAlunos(&alunos, cursos);
 
   cadastrarDisciplinas(cursos);
   cadastrarDisciplinas(cursos);
   cadastrarDisciplinas(cursos);
+
+  cadastrarMatriculas(alunos, cursos->nodeDisciplina);
+  cadastrarMatriculas(alunos, cursos->nodeDisciplina);
+  cadastrarMatriculas(alunos, cursos->nodeDisciplina);
 
   showAllAlunos(alunos);
   showAllCurso(cursos);

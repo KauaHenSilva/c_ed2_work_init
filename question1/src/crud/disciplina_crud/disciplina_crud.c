@@ -5,59 +5,67 @@
 #include <curso_crud.h>
 #include <utils.h>
 
-NodeDisciplina *alocDisciplina()
+void alocDisciplina(NodeDisciplina **new)
 {
-  NodeDisciplina *new = (NodeDisciplina *)malloc(sizeof(NodeDisciplina));
-  new->cargaHoraria = -1;
-  new->codDisciplina = -1;
-  new->periodo = -1;
-  new->nomeDaDisciplina = NULL;
-  new->dir = NULL;
-  new->esq = NULL;
-  return new;
+  *new = (NodeDisciplina *)malloc(sizeof(NodeDisciplina));
+  (*new)->cargaHoraria = -1;
+  (*new)->codDisciplina = -1;
+  (*new)->periodo = -1;
+  (*new)->nomeDaDisciplina = NULL;
+  (*new)->dir = NULL;
+  (*new)->esq = NULL;
 }
 
 void freeNodeDisciplina(NodeDisciplina *node)
 {
-  free(node->nomeDaDisciplina);
+  if (node->nomeDaDisciplina)
+    free(node->nomeDaDisciplina);
+
   free(node);
 }
 
-void freeNodeDisciplinas(NodeDisciplina *node)
+void freeNodeDisciplinas(NodeDisciplina *raiz)
 {
-  if (!node)
-    return;
-
-  freeNodeDisciplinas(node->esq);
-  freeNodeDisciplinas(node->dir);
-
-  freeNodeDisciplina(node);
+  if (raiz)
+  {
+    freeNodeDisciplinas(raiz->esq);
+    freeNodeDisciplinas(raiz->dir);
+    freeNodeDisciplina(raiz);
+  }
 }
 
 int prencherDisciplina(NodeDisciplina *node)
 {
+  printf("Para sair só digite 'sair'.\n");
+
   int confirm = 1;
+  char *enunciado;
+
+  enunciado = "Digite o codigo da disciplina: ";
+  confirm = getInt(&node->codDisciplina, enunciado);
 
   if (confirm)
-    confirm = getInt(&node->codDisciplina, "Digite o codigo da disciplina: ");
+  {
+    enunciado = "Digite o periodo da disciplina: ";
+    confirm = getInt(&node->periodo, enunciado);
+  }
 
   if (confirm)
-    // Fazer a verificação se o periodo é valido.
-    confirm = getInt(&node->periodo, "Digite o periodo da disciplina: ");
+  {
+    enunciado = "Digite a carga horaria da disciplina: ";
+    confirm = getInt(&node->cargaHoraria, enunciado);
+  }
 
   if (confirm)
-    // Fazer a verificação se a carga horaria é valida. multiplo de 15 e entre 30 e 90.
-    confirm = getInt(&node->cargaHoraria, "Digite a carga horaria da disciplina: ");
-
-  if (confirm)
-    confirm = getString(&node->nomeDaDisciplina, "Digite o nome da disciplina: ");
+  {
+    enunciado = "Digite o nome da disciplina: ";
+    confirm = getString(&node->nomeDaDisciplina, enunciado);
+  }
 
   if (!confirm)
-  {
     printf("Não foi possivel execultar o prencher disciplina!");
-    return 1;
-  }
-  return 0;
+
+  return !confirm;
 }
 
 void showDisciplina(NodeDisciplina *disciplina)
@@ -69,42 +77,42 @@ void showDisciplina(NodeDisciplina *disciplina)
 
 void showAllDisciplina(NodeDisciplina *disciplina)
 {
-  if (!disciplina)
-    return;
-
-  showAllDisciplina(disciplina->esq);
-  showAllDisciplina(disciplina->dir);
-  showDisciplina(disciplina);
+  if (disciplina)
+  {
+    showAllDisciplina(disciplina->esq);
+    showAllDisciplina(disciplina->dir);
+    showDisciplina(disciplina);
+  }
 }
 
-static NodeDisciplina *inserction(NodeDisciplina *raiz, NodeDisciplina *node)
+static void inserction(NodeDisciplina **raiz, NodeDisciplina *node)
 {
-  if (!raiz)
-    return node;
+  if (!*raiz)
+    *raiz = node;
   else
   {
-    if (node->codDisciplina < raiz->codDisciplina)
-      raiz->esq = inserction(raiz->esq, node);
+    if (node->codDisciplina < (*raiz)->codDisciplina)
+      inserction(&(*raiz)->esq, node);
     else
-      raiz->dir = inserction(raiz->dir, node);
+      inserction(&(*raiz)->dir, node);
   }
-
-  return raiz;
 }
 
 void cadastrarDisciplinas(NodeCurso *curso)
 {
-  NodeDisciplina *new = alocDisciplina();
+  NodeDisciplina *new;
+  alocDisciplina(&new);
+
   if (prencherDisciplina(new))
-  {
     freeNodeDisciplina(new);
-    return;
+
+  if (new)
+  {
+    // temporario, para inserir no ultimo curso a direita. // O usuario deve escolher o curso.
+    NodeCurso *aux = curso;
+    while (aux->dir)
+      aux = aux->dir;
+
+    inserction(&(aux->nodeDisciplina), new);
   }
-
-  // temporario, para inserir no ultimo curso.
-  NodeCurso *aux = curso;
-  while (aux->dir)
-    aux = aux->dir;
-
-  aux->nodeDisciplina = inserction(aux->nodeDisciplina, new);
 }

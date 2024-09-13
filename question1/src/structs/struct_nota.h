@@ -1,6 +1,7 @@
 #pragma once
 
 // -**Ordem : **Código da Disciplina
+// - **Free:** node.
 typedef struct stNodeNota
 {
   int codDisciplina;

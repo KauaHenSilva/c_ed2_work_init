@@ -5,10 +5,7 @@
 
 // Auxs
 
-NodeDisciplina *alocDisciplina();
-void freeNodeDisciplina(NodeDisciplina *node);
-void freeNodeDisciplinas(NodeDisciplina *node);
-int prencherDisciplina(NodeDisciplina *node);
+void freeNodeDisciplinas(NodeDisciplina *raiz);
 void showAllDisciplina(NodeDisciplina *disciplina);
 
 // ---------------------------------------------------------------------------------------

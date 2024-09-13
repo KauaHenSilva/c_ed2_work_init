@@ -5,8 +5,6 @@
 
 // Auxs
 
-ListAluno *alocAluno();
-int prencherAluno(ListAluno *aluno, NodeCurso *cursos);
 void freeAlunosList(ListAluno *alunos);
 void showAllAlunos(ListAluno *alunos);
 
