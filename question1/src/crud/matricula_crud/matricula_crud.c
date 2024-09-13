@@ -49,11 +49,11 @@ int prencherMatricula(NodeMatricula *node)
   int confirm;
   char *eneunciado;
 
-  eneunciado = "Digite o codigo da disciplina!";
+  eneunciado = "Digite o codigo da disciplina: ";
   confirm = getInt(&node->codDisciplina, eneunciado);
 
   if (!confirm)
-    printf("Não foi possivel execultar o prencher disciplina!");
+    printf("Não foi possivel execultar o prencher disciplina: ");
 
   return !confirm;
 }
@@ -71,6 +71,41 @@ void inserctionMatricula(NodeMatricula **raiz, NodeMatricula *new)
   }
 }
 
+NodeMatricula *esqRoot(NodeMatricula *node)
+{
+  NodeMatricula *current = node;
+  while (current && current->esq != NULL)
+    current = current->esq;
+  return current;
+}
+
+// Tem que testar ainda. (Quebrou a parte que os cursos não tem o codigo correto.)
+void removMatricula(NodeMatricula **matricula, int codDisciplina)
+{
+  NodeMatricula *atual = *matricula;
+  NodeMatricula *temp = *matricula;
+
+  if (matricula)
+  {
+    if (atual->codDisciplina > codDisciplina)
+      removMatricula(&(atual->esq), codDisciplina);
+    else if (atual->codDisciplina < codDisciplina)
+      removMatricula(&(atual->dir), codDisciplina);
+    else
+    {
+      if (atual->esq == NULL)
+        temp = atual->dir;
+      else if (atual->dir == NULL)
+        temp = atual->esq;
+      else
+        temp = esqRoot(atual->dir);
+
+      *matricula = temp;
+      free(atual);
+    }
+  }
+}
+
 void cadastrarMatriculas(ListAluno *aluno, NodeDisciplina *raizDisciplina)
 {
   NodeMatricula *new;
@@ -78,16 +113,8 @@ void cadastrarMatriculas(ListAluno *aluno, NodeDisciplina *raizDisciplina)
 
   if (new)
   {
-    // insirir no utimo aluno da lista. MUDAR.
     ListAluno *auxAluno = aluno;
-    if (auxAluno->prox)
-      while (auxAluno->prox->prox)
-        auxAluno = auxAluno->prox;
-
-    // inserir no utima disciplina na direita. MUDAR.
     NodeDisciplina *auxDisciplina = raizDisciplina;
-    while (auxDisciplina->dir)
-      auxDisciplina = auxDisciplina->dir;
 
     new->codDisciplina = auxDisciplina->codDisciplina;
     inserctionMatricula(&(auxAluno->nodeMatricula), new);

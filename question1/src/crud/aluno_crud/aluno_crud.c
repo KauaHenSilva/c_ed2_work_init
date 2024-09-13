@@ -8,7 +8,16 @@
 
 #include <utils.h>
 
-void alocAluno(ListAluno **new)
+/**
+ * @brief Aloca memória para uma nova estrutura ListAluno e inicializa seus membros.
+ *
+ * Esta função aloca memória para uma nova estrutura ListAluno e define seus membros
+ * para valores padrão. Especificamente, define 'codigoDoCurso' e 'matricula' como -1,
+ * e inicializa 'nome', 'nodeMatricula', 'nodeNota', 'ant' e 'prox' como NULL.
+ *
+ * @param new Uma refernecia para um ponteiro para uma estrutura ListAluno que será alocada e inicializada.
+ */
+static void alocAluno(ListAluno **new)
 {
   *new = (ListAluno *)malloc(sizeof(ListAluno));
   (*new)->codigoDoCurso = -1;
@@ -20,26 +29,36 @@ void alocAluno(ListAluno **new)
   (*new)->prox = NULL;
 }
 
-void freeAluno(ListAluno *aluno)
+/**
+ * @brief Libera a memória alocada para um objeto do tipo ListAluno.
+ *
+ * Esta função libera toda a memória associada ao objeto ListAluno passado como parâmetro,
+ * garantindo que não haja vazamentos de memória.
+ *
+ * @param aluno Ponteiro para o uma struct ListAluno que será liberado.
+ */
+static void freeAluno(ListAluno *aluno)
 {
   if (aluno->nome)
     free(aluno->nome);
 
   freeNodeMatriculas(aluno->nodeMatricula);
-
   free(aluno);
 }
 
-void freeAlunosList(ListAluno *alunos)
-{
-  if (alunos)
-  {
-    freeAlunosList(alunos->prox);
-    freeAluno(alunos);
-  }
-}
-
-int prencherAluno(ListAluno *aluno, NodeCurso *cursos)
+/**
+ * @brief Preenche os dados de um aluno.
+ *
+ * Esta função solicita ao usuário que insira os dados de um aluno, como o código do curso,
+ * matrícula e nome. Se o modo de depuração (DEBUG_MODE) estiver desativado, a função também
+ * verifica se o curso está cadastrado.
+ *
+ * @param aluno Ponteiro para a estrutura ListAluno onde os dados do aluno serão armazenados.
+ * @param cursos Ponteiro para a estrutura NodeCurso contendo a lista de cursos cadastrados.
+ *
+ * @return Retorna 0 se os dados foram preenchidos com sucesso, ou 1 se houve algum erro.
+ */
+static int prencherAluno(ListAluno *aluno, NodeCurso *cursos)
 {
   printf("Para sair só digite 'sair'.\n");
 
@@ -79,7 +98,15 @@ int prencherAluno(ListAluno *aluno, NodeCurso *cursos)
   return !confirm;
 }
 
-void showAluno(ListAluno *aluno)
+/**
+ * @brief Exibe as informações de um aluno.
+ *
+ * Esta função imprime no console as informações de um aluno, incluindo
+ * o código do curso, matrícula, nome e todas as matrículas associadas.
+ *
+ * @param aluno Ponteiro para a estrutura ListAluno que contém as informações do aluno.
+ */
+static void showAluno(ListAluno *aluno)
 {
   printf("Aluno: \n");
   printf("\tid: %d\n", aluno->codigoDoCurso);
@@ -89,15 +116,16 @@ void showAluno(ListAluno *aluno)
   showAllMatriculas(aluno->nodeMatricula);
 }
 
-void showAllAlunos(ListAluno *alunos)
-{
-  if (alunos)
-  {
-    showAllAlunos(alunos->prox);
-    showAluno(alunos);
-  }
-}
-
+/**
+ * @brief Insere um novo aluno na lista de alunos de forma ordenada.
+ *
+ * A função insere um novo aluno na lista de alunos de acordo com o código do curso
+ * e o nome do aluno, mantendo a lista ordenada. A inserção pode ocorrer no início,
+ * no meio ou no final da lista.
+ *
+ * @param alunos Ponteiro duplo para a lista de alunos.
+ * @param new Ponteiro para o novo aluno a ser inserido.
+ */
 void inserctionAluno(ListAluno **alunos, ListAluno *new)
 {
   if (!*alunos)
@@ -135,6 +163,26 @@ void inserctionAluno(ListAluno **alunos, ListAluno *new)
     }
   }
 }
+
+
+void showAllAlunos(ListAluno *alunos)
+{
+  if (alunos)
+  {
+    showAllAlunos(alunos->prox);
+    showAluno(alunos);
+  }
+}
+
+void freeAlunosList(ListAluno *alunos)
+{
+  if (alunos)
+  {
+    freeAlunosList(alunos->prox);
+    freeAluno(alunos);
+  }
+}
+
 
 int cadastrarAlunos(ListAluno **alunos, NodeCurso *cursos)
 {

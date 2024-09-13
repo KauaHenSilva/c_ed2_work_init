@@ -2,8 +2,8 @@
 
 #include <struct_disciplina.h>
 
-// - **Ordem:** Código do Curso
-// - **Free:** node, nomeDoCurso, nodeDisciplina.
+// - Ordem: Código do Curso
+// - Free: node, nomeDoCurso, nodeDisciplina.
 typedef struct NodeCurso
 {
   int codigo;

@@ -7,6 +7,7 @@
     ".prettierrc": "json",
     "*.css": "css",
     "struct_curso.h": "c",
-    "struct_matricula.h": "c"
+    "struct_matricula.h": "c",
+    "struct_disciplina.h": "c"
   }
 }

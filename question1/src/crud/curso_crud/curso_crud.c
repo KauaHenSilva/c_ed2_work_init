@@ -87,6 +87,7 @@ void showAllCurso(NodeCurso *curso)
   }
 }
 
+// Revisar logica.
 void isCurseOpen(NodeCurso *curso, int id, int *bool)
 {
   if (curso)

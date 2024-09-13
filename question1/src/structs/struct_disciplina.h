@@ -1,7 +1,7 @@
 #pragma once
 
-// -**Ordem : **Código da Disciplina
-// - **Free:** node, nomeDaDisciplina.
+// - Ordem: Código da Disciplina
+// - Free: node, nomeDaDisciplina.
 typedef struct stNodeDisciplina
 {
   int codDisciplina;
