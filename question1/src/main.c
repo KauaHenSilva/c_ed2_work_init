@@ -41,10 +41,10 @@ int main()
     printf("\n");
   }
 
-  for (int x = 0; x < 3; x++)
+  for (int x = 0; x < 2; x++)
   {
     printf("Cadrastrando Nota: \n\n");
-    cadastrarNotas(alunos, cursos->nodeDisciplina);
+    cadastrarNotas(alunos);
     printf("\n");
   }
 

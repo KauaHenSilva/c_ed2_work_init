@@ -1,5 +1,6 @@
 #include <nota_crud.h>
 #include <matricula_crud.h>
+#include <disciplina_crud.h>
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -66,6 +67,7 @@ void showNota(NodeNota *node)
 {
   printf("Notas:\n");
   printf("\tCodDisciplina: %d\n", node->codDisciplina);
+  printf("\tNotaFinal: %d\n", node->notaFinal);
 }
 
 /**
@@ -86,7 +88,6 @@ void showAllNotas(NodeNota *raiz)
   }
 }
 
-
 #if DEBUG_MODE
 /**
  * @brief Preenche os dados de uma nota com base na entrada do usuário.
@@ -95,28 +96,34 @@ void showAllNotas(NodeNota *raiz)
  * Se a entrada for inválida, a função retorna um erro.
  *
  * @param raizNota Ponteiro para a raiz de nota a ser preenchido.
- * @param raizDisciplina Ponteiro para a raiz de nota a ser preenchido.
+ * @param raizMatricula Ponteiro para a raiz de matricula a ser escolhida.
  * @return Retorna 1 se o preenchimento foi bem-sucedido, 0 caso contrário.
  */
-int prencherNota(NodeNota *raizNota, NodeDisciplina *raizDisciplina)
+int prencherNota(NodeNota *raizNota, NodeMatricula *raizMatricula)
 {
   printf("Para sair só digite 'sair'.\n");
 
   int confirm;
-  char *eneunciado;
+  char *enunciado;
 
-  NodeDisciplina *search = NULL;
+  NodeMatricula *search = NULL;
   do
   {
-    eneunciado = "Digite o codigo da disciplina da nota: ";
+    enunciado = "Digite o codigo da disciplina da nota: ";
 
     if (raizNota->codDisciplina == -1)
-      confirm = getInt(&raizNota->codDisciplina, eneunciado);
+      confirm = getInt(&raizNota->codDisciplina, enunciado);
     else
       printf("[DEBUG]: procurando disciplinas com o id: %d\n", --raizNota->codDisciplina);
 
-    search_matricula(raizDisciplina, raizNota->codDisciplina, &search);
+    search_matricula(raizMatricula, raizNota->codDisciplina, &search);
   } while (!search);
+
+  if (confirm)
+  {
+    enunciado = "Digite a nota final do aluno: ";
+    confirm = getInt(&raizNota->notaFinal, enunciado);
+  }
 
   if (!confirm)
     printf("Não foi possivel execultar o prencher a nota: ");
@@ -134,21 +141,27 @@ int prencherNota(NodeNota *raizNota, NodeDisciplina *raizDisciplina)
  * @param raizDisciplina Ponteiro para a raiz de nota a ser preenchido.
  * @return Retorna 1 se o preenchimento foi bem-sucedido, 0 caso contrário.
  */
-int prencherNota(NodeNota *raizNota, NodeDisciplina *raizDisciplina)
+int prencherNota(NodeNota *raizNota, NodeMatricula *raizMatricula)
 {
   printf("Para sair só digite 'sair'.\n");
 
   int confirm;
   char *eneunciado;
 
-  NodeDisciplina *search = NULL;
+  NodeMatricula *search = NULL;
   do
   {
     eneunciado = "Digite o codigo da disciplina da nota: ";
-    confirm = getInt(&raizNota->codDisciplina, eneunciado);
+    confirm = getInt(&raizMatricula->codDisciplina, eneunciado);
 
-    search_matricula(raizDisciplina, raizNota->codDisciplina, &search);
+    search_matricula(raizDisciplina, raizMatricula->codDisciplina, &search);
   } while (!search);
+
+  if (confirm)
+  {
+    enunciado = "Digite a nota final do aluno: ";
+    confirm = getInt(&raizNota->notaFinal, enunciado);
+  }
 
   if (!confirm)
     printf("Não foi possivel execultar o prencher a nota: ");
@@ -172,25 +185,26 @@ void inserctionNota(NodeNota **raiz, NodeNota *new)
     *raiz = new;
   else
   {
-    if ((*raiz)->codDisciplina < new->codDisciplina)
+    if (new->codDisciplina < (*raiz)->codDisciplina)
       inserctionNota(&(*raiz)->esq, new);
     else
       inserctionNota(&(*raiz)->dir, new);
   }
 }
 
-void cadastrarNotas(ListAluno *aluno, NodeDisciplina *raizDisciplina)
+void cadastrarNotas(ListAluno *aluno)
 {
   NodeNota *new;
   alocNota(&new);
 
-  if (prencherNota(new, raizDisciplina))
+  if (prencherNota(new, aluno->nodeMatricula))
     freeNodeNotas(new);
 
   if (new)
   {
     ListAluno *auxAluno = aluno;
     removerDisciplinaDaArvoreDeMatricula(&aluno->nodeMatricula, new->codDisciplina);
+    // isso está errado, ele tá pegando de uma
     inserctionNota(&auxAluno->nodeNota, new);
   }
 }

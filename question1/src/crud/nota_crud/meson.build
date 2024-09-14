@@ -5,6 +5,7 @@ lib_nota_crud = static_library(
     inc_structs,
     inc_utils,
     inc_matricula_crud,
+    inc_disciplina_crud,
   ],
   install: true,
 )

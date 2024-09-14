@@ -80,7 +80,6 @@ void showAllMatriculas(NodeMatricula *raiz)
   }
 }
 
-
 #if DEBUG_MODE
 /**
  * @brief Insere uma nova matricula na árvore binária de matriculas.
@@ -92,25 +91,35 @@ void showAllMatriculas(NodeMatricula *raiz)
  * @return Retorna 1 se os dados foram preenchidos com sucesso, ou 0 se houve algum erro.
  *
  */
-int prencherMatricula(NodeMatricula *node, NodeDisciplina *raizDisciplina)
+int prencherMatricula(
+    NodeMatricula *new, NodeDisciplina *raizDisciplina, NodeMatricula *matricula)
 {
   printf("Para sair só digite 'sair'.\n");
 
   int confirm;
   char *eneunciado;
 
-  NodeDisciplina *search = NULL;
+  NodeDisciplina *searchDisciplina;
+  NodeMatricula *searchMatricula;
   do
   {
+    searchDisciplina = NULL;
+    searchMatricula = NULL;
+
     eneunciado = "Digite o codigo da disciplina: ";
 
-    if (node->codDisciplina == -1)
-      confirm = getInt(&node->codDisciplina, eneunciado);
+    if (new->codDisciplina == -1)
+      confirm = getInt(&new->codDisciplina, eneunciado);
     else
-      printf("[DEBUG]: procurando disciplinas com o id: %d\n", --node->codDisciplina);
+      printf("[DEBUG]: procurando disciplinas com o id: %d\n", --new->codDisciplina);
 
-    search_disciplina(raizDisciplina, node->codDisciplina, &search);
-  } while (!search);
+    search_disciplina(raizDisciplina, new->codDisciplina, &searchDisciplina);
+    search_matricula(matricula, new->codDisciplina, &searchMatricula);
+
+    // Logica do while
+    // Caso ele ache a disciplina (searchDisciplina != NULL) e caso a disiplina não esteja nas disciplinas já matriculadas. o mesmo deve sair do while.
+
+  } while (!(searchDisciplina && !searchMatricula));
 
   if (!confirm)
     printf("Não foi possivel execultar o prencher disciplina: ");
@@ -167,7 +176,7 @@ void inserctionMatricula(NodeMatricula **raiz, NodeMatricula *new)
     *raiz = new;
   else
   {
-    if ((*raiz)->codDisciplina < new->codDisciplina)
+    if (new->codDisciplina < (*raiz)->codDisciplina)
       inserctionMatricula(&(*raiz)->esq, new);
     else
       inserctionMatricula(&(*raiz)->dir, new);
@@ -236,15 +245,12 @@ void cadastrarMatriculas(ListAluno *aluno, NodeDisciplina *raizDisciplina)
   NodeMatricula *new;
   alocMatricula(&new);
 
-  if (prencherMatricula(new, raizDisciplina))
+  if (prencherMatricula(new, raizDisciplina, aluno->nodeMatricula))
     freeNodeMatriculas(new);
 
   if (new)
   {
     ListAluno *auxAluno = aluno;
-    NodeDisciplina *auxDisciplina = raizDisciplina;
-
-    new->codDisciplina = auxDisciplina->codDisciplina;
     inserctionMatricula(&(auxAluno->nodeMatricula), new);
   }
 }

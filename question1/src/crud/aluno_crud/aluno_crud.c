@@ -5,6 +5,7 @@
 #include <aluno_crud.h>
 #include <curso_crud.h>
 #include <matricula_crud.h>
+#include <nota_crud.h>
 
 #include <utils.h>
 
@@ -112,6 +113,7 @@ static void showAluno(ListAluno *aluno)
   printf("\tNome: %s\n", aluno->nome);
 
   showAllMatriculas(aluno->nodeMatricula);
+  showAllNotas(aluno->nodeNota);
 }
 
 /**
