@@ -80,6 +80,8 @@ void showAllMatriculas(NodeMatricula *raiz)
   }
 }
 
+
+#if DEBUG_MODE
 /**
  * @brief Insere uma nova matricula na árvore binária de matriculas.
  *
@@ -102,14 +104,10 @@ int prencherMatricula(NodeMatricula *node, NodeDisciplina *raizDisciplina)
   {
     eneunciado = "Digite o codigo da disciplina: ";
 
-#if DEBUG_MODE
     if (node->codDisciplina == -1)
       confirm = getInt(&node->codDisciplina, eneunciado);
     else
       printf("[DEBUG]: procurando disciplinas com o id: %d\n", --node->codDisciplina);
-#else
-    confirm = getInt(&node->codDisciplina, eneunciado);
-#endif
 
     search_disciplina(raizDisciplina, node->codDisciplina, &search);
   } while (!search);
@@ -119,6 +117,39 @@ int prencherMatricula(NodeMatricula *node, NodeDisciplina *raizDisciplina)
 
   return !confirm;
 }
+#else
+/**
+ * @brief Insere uma nova matricula na árvore binária de matriculas.
+ *
+ * Esta função solicita ao usuário que insira o codigo da matricula.
+ *
+ * @param node Ponteiro para a estrutura NodeMatricula onde os dados da matricula serão armazenados.
+ *
+ * @return Retorna 1 se os dados foram preenchidos com sucesso, ou 0 se houve algum erro.
+ *
+ */
+int prencherMatricula(NodeMatricula *node, NodeDisciplina *raizDisciplina)
+{
+  printf("Para sair só digite 'sair'.\n");
+
+  int confirm;
+  char *eneunciado;
+
+  NodeDisciplina *search = NULL;
+  do
+  {
+    eneunciado = "Digite o codigo da disciplina: ";
+    confirm = getInt(&node->codDisciplina, eneunciado);
+
+    search_disciplina(raizDisciplina, node->codDisciplina, &search);
+  } while (!search);
+
+  if (!confirm)
+    printf("Não foi possivel execultar o prencher disciplina: ");
+
+  return !confirm;
+}
+#endif
 
 /**
  * @brief Insere um novo nó na árvore binária de matriculas.
