@@ -14,7 +14,7 @@
  *
  * @param new Uma refernecia para um ponteiro para uma estrutura NodeDisciplina que será alocada e inicializada.
  */
-void alocDisciplina(NodeDisciplina **new)
+static void alocDisciplina(NodeDisciplina **new)
 {
   *new = (NodeDisciplina *)malloc(sizeof(NodeDisciplina));
   (*new)->cargaHoraria = -1;
@@ -32,7 +32,7 @@ void alocDisciplina(NodeDisciplina **new)
  *
  * @param node Ponteiro para o uma struct NodeDisciplina que será liberado.
  */
-void freeNodeDisciplina(NodeDisciplina *node)
+static void freeNodeDisciplina(NodeDisciplina *node)
 {
   if (node->nomeDaDisciplina)
     free(node->nomeDaDisciplina);
@@ -67,7 +67,7 @@ void freeNodeDisciplinas(NodeDisciplina *raiz)
  * @return Retorna 1 se os dados foram preenchidos com sucesso, ou 0 se houve algum erro.
  *
  */
-int prencherDisciplina(NodeDisciplina *node)
+static int prencherDisciplina(NodeDisciplina *node)
 {
   printf("Para sair só digite 'sair'.\n");
 
@@ -108,7 +108,7 @@ int prencherDisciplina(NodeDisciplina *node)
 *
 * @param disciplina Ponteiro para a estrutura NodeDisciplina que contém as informações da disciplina.
 */
-void showDisciplina(NodeDisciplina *disciplina)
+static void showDisciplina(NodeDisciplina *disciplina)
 {
   printf("Disciplina: \n");
   printf("\tid: %d\n", disciplina->codDisciplina);

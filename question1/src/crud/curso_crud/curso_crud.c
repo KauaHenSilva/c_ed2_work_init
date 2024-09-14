@@ -16,7 +16,7 @@
  *
  * @return Um ponteiro para o novo curso alocado.
  */
-NodeCurso *alocCurso()
+static NodeCurso *alocCurso()
 {
   NodeCurso *new = (NodeCurso *)malloc(sizeof(NodeCurso));
   new->codigo = -1;
@@ -37,7 +37,7 @@ NodeCurso *alocCurso()
  *
  * @param node Ponteiro para o nó de curso a ser liberado.
  */
-void freeNodeCurso(NodeCurso *node)
+static void freeNodeCurso(NodeCurso *node)
 {
   if (node->nomeDoCurso)
     free(node->nomeDoCurso);
@@ -56,7 +56,7 @@ void freeNodeCurso(NodeCurso *node)
  *
  * @param node Ponteiro para o nó raiz da árvore de cursos.
  */
-void freeNodeCursos(NodeCurso *node)
+static void freeNodeCursos(NodeCurso *node)
 {
   if (node)
   {
@@ -77,7 +77,7 @@ void freeNodeCursos(NodeCurso *node)
  * @param node Ponteiro para o curso a ser preenchido.
  * @return Retorna 1 se o preenchimento foi bem-sucedido, 0 caso contrário.
  */
-int prencherCurso(NodeCurso *node)
+static int prencherCurso(NodeCurso *node)
 {
   printf("Para sair só digite 'sair'.\n");
 
@@ -115,7 +115,7 @@ int prencherCurso(NodeCurso *node)
  *
  * @param curso Ponteiro para o curso a ser exibido.
  */
-void showCurso(NodeCurso *curso)
+static void showCurso(NodeCurso *curso)
 {
   printf("Curso: \n");
   printf("\tid: %d\n", curso->codigo);

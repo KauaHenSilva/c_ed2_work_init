@@ -12,7 +12,7 @@
  *
  * @param node Uma refernecia para um ponteiro para uma estrutura NodeMatricula que será alocada e inicializada.
  */
-void alocMatricula(NodeMatricula **node)
+static void alocMatricula(NodeMatricula **node)
 {
   *node = (NodeMatricula *)malloc(sizeof(NodeMatricula));
   (*node)->codDisciplina = -1;
@@ -28,7 +28,7 @@ void alocMatricula(NodeMatricula **node)
  *
  * @param node Ponteiro para o uma struct NodeMatricula que será liberado.
  */
-void freeNodeMatricula(NodeMatricula *node)
+static void freeNodeMatricula(NodeMatricula *node)
 {
   free(node);
 }
@@ -55,7 +55,7 @@ void freeNodeMatriculas(NodeMatricula *raiz)
  *
  * @param node Ponteiro para a estrutura NodeMatricula que contém a informação da matricula.
  */
-void showMatricula(NodeMatricula *node)
+static void showMatricula(NodeMatricula *node)
 {
   printf("Matricula:\n");
   printf("\tCodDisciplina: %d\n", node->codDisciplina);
@@ -91,8 +91,7 @@ void showAllMatriculas(NodeMatricula *raiz)
  * @return Retorna 1 se os dados foram preenchidos com sucesso, ou 0 se houve algum erro.
  *
  */
-int prencherMatricula(
-    NodeMatricula *new, NodeDisciplina *raizDisciplina, NodeMatricula *matricula)
+static int prencherMatricula(NodeMatricula *new, NodeDisciplina *raizDisciplina, NodeMatricula *matricula)
 {
   printf("Para sair só digite 'sair'.\n");
 
