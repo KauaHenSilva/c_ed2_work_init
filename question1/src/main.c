@@ -4,6 +4,7 @@
 #include <curso_crud.h>
 #include <disciplina_crud.h>
 #include <matricula_crud.h>
+#include <nota_crud.h>
 
 #include <utils.h>
 
@@ -12,21 +13,40 @@ int main()
   ListAluno *alunos = NULL;
   NodeCurso *cursos = NULL;
 
-  cadastrarCursos(&cursos);
-  cadastrarCursos(&cursos);
-  cadastrarCursos(&cursos);
+  for (int x = 0; x < 3; x++)
+  {
+    printf("Cadrastrando Cursos: \n\n");
+    cadastrarCursos(&cursos);
+    printf("\n");
+  }
 
-  cadastrarAlunos(&alunos, cursos);
-  cadastrarAlunos(&alunos, cursos);
-  cadastrarAlunos(&alunos, cursos);
+  for (int x = 0; x < 3; x++)
+  {
+    printf("Cadrastrando Aluno: \n\n");
+    cadastrarAlunos(&alunos, cursos);
+    printf("\n");
+  }
 
-  cadastrarDisciplinas(cursos);
-  cadastrarDisciplinas(cursos);
-  cadastrarDisciplinas(cursos);
+  for (int x = 0; x < 3; x++)
+  {
+    printf("Cadrastrando Disciplina: \n\n");
+    cadastrarDisciplinas(cursos);
+    printf("\n");
+  }
 
-  cadastrarMatriculas(alunos, cursos->nodeDisciplina);
-  cadastrarMatriculas(alunos, cursos->nodeDisciplina);
-  cadastrarMatriculas(alunos, cursos->nodeDisciplina);
+  for (int x = 0; x < 3; x++)
+  {
+    printf("Cadrastrando Matricula: \n\n");
+    cadastrarMatriculas(alunos, cursos->nodeDisciplina);
+    printf("\n");
+  }
+
+  for (int x = 0; x < 3; x++)
+  {
+    printf("Cadrastrando Nota: \n\n");
+    cadastrarNotas(alunos, cursos->nodeDisciplina);
+    printf("\n");
+  }
 
   showAllAlunos(alunos);
   showAllCurso(cursos);

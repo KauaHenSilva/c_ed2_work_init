@@ -1,4 +1,5 @@
 #include <matricula_crud.h>
+#include <disciplina_crud.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <utils.h>
@@ -42,15 +43,29 @@ void showAllMatriculas(NodeMatricula *raiz)
   }
 }
 
-int prencherMatricula(NodeMatricula *node)
+int prencherMatricula(NodeMatricula *node, NodeDisciplina *raizDisciplina)
 {
   printf("Para sair só digite 'sair'.\n");
 
   int confirm;
   char *eneunciado;
 
-  eneunciado = "Digite o codigo da disciplina: ";
-  confirm = getInt(&node->codDisciplina, eneunciado);
+  NodeDisciplina *search = NULL;
+  do
+  {
+    eneunciado = "Digite o codigo da disciplina: ";
+
+#if DEBUG_MODE
+    if (node->codDisciplina == -1)
+      confirm = getInt(&node->codDisciplina, eneunciado);
+    else
+      printf("[DEBUG]: procurando disciplinas com o id: %d\n", --node->codDisciplina);
+#else
+    confirm = getInt(&node->codDisciplina, eneunciado);
+#endif
+
+    search_disciplina(raizDisciplina, node->codDisciplina, &search);
+  } while (!search);
 
   if (!confirm)
     printf("Não foi possivel execultar o prencher disciplina: ");
@@ -71,6 +86,19 @@ void inserctionMatricula(NodeMatricula **raiz, NodeMatricula *new)
   }
 }
 
+void search_matricula(NodeMatricula *raiz, int code, NodeMatricula **result)
+{
+  if (raiz)
+  {
+    if (raiz->codDisciplina == code)
+      *result = raiz;
+    else if (raiz->codDisciplina < code)
+      search_matricula(raiz->dir, code, result);
+    else if (raiz->codDisciplina > code)
+      search_matricula(raiz->esq, code, result);
+  }
+}
+
 NodeMatricula *esqRoot(NodeMatricula *node)
 {
   NodeMatricula *current = node;
@@ -80,7 +108,7 @@ NodeMatricula *esqRoot(NodeMatricula *node)
 }
 
 // Tem que testar ainda. (Quebrou a parte que os cursos não tem o codigo correto.)
-void removMatricula(NodeMatricula **matricula, int codDisciplina)
+void removerDisciplinaDaArvoreDeMatricula(NodeMatricula **matricula, int codDisciplina)
 {
   NodeMatricula *atual = *matricula;
   NodeMatricula *temp = *matricula;
@@ -88,9 +116,9 @@ void removMatricula(NodeMatricula **matricula, int codDisciplina)
   if (matricula)
   {
     if (atual->codDisciplina > codDisciplina)
-      removMatricula(&(atual->esq), codDisciplina);
+      removerDisciplinaDaArvoreDeMatricula(&(atual->esq), codDisciplina);
     else if (atual->codDisciplina < codDisciplina)
-      removMatricula(&(atual->dir), codDisciplina);
+      removerDisciplinaDaArvoreDeMatricula(&(atual->dir), codDisciplina);
     else
     {
       if (atual->esq == NULL)
@@ -110,6 +138,9 @@ void cadastrarMatriculas(ListAluno *aluno, NodeDisciplina *raizDisciplina)
 {
   NodeMatricula *new;
   alocMatricula(&new);
+
+  if (prencherMatricula(new, raizDisciplina))
+    freeNodeMatriculas(new);
 
   if (new)
   {

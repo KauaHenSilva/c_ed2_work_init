@@ -1,4 +1,6 @@
 #include <nota_crud.h>
+#include <matricula_crud.h>
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <utils.h>
@@ -44,15 +46,29 @@ void showAllNotas(NodeNota *raiz)
   }
 }
 
-int prencherNota(NodeNota *node)
+int prencherNota(NodeNota *raizNota, NodeDisciplina *raizDisciplina)
 {
   printf("Para sair só digite 'sair'.\n");
 
   int confirm;
   char *eneunciado;
 
-  eneunciado = "Digite o codigo da disciplina da nota: ";
-  confirm = getInt(&node->codDisciplina, eneunciado);
+  NodeDisciplina *search = NULL;
+  do
+  {
+    eneunciado = "Digite o codigo da disciplina da nota: ";
+
+#if DEBUG_MODE
+    if (raizNota->codDisciplina == -1)
+      confirm = getInt(&raizNota->codDisciplina, eneunciado);
+    else
+      printf("[DEBUG]: procurando disciplinas com o id: %d\n", --raizNota->codDisciplina);
+#else
+    confirm = getInt(&raizNota->codDisciplina, eneunciado);
+#endif
+
+    search_matricula(raizDisciplina, raizNota->codDisciplina, &search);
+  } while (!search);
 
   if (!confirm)
     printf("Não foi possivel execultar o prencher a nota: ");
@@ -73,7 +89,18 @@ void inserctionNota(NodeNota **raiz, NodeNota *new)
   }
 }
 
-void cadastrarNotas(ListAluno *aluno)
+void cadastrarNotas(ListAluno *aluno, NodeDisciplina *raizDisciplina)
 {
+  NodeNota *new;
+  alocNota(&new);
 
+  if (prencherNota(new, raizDisciplina))
+    freeNodeNotas(new);
+
+  if (new)
+  {
+    ListAluno *auxAluno = aluno;
+    removerDisciplinaDaArvoreDeMatricula(&aluno->nodeMatricula, new->codDisciplina);
+    inserctionNota(&auxAluno->nodeNota, new);
+  }
 }

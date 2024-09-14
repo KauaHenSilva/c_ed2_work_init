@@ -4,6 +4,7 @@ lib_matricula_crud = static_library(
   include_directories: [
     inc_structs,
     inc_utils,
+    inc_disciplina_crud,
   ],
   install: true,
 )

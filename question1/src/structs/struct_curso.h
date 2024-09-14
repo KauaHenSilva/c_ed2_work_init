@@ -4,12 +4,12 @@
 
 // - Ordem: Código do Curso
 // - Free: node, nomeDoCurso, nodeDisciplina.
-typedef struct NodeCurso
+typedef struct stNodeCurso
 {
   int codigo;
   char *nomeDoCurso;
   int quantidadeDePeriodo;
   NodeDisciplina *nodeDisciplina;
-  struct NodeCurso *esq;
-  struct NodeCurso *dir;
+  struct stNodeCurso *esq;
+  struct stNodeCurso *dir;
 } NodeCurso;

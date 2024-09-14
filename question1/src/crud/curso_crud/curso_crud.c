@@ -88,18 +88,30 @@ void showAllCurso(NodeCurso *curso)
 }
 
 // Revisar logica.
-void isCurseOpen(NodeCurso *curso, int id, int *bool)
+void isCurseOpen(NodeCurso *node, int id, int *bool)
 {
-  if (curso)
+  if (node)
   {
-    if (curso->codigo == id)
+    if (node->codigo == id)
       *bool = 1;
     else
     {
-      isCurseOpen(curso->esq, id, bool);
-      isCurseOpen(curso->dir, id, bool);
+      if (node->codigo < id)
+        isCurseOpen(node->dir, id, bool);
+      else
+        isCurseOpen(node->esq, id, bool);
     }
   }
+}
+
+void search_course(NodeCurso *raiz, int code, NodeCurso *result)
+{
+  if (raiz->codigo == code || !raiz)
+    result = raiz;
+  else if (raiz->codigo < code)
+    search_course(raiz->dir, code, result);
+  else if (raiz->codigo > code)
+    search_course(raiz->esq, code, result);
 }
 
 void inserctionCurso(NodeCurso **raiz, NodeCurso *node)

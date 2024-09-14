@@ -8,6 +8,12 @@
     "*.css": "css",
     "struct_curso.h": "c",
     "struct_matricula.h": "c",
-    "struct_disciplina.h": "c"
+    "struct_disciplina.h": "c",
+    "system_error": "c",
+    "array": "c",
+    "functional": "c",
+    "tuple": "c",
+    "type_traits": "c",
+    "utility": "c"
   }
 }

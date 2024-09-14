@@ -68,15 +68,13 @@ static int prencherAluno(ListAluno *aluno, NodeCurso *cursos)
   enunciado = "Digite o codigo do Curso: ";
   confirm = getInt(&aluno->codigoDoCurso, enunciado);
 
-#if DEBUG_MODE
-  if (isCurseOpen(cursos, aluno->codigoDoCurso) == 0)
+  int verificacao = 0;
+  isCurseOpen(cursos, aluno->codigoDoCurso, &verificacao);
+  if (verificacao)
   {
     printf("Curso não cadastrado!\n");
     return 1;
   }
-#else
-  (void)cursos;
-#endif
 
   if (confirm)
   {
@@ -164,7 +162,6 @@ void inserctionAluno(ListAluno **alunos, ListAluno *new)
   }
 }
 
-
 void showAllAlunos(ListAluno *alunos)
 {
   if (alunos)
@@ -182,7 +179,6 @@ void freeAlunosList(ListAluno *alunos)
     freeAluno(alunos);
   }
 }
-
 
 int cadastrarAlunos(ListAluno **alunos, NodeCurso *cursos)
 {

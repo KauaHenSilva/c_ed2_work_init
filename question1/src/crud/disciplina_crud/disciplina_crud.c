@@ -85,6 +85,19 @@ void showAllDisciplina(NodeDisciplina *disciplina)
   }
 }
 
+void search_disciplina(NodeDisciplina *raiz, int code, NodeDisciplina **result)
+{
+  if (raiz)
+  {
+    if (raiz->codDisciplina == code)
+      *result = raiz;
+    else if (raiz->codDisciplina < code)
+      search_disciplina(raiz->dir, code, result);
+    else if (raiz->codDisciplina > code)
+      search_disciplina(raiz->esq, code, result);
+  }
+}
+
 static void inserction(NodeDisciplina **raiz, NodeDisciplina *node)
 {
   if (!*raiz)
