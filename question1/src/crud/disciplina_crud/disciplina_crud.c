@@ -108,11 +108,7 @@ void cadastrarDisciplinas(NodeCurso *curso)
 
   if (new)
   {
-    // temporario, para inserir no ultimo curso a direita. // O usuario deve escolher o curso.
     NodeCurso *aux = curso;
-    while (aux->dir)
-      aux = aux->dir;
-
     inserction(&(aux->nodeDisciplina), new);
   }
 }
