@@ -174,6 +174,15 @@ static void inserction(NodeDisciplina **raiz, NodeDisciplina *node)
   }
 }
 
+/**
+ * @brief Cadastra uma nova disciplina em um curso.
+ *
+ * A função aloca memória para um novo nó de disciplina, preenche as informações
+ * da disciplina e a insere na árvore binária de disciplinas do curso. Se o
+ * preenchimento da disciplina falhar, a memória alocada para o novo nó é liberada.
+ *
+ * @param curso Ponteiro para o nó raiz da árvore de cursos.
+ */
 void cadastrarDisciplinas(NodeCurso *curso)
 {
   NodeDisciplina *new;
