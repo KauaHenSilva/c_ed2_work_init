@@ -94,7 +94,8 @@ void showAllNotas(NodeNota *raiz)
  * Solicita ao usuário o código da disciplina para preencher a nota.
  * Se a entrada for inválida, a função retorna um erro.
  *
- * @param node Ponteiro para o nó de nota a ser preenchido.
+ * @param raizNota Ponteiro para a raiz de nota a ser preenchido.
+ * @param raizDisciplina Ponteiro para a raiz de nota a ser preenchido.
  * @return Retorna 1 se o preenchimento foi bem-sucedido, 0 caso contrário.
  */
 int prencherNota(NodeNota *raizNota, NodeDisciplina *raizDisciplina)
@@ -129,7 +130,8 @@ int prencherNota(NodeNota *raizNota, NodeDisciplina *raizDisciplina)
  * Solicita ao usuário o código da disciplina para preencher a nota.
  * Se a entrada for inválida, a função retorna um erro.
  *
- * @param node Ponteiro para o nó de nota a ser preenchido.
+ * @param raizNota Ponteiro para a raiz de nota a ser preenchido.
+ * @param raizDisciplina Ponteiro para a raiz de nota a ser preenchido.
  * @return Retorna 1 se o preenchimento foi bem-sucedido, 0 caso contrário.
  */
 int prencherNota(NodeNota *raizNota, NodeDisciplina *raizDisciplina)
