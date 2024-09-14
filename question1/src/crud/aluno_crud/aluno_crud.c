@@ -162,6 +162,16 @@ void inserctionAluno(ListAluno **alunos, ListAluno *new)
   }
 }
 
+/**
+ * @brief Exibe todos os alunos da lista.
+ *
+ * Função recursiva que percorre a lista encadeada de alunos e exibe as
+ * informações de cada aluno. A função chama `showAllAlunos` para o próximo nó
+ * até que o fim da lista seja alcançado, e em seguida chama `showAluno` para exibir
+ * o aluno atual.
+ *
+ * @param alunos Ponteiro para o primeiro nó da lista de alunos.
+ */
 void showAllAlunos(ListAluno *alunos)
 {
   if (alunos)
@@ -171,6 +181,17 @@ void showAllAlunos(ListAluno *alunos)
   }
 }
 
+
+/**
+ * @brief Libera a memória alocada para a lista de alunos.
+ *
+ * Função recursiva que percorre a lista encadeada de alunos e libera a memória
+ * alocada para cada nó da lista. A função chama `freeAlunosList` para o próximo nó
+ * até que o fim da lista seja alcançado, e em seguida chama `freeAluno` para
+ * liberar o aluno atual.
+ *
+ * @param alunos Ponteiro para o primeiro nó da lista de alunos.
+ */
 void freeAlunosList(ListAluno *alunos)
 {
   if (alunos)
@@ -180,6 +201,18 @@ void freeAlunosList(ListAluno *alunos)
   }
 }
 
+/**
+ * @brief Cadastra um novo aluno na lista de alunos.
+ *
+ * A função aloca memória para um novo aluno, preenche os dados do aluno usando a função `prencherAluno`
+ * e insere o aluno na lista se o preenchimento for bem-sucedido. Se o cadastro do aluno falhar,
+ * a memória alocada para o aluno é liberada.
+ *
+ * @param alunos Ponteiro para o ponteiro da lista de alunos.
+ * @param cursos Ponteiro para a lista de cursos disponíveis (usado no preenchimento do aluno).
+ *
+ * @return Retorna 1 se o cadastro foi bem-sucedido, ou 0 caso contrário.
+ */
 int cadastrarAlunos(ListAluno **alunos, NodeCurso *cursos)
 {
   ListAluno *new;
