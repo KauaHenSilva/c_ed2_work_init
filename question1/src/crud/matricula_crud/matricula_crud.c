@@ -4,6 +4,14 @@
 #include <stdio.h>
 #include <utils.h>
 
+/**
+ * @brief Aloca memória para uma nova estrutura NodeMatricula e inicializa seus membros.
+ *
+ * Esta função aloca memória para uma nova estrutura NodeMatricula e define seus membros
+ * para valores padrão. Especificamente, define 'codDissciplina' com -1, 'dir' e 'esq' com NULL.
+ *
+ * @param node Uma refernecia para um ponteiro para uma estrutura NodeMatricula que será alocada e inicializada.
+ */
 void alocMatricula(NodeMatricula **node)
 {
   *node = (NodeMatricula *)malloc(sizeof(NodeMatricula));
@@ -12,11 +20,25 @@ void alocMatricula(NodeMatricula **node)
   (*node)->esq = NULL;
 }
 
+/**
+ * @brief Libera a memória alocada para um objeto do tipo NodeMatricula.
+ *
+ * Esta função libera toda a memória associada ao objeto NodeMatricula passado como parâmetro,
+ * garantindo que não haja vazamentos de memória.
+ *
+ * @param node Ponteiro para o uma struct NodeMatricula que será liberado.
+ */
 void freeNodeMatricula(NodeMatricula *node)
 {
   free(node);
 }
 
+/**
+ * @brief Libera a memória alocada para todos os objetos do tipo NodeMatricula.
+ *
+ * Esta função percorre a árvore binária de Matriculas e libera toda a memória associada a cada nó.
+ * @param raiz Ponteiro para o uma struct NodeMatricula que será liberado.
+ */
 void freeNodeMatriculas(NodeMatricula *raiz)
 {
   if (raiz)
@@ -27,12 +49,27 @@ void freeNodeMatriculas(NodeMatricula *raiz)
   }
 }
 
+/*
+ * @brief Exibe as informações de uma matriculaa.
+ * Esta função imprime no console o codigo de matricula.
+ *
+ * @param node Ponteiro para a estrutura NodeMatricula que contém a informação da matricula.
+ */
 void showMatricula(NodeMatricula *node)
 {
   printf("Matricula:\n");
   printf("\tCodDisciplina: %d\n", node->codDisciplina);
 }
 
+/**
+ * @brief Exibe todas as matriculas.
+ *
+ * Função recursiva que percorre a arvore de matriculas e exibe o codigo de cada matricula
+ * . A função chama `showAllMatriculas` para percorrer todos os nós, e em seguida chama
+ * `showMatricula` para exibir a matricula atual.
+ *
+ * @param raiz Ponteiro para o nó raiz da arvore de matriculas.
+ */
 void showAllMatriculas(NodeMatricula *raiz)
 {
   if (raiz)
@@ -43,6 +80,16 @@ void showAllMatriculas(NodeMatricula *raiz)
   }
 }
 
+/**
+ * @brief Insere uma nova matricula na árvore binária de matriculas.
+ *
+ * Esta função solicita ao usuário que insira o codigo da matricula.
+ *
+ * @param node Ponteiro para a estrutura NodeMatricula onde os dados da matricula serão armazenados.
+ *
+ * @return Retorna 1 se os dados foram preenchidos com sucesso, ou 0 se houve algum erro.
+ *
+ */
 int prencherMatricula(NodeMatricula *node, NodeDisciplina *raizDisciplina)
 {
   printf("Para sair só digite 'sair'.\n");
@@ -73,6 +120,16 @@ int prencherMatricula(NodeMatricula *node, NodeDisciplina *raizDisciplina)
   return !confirm;
 }
 
+/**
+ * @brief Insere um novo nó na árvore binária de matriculas.
+ *
+ * A função insere um novo nó `node` na árvore binária de matriculas com base
+ * no código de matricula. Ela percorre a árvore comparando os códigos para garantir
+ * que os nós à esquerda tenham valores menores e os nós à direita tenham valores maiores.
+ *
+ * @param raiz Ponteiro duplo para o nó raiz da árvore de disciplinas.
+ * @param node Ponteiro para o nó de disciplina a ser inserido.
+ */
 void inserctionMatricula(NodeMatricula **raiz, NodeMatricula *new)
 {
   if (!*raiz)
@@ -134,6 +191,15 @@ void removerDisciplinaDaArvoreDeMatricula(NodeMatricula **matricula, int codDisc
   }
 }
 
+/**
+ * @brief Cadastra uma nova matrícula para um aluno em uma disciplina.
+ *
+ * Esta função cria uma nova matrícula e a insere na árvore de matrículas de um aluno,
+ * associando a matrícula à disciplina correspondente.
+ *
+ * @param aluno Lista de alunos onde a matrícula será adicionada.
+ * @param raizDisciplina Raiz da árvore de disciplinas disponíveis.
+ */
 void cadastrarMatriculas(ListAluno *aluno, NodeDisciplina *raizDisciplina)
 {
   NodeMatricula *new;
