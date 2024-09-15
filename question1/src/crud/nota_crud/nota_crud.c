@@ -174,6 +174,59 @@ void inserctionNota(NodeNota **raiz, NodeNota *new)
   }
 }
 
+NodeMatricula *remover(NodeMatricula *raiz, int codDisciplina)
+{
+
+  if (raiz != NULL)
+  {
+    if (raiz->codDisciplina == codDisciplina)
+    {
+      // remove nos folhas
+      if (raiz->esq == NULL && raiz->dir == NULL)
+      {
+        free(raiz);
+        return NULL;
+      }
+      else
+      {
+        // remove nos que possui apenas um filho
+        if (raiz->esq == NULL || raiz->dir == NULL)
+        {
+          NodeMatricula *temp;
+          if (raiz->esq != NULL)
+          {
+            temp = raiz->esq;
+          }
+          else
+          {
+            temp = raiz->dir;  
+          }
+          free(raiz);
+          return temp;
+
+        }else{
+          NodeMatricula *aux = raiz->esq;
+          while(aux->dir != NULL){
+            aux = aux->dir;
+          } 
+          raiz->codDisciplina = aux->codDisciplina;
+          aux->codDisciplina = codDisciplina;
+          raiz->esq = remover(raiz->esq, codDisciplina);
+          return raiz;
+        }
+      }
+    }
+    else
+    {
+      if (raiz->esq < raiz->codDisciplina)
+        raiz->esq = remover(raiz->esq, codDisciplina);
+      else
+        raiz->dir = remover(raiz->dir, codDisciplina);
+      return raiz;
+    }
+  }
+}
+
 /**
  * @brief Exibe todas as notas de uma árvore binária.
  *

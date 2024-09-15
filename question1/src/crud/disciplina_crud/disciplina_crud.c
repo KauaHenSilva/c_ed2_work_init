@@ -125,6 +125,16 @@ static void showDisciplina(NodeDisciplina *disciplina)
  *
  * @param disciplina Ponteiro para o nó raiz da arvore de disciplinas.
  */
+/**
+ * @brief Exibe todas as disciplinas.
+ *
+ * Função recursiva que percorre a arvore de disciplinas e exibe as
+ * informações de cada disciplina. A função chama `showAllDisciplina` para percorret
+ * todos os nós, e em seguida chama `showDisciplina` para exibir
+ * a disciplina atual.
+ *
+ * @param disciplina Ponteiro para o nó raiz da arvore de disciplinas.
+ */
 void showAllDisciplina(NodeDisciplina *disciplina)
 {
   if (disciplina)
