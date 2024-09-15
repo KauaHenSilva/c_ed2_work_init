@@ -1,8 +1,20 @@
 #pragma once
 
+#include <struct_matricula.h>
+#include <struct_aluno.h>
+#include <struct_disciplina.h>
+
+// auxs
+
+void freeNodeMatriculas(NodeMatricula *raiz);
+void showAllMatriculas(NodeMatricula *raiz);
+void search_matricula(NodeMatricula *raiz, int code, NodeMatricula **result);
+
+// ---------------------------------------------------------------------------------------
+
 // - Permitir o cadastro de uma matrícula.
 // - A matrícula deve ser organizada e conter somente um código de disciplina do curso do aluno.
-void cadastrarMatriculas();
+void cadastrarMatriculas(ListAluno *aluno, NodeDisciplina *raizDisciplina);
 
 // - Permitir a remoção de uma disciplina da árvore de matrícula de um determinado aluno.
-void removerDisciplinaDaArvoreDeMatricula();
+void removerDisciplinaDaArvoreDeMatricula(NodeMatricula **matricula, int codDisciplina);

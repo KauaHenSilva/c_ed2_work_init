@@ -1,0 +1,263 @@
+#include <nota_crud.h>
+#include <matricula_crud.h>
+#include <disciplina_crud.h>
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <utils.h>
+
+/**
+ * @brief Aloca memória para uma nova nota.
+ *
+ * Esta função aloca dinamicamente memória para um novo nó de nota (`NodeNota`),
+ * inicializando seus campos com valores padrão (-1 para `codDisciplina`,
+ * `notaFinal` e `semestreCursado`) e definindo os ponteiros para subárvores
+ * esquerda e direita como `NULL`.
+ *
+ * @param node Ponteiro duplo para o nó de nota que será alocado.
+ */
+static void alocNota(NodeNota **node)
+{
+  *node = (NodeNota *)malloc(sizeof(NodeNota));
+  (*node)->codDisciplina = -1;
+  (*node)->notaFinal = -1;
+  (*node)->semestreCursado = -1;
+  (*node)->dir = NULL;
+  (*node)->esq = NULL;
+}
+
+/**
+ * @brief Libera a memória de um nó de nota.
+ *
+ * Esta função libera a memória associada a um nó de nota.
+ *
+ * @param node Ponteiro para o nó de nota a ser liberado.
+ */
+static void freeNodeNota(NodeNota *node)
+{
+  free(node);
+}
+
+/**
+ * @brief Libera a memória de uma árvore binária de notas.
+ *
+ * Função recursiva que percorre toda a árvore binária de notas e libera a
+ * memória de cada nó.
+ *
+ * @param raiz Ponteiro para o nó raiz da árvore de notas.
+ */
+void freeNodeNotas(NodeNota *raiz)
+{
+  if (raiz)
+  {
+    freeNodeNotas(raiz->esq);
+    freeNodeNotas(raiz->dir);
+    freeNodeNota(raiz);
+  }
+}
+
+/**
+ * @brief Exibe os dados de uma nota.
+ *
+ * Mostra o código da disciplina associado à nota.
+ *
+ * @param node Ponteiro para o nó de nota a ser exibido.
+ */
+static void showNota(NodeNota *node)
+{
+  printf("Notas:\n");
+  printf("\tCodDisciplina: %d\n", node->codDisciplina);
+  printf("\tNotaFinal: %d\n", node->notaFinal);
+}
+
+#if DEBUG_MODE
+/**
+ * @brief Preenche os dados de uma nota com base na entrada do usuário.
+ *
+ * Solicita ao usuário o código da disciplina para preencher a nota.
+ * Se a entrada for inválida, a função retorna um erro.
+ *
+ * @param raizNota Ponteiro para a raiz de nota a ser preenchido.
+ * @param raizMatricula Ponteiro para a raiz de matricula a ser escolhida.
+ * @return Retorna 1 se o preenchimento foi bem-sucedido, 0 caso contrário.
+ */
+static int prencherNota(NodeNota *raizNota, NodeMatricula *raizMatricula)
+{
+  printf("Para sair só digite 'sair'.\n");
+
+  int confirm;
+  char *enunciado;
+
+  NodeMatricula *search = NULL;
+  do
+  {
+    enunciado = "Digite o codigo da disciplina da nota: ";
+
+    if (raizNota->codDisciplina == -1)
+      confirm = getInt(&raizNota->codDisciplina, enunciado);
+    else
+      printf("[DEBUG]: procurando disciplinas com o id: %d\n", --raizNota->codDisciplina);
+
+    search_matricula(raizMatricula, raizNota->codDisciplina, &search);
+  } while (!search);
+
+  if (confirm)
+  {
+    enunciado = "Digite a nota final do aluno: ";
+    confirm = getInt(&raizNota->notaFinal, enunciado);
+  }
+
+  if (!confirm)
+    printf("Não foi possivel execultar o prencher a nota: ");
+
+  return !confirm;
+}
+#else
+/**
+ * @brief Preenche os dados de uma nota com base na entrada do usuário.
+ *
+ * Solicita ao usuário o código da disciplina para preencher a nota.
+ * Se a entrada for inválida, a função retorna um erro.
+ *
+ * @param raizNota Ponteiro para a raiz de nota a ser preenchido.
+ * @param raizDisciplina Ponteiro para a raiz de nota a ser preenchido.
+ * @return Retorna 1 se o preenchimento foi bem-sucedido, 0 caso contrário.
+ */
+static int prencherNota(NodeNota *raizNota, NodeMatricula *raizMatricula)
+{
+  printf("Para sair só digite 'sair'.\n");
+
+  int confirm;
+  char *eneunciado;
+
+  NodeMatricula *search = NULL;
+  do
+  {
+    eneunciado = "Digite o codigo da disciplina da nota: ";
+    confirm = getInt(&raizMatricula->codDisciplina, eneunciado);
+
+    search_matricula(raizDisciplina, raizMatricula->codDisciplina, &search);
+  } while (!search);
+
+  if (confirm)
+  {
+    enunciado = "Digite a nota final do aluno: ";
+    confirm = getInt(&raizNota->notaFinal, enunciado);
+  }
+
+  if (!confirm)
+    printf("Não foi possivel execultar o prencher a nota: ");
+
+  return !confirm;
+}
+#endif
+
+/**
+ * @brief Insere um novo nó de nota na árvore binária.
+ *
+ * A função insere um novo nó de nota em uma árvore binária de acordo com o
+ * código da disciplina, preservando a ordenação.
+ *
+ * @param raiz Ponteiro para o ponteiro do nó raiz da árvore de notas.
+ * @param new Ponteiro para o novo nó de nota a ser inserido.
+ */
+void inserctionNota(NodeNota **raiz, NodeNota *new)
+{
+  if (!*raiz)
+    *raiz = new;
+  else
+  {
+    if (new->codDisciplina < (*raiz)->codDisciplina)
+      inserctionNota(&(*raiz)->esq, new);
+    else
+      inserctionNota(&(*raiz)->dir, new);
+  }
+}
+
+NodeMatricula *remover(NodeMatricula *raiz, int codDisciplina)
+{
+
+  if (raiz != NULL)
+  {
+    if (raiz->codDisciplina == codDisciplina)
+    {
+      // remove nos folhas
+      if (raiz->esq == NULL && raiz->dir == NULL)
+      {
+        free(raiz);
+        return NULL;
+      }
+      else
+      {
+        // remove nos que possui apenas um filho
+        if (raiz->esq == NULL || raiz->dir == NULL)
+        {
+          NodeMatricula *temp;
+          if (raiz->esq != NULL)
+          {
+            temp = raiz->esq;
+          }
+          else
+          {
+            temp = raiz->dir;  
+          }
+          free(raiz);
+          return temp;
+
+        }else{
+          NodeMatricula *aux = raiz->esq;
+          while(aux->dir != NULL){
+            aux = aux->dir;
+          } 
+          raiz->codDisciplina = aux->codDisciplina;
+          aux->codDisciplina = codDisciplina;
+          raiz->esq = remover(raiz->esq, codDisciplina);
+          return raiz;
+        }
+      }
+    }
+    else
+    {
+      if (raiz->esq > codDisciplina)
+        raiz->esq = remover(raiz->esq, codDisciplina);
+      else
+        raiz->dir = remover(raiz->dir, codDisciplina);
+      return raiz;
+    }
+  }
+}
+
+/**
+ * @brief Exibe todas as notas de uma árvore binária.
+ *
+ * Função recursiva que percorre toda a árvore de notas e exibe os detalhes
+ * de cada nó.
+ *
+ * @param raiz Ponteiro para o nó raiz da árvore de notas.
+ */
+void showAllNotas(NodeNota *raiz)
+{
+  if (raiz)
+  {
+    showAllNotas(raiz->esq);
+    showAllNotas(raiz->dir);
+    showNota(raiz);
+  }
+}
+
+void cadastrarNotas(ListAluno *aluno)
+{
+  NodeNota *new;
+  alocNota(&new);
+
+  if (prencherNota(new, aluno->nodeMatricula))
+    freeNodeNotas(new);
+
+  if (new)
+  {
+    ListAluno *auxAluno = aluno;
+    removerDisciplinaDaArvoreDeMatricula(&aluno->nodeMatricula, new->codDisciplina);
+    // isso está errado, ele tá pegando de uma
+    inserctionNota(&auxAluno->nodeNota, new);
+  }
+}
