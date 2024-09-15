@@ -218,7 +218,7 @@ NodeMatricula *remover(NodeMatricula *raiz, int codDisciplina)
     }
     else
     {
-      if (raiz->esq < raiz->codDisciplina)
+      if (raiz->esq > codDisciplina)
         raiz->esq = remover(raiz->esq, codDisciplina);
       else
         raiz->dir = remover(raiz->dir, codDisciplina);

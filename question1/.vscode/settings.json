@@ -1,21 +1,10 @@
 {
-  "mesonbuild.configureOnOpen": true,
-  "C_Cpp.default.configurationProvider": "mesonbuild.mesonbuild",
-  "C_Cpp.default.compileCommands": "/home/rayssaalves/c_ed1_work_init/question1/builddir/compile_commands.json",
-  "files.associations": {
-    ".env.*": "dotenv",
-    ".prettierrc": "json",
-    "*.css": "css",
-    "struct_curso.h": "c",
-    "struct_matricula.h": "c",
-    "struct_disciplina.h": "c"
-  },
+  "C_Cpp_Runner.msvcBatchPath": "",
   "C_Cpp_Runner.cCompilerPath": "gcc",
   "C_Cpp_Runner.cppCompilerPath": "g++",
   "C_Cpp_Runner.debuggerPath": "gdb",
   "C_Cpp_Runner.cStandard": "",
   "C_Cpp_Runner.cppStandard": "",
-  "C_Cpp_Runner.msvcBatchPath": "",
   "C_Cpp_Runner.useMsvc": false,
   "C_Cpp_Runner.warnings": [
     "-Wall",
@@ -67,13 +56,7 @@
   "C_Cpp_Runner.showCompilationTime": false,
   "C_Cpp_Runner.useLinkTimeOptimization": false,
   "C_Cpp_Runner.msvcSecureNoWarnings": false,
-  "struct_disciplina.h": "c",
-  "system_error": "c",
-  "array": "c",
-  "functional": "c",
-  "tuple": "c",
-  "type_traits": "c",
-  "utility": "c",
-  "algorithm": "c"
-}
+  "mesonbuild.configureOnOpen": true,
+  "C_Cpp.default.compileCommands": "/home/rayssaalves/c_ed1_work_init/question1/builddir/compile_commands.json",
+  "C_Cpp.default.configurationProvider": "mesonbuild.mesonbuild"
 }
