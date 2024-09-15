@@ -56,7 +56,7 @@ static void freeNodeCurso(NodeCurso *node)
  *
  * @param node Ponteiro para o nó raiz da árvore de cursos.
  */
-static void freeNodeCursos(NodeCurso *node)
+void freeNodeCursos(NodeCurso *node)
 {
   if (node)
   {
