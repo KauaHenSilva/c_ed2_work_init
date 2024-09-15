@@ -66,5 +66,14 @@
   "C_Cpp_Runner.useLeakSanitizer": false,
   "C_Cpp_Runner.showCompilationTime": false,
   "C_Cpp_Runner.useLinkTimeOptimization": false,
-  "C_Cpp_Runner.msvcSecureNoWarnings": false
+  "C_Cpp_Runner.msvcSecureNoWarnings": false,
+  "struct_disciplina.h": "c",
+  "system_error": "c",
+  "array": "c",
+  "functional": "c",
+  "tuple": "c",
+  "type_traits": "c",
+  "utility": "c",
+  "algorithm": "c"
+}
 }

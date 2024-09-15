@@ -6,6 +6,7 @@ lib_aluno_crud = static_library(
     inc_utils,
     inc_curso_crud,
     inc_matricula_crud,
+    inc_nota_crud,
   ],
   install: true,
 )

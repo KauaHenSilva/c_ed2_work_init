@@ -5,17 +5,16 @@
 #include <curso_crud.h>
 #include <utils.h>
 
-
 /**
  * @brief Aloca memória para uma nova estrutura NodeDisciplina e inicializa seus membros.
- * 
+ *
  * Esta função aloca memória para uma nova estrutura NodeDisciplina e define seus membros
  * para valores padrão. Especificamente, define 'cargaHoraria', 'codDisciplina','periodo' com -1,
  * 'nomeDaDisciplina', 'dir' e 'esq' com NULL.
- * 
+ *
  * @param new Uma refernecia para um ponteiro para uma estrutura NodeDisciplina que será alocada e inicializada.
  */
-void alocDisciplina(NodeDisciplina **new)
+static void alocDisciplina(NodeDisciplina **new)
 {
   *new = (NodeDisciplina *)malloc(sizeof(NodeDisciplina));
   (*new)->cargaHoraria = -1;
@@ -29,19 +28,17 @@ void alocDisciplina(NodeDisciplina **new)
 /**
  * @brief Libera a memória alocada para um objeto do tipo NodeDisciplina.
  *
- * Esta função libera toda a memória associada ao objeto NodeDisciplina passado como parâmetro,
- * garantindo que não haja vazamentos de memória.
+ * Esta função libera toda a memória associada ao objeto NodeDisciplina passado como parâmetro, garantindo que não haja vazamentos de memória.
  *
  * @param node Ponteiro para o uma struct NodeDisciplina que será liberado.
  */
-void freeNodeDisciplina(NodeDisciplina *node)
+static void freeNodeDisciplina(NodeDisciplina *node)
 {
   if (node->nomeDaDisciplina)
     free(node->nomeDaDisciplina);
 
   free(node);
 }
-
 
 /**
  * @brief Libera a memória alocada para todos os objetos do tipo NodeDisciplina.
@@ -59,7 +56,6 @@ void freeNodeDisciplinas(NodeDisciplina *raiz)
   }
 }
 
-
 /**
  * @brief Insere uma nova disciplina na árvore binária de disciplinas.
  *
@@ -69,9 +65,9 @@ void freeNodeDisciplinas(NodeDisciplina *raiz)
  * @param node Ponteiro para a estrutura NodeDisciplina onde os dados da disciplina serão armazenados.
  *
  * @return Retorna 1 se os dados foram preenchidos com sucesso, ou 0 se houve algum erro.
- * 
+ *
  */
-int prencherDisciplina(NodeDisciplina *node)
+static int prencherDisciplina(NodeDisciplina *node)
 {
   printf("Para sair só digite 'sair'.\n");
 
@@ -105,7 +101,6 @@ int prencherDisciplina(NodeDisciplina *node)
   return !confirm;
 }
 
-
 /*
 * @brief Exibe as informações de uma disciplina.
 * Esta função imprime no console as informações de uma disciplina, incluindo
@@ -113,13 +108,23 @@ int prencherDisciplina(NodeDisciplina *node)
 *
 * @param disciplina Ponteiro para a estrutura NodeDisciplina que contém as informações da disciplina.
 */
-void showDisciplina(NodeDisciplina *disciplina)
+static void showDisciplina(NodeDisciplina *disciplina)
 {
   printf("Disciplina: \n");
   printf("\tid: %d\n", disciplina->codDisciplina);
   printf("\tNome: %s\n", disciplina->nomeDaDisciplina);
 }
 
+/**
+ * @brief Exibe todas as disciplinas.
+ *
+ * Função recursiva que percorre a arvore de disciplinas e exibe as
+ * informações de cada disciplina. A função chama `showAllDisciplina` para percorret
+ * todos os nós, e em seguida chama `showDisciplina` para exibir
+ * a disciplina atual.
+ *
+ * @param disciplina Ponteiro para o nó raiz da arvore de disciplinas.
+ */
 /**
  * @brief Exibe todas as disciplinas.
  *
@@ -140,6 +145,21 @@ void showAllDisciplina(NodeDisciplina *disciplina)
   }
 }
 
+
+void search_disciplina(NodeDisciplina *raiz, int code, NodeDisciplina **result)
+{
+  if (raiz)
+  {
+    if (raiz->codDisciplina == code)
+      *result = raiz;
+    else if (raiz->codDisciplina < code)
+      search_disciplina(raiz->dir, code, result);
+    else if (raiz->codDisciplina > code)
+      search_disciplina(raiz->esq, code, result);
+  }
+}
+
+
 /**
  * @brief Insere um novo nó na árvore binária de disciplinas.
  *
@@ -151,7 +171,6 @@ void showAllDisciplina(NodeDisciplina *disciplina)
  * @param raiz Ponteiro duplo para o nó raiz da árvore de disciplinas.
  * @param node Ponteiro para o nó de disciplina a ser inserido.
  */
-
 static void inserction(NodeDisciplina **raiz, NodeDisciplina *node)
 {
   if (!*raiz)
@@ -165,17 +184,15 @@ static void inserction(NodeDisciplina **raiz, NodeDisciplina *node)
   }
 }
 
-
 /**
  * @brief Cadastra uma nova disciplina em um curso.
  *
  * A função aloca memória para um novo nó de disciplina, preenche as informações
- * da disciplina e a insere na árvore binária de disciplinas do curso. Se o 
+ * da disciplina e a insere na árvore binária de disciplinas do curso. Se o
  * preenchimento da disciplina falhar, a memória alocada para o novo nó é liberada.
  *
  * @param curso Ponteiro para o nó raiz da árvore de cursos.
  */
-
 void cadastrarDisciplinas(NodeCurso *curso)
 {
   NodeDisciplina *new;
@@ -186,11 +203,7 @@ void cadastrarDisciplinas(NodeCurso *curso)
 
   if (new)
   {
-    // temporario, para inserir no ultimo curso a direita. // O usuario deve escolher o curso.
     NodeCurso *aux = curso;
-    while (aux->dir)
-      aux = aux->dir;
-
     inserction(&(aux->nodeDisciplina), new);
   }
 }

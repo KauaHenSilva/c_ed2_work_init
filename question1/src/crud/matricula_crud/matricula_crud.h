@@ -8,6 +8,7 @@
 
 void freeNodeMatriculas(NodeMatricula *raiz);
 void showAllMatriculas(NodeMatricula *raiz);
+void search_matricula(NodeMatricula *raiz, int code, NodeMatricula **result);
 
 // ---------------------------------------------------------------------------------------
 
@@ -16,4 +17,4 @@ void showAllMatriculas(NodeMatricula *raiz);
 void cadastrarMatriculas(ListAluno *aluno, NodeDisciplina *raizDisciplina);
 
 // - Permitir a remoção de uma disciplina da árvore de matrícula de um determinado aluno.
-void removerDisciplinaDaArvoreDeMatricula();
+void removerDisciplinaDaArvoreDeMatricula(NodeMatricula **matricula, int codDisciplina);

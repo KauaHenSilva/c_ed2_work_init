@@ -4,11 +4,8 @@
 #include <utils.h>
 #include <ctype.h>
 
-#define DEBUG_MODE 1
 
-#if DEBUG_MODE
 int debug_index = 0;
-
 char *getDebugInput()
 {
   char *buffer = malloc(12 * sizeof(char));
@@ -16,7 +13,6 @@ char *getDebugInput()
     snprintf(buffer, 12, "%d\n", debug_index++);
   return buffer;
 }
-#endif
 
 int getString(char **string, const char *msg)
 {
@@ -104,15 +100,9 @@ int getIntInValues(int *values, int tamValue, int *number, const char *msg)
   {
     printf("%s", msg);
 #if DEBUG_MODE
-    char *debug_input = values[rand() % tamValue];
-    if (debug_input != NULL)
-    {
-      strcpy(buffer, debug_input);
-      printf("%s", buffer); // Simulate user input
-    }
-    else
-      return 0;
-    free(debug_input);
+    int debug_input = values[rand() % tamValue];
+    snprintf(buffer, sizeof(buffer), "%d\n", debug_input);
+    printf("%s", buffer); // Simulate user input
 #else
     if (fgets(buffer, sizeof(buffer), stdin) != NULL)
 #endif
