@@ -233,6 +233,44 @@ void removerDisciplinaDaArvoreDeMatricula(NodeMatricula **matricula, int codDisc
   }
 }
 
+
+//precia testar esta função de remoção 
+// NodeMatricula *removerMatricula(NodeMatricula *raiz, int codDisciplina) {
+//     if (raiz == NULL) {
+//         return NULL;
+//     }
+
+//     if (raiz->codDisciplina == codDisciplina) {
+//         // Remove nos folhas
+//         if (raiz->esq == NULL && raiz->dir == NULL) {
+//             free(raiz);
+//             return NULL;
+//         }
+//         // Remove nós que possuem apenas um filho
+//         else if (raiz->esq == NULL || raiz->dir == NULL) {
+//             NodeMatricula *temp = (raiz->esq != NULL) ? raiz->esq : raiz->dir;
+//             free(raiz);
+//             return temp;
+//         }
+//         // Remove nós que possuem dois filhos
+//         else {
+//             NodeMatricula *aux = raiz->esq;
+//             while (aux->dir != NULL) {
+//                 aux = aux->dir;
+//             }
+//             raiz->codDisciplina = aux->codDisciplina;
+//             raiz->esq = removerMatricula(raiz->esq, aux->codDisciplina);
+//             return raiz;
+//         }
+//     } else if (raiz->codDisciplina > codDisciplina) {
+//         raiz->esq = removerMatricula(raiz->esq, codDisciplina);
+//     } else {
+//         raiz->dir = removerMatricula(raiz->dir, codDisciplina);
+//     }
+
+//     return raiz;
+// }
+
 /**
  * @brief Cadastra uma nova matrícula para um aluno em uma disciplina.
  *
