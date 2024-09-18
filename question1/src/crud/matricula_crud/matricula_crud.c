@@ -1,8 +1,11 @@
-#include <matricula_crud.h>
-#include <disciplina_crud.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <utils.h>
+
+#include "../matricula_crud/matricula_crud.h"
+#include "../disciplina_crud/disciplina_crud.h"
+
+#include "../../utils/utils.h"
+
 
 /**
  * @brief Aloca memória para uma nova estrutura NodeMatricula e inicializa seus membros.

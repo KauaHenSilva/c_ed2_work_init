@@ -1,8 +1,8 @@
 #pragma once
 
-#include <struct_matricula.h>
-#include <struct_aluno.h>
-#include <struct_disciplina.h>
+#include "../../structs/struct_matricula.h"
+#include "../../structs/struct_aluno.h"
+#include "../../structs/struct_disciplina.h"
 
 // auxs
 

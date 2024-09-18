@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <disciplina_crud.h>
-#include <curso_crud.h>
-#include <utils.h>
+#include "../curso_crud/curso_crud.h"
+#include "../disciplina_crud/disciplina_crud.h"
+
+#include "../../utils/utils.h"
 
 /**
  * @brief Aloca memória para uma nova estrutura NodeDisciplina e inicializa seus membros.

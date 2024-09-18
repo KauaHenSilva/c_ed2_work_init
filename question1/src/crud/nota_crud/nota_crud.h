@@ -1,9 +1,9 @@
 #pragma once
 
-#include <struct_matricula.h>
-#include <struct_disciplina.h>
-#include <struct_nota.h>
-#include <struct_aluno.h>
+#include "../../structs/struct_matricula.h"
+#include "../../structs/struct_disciplina.h"
+#include "../../structs/struct_nota.h"
+#include "../../structs/struct_aluno.h"
 
 void showAllNotas(NodeNota *raiz);
 

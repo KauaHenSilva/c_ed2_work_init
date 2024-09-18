@@ -1,6 +1,6 @@
 #pragma once
 
-#include <struct_disciplina.h>
+#include "struct_disciplina.h"
 
 // - Ordem: Código do Curso
 // - Free: node, nomeDoCurso, nodeDisciplina.

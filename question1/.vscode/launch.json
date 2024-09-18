@@ -2,29 +2,23 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Executar",
+      "name": "C/C++ Runner: Debug Session",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/builddir/main",
       "args": [],
       "stopAtEntry": false,
-      "cwd": "${workspaceFolder}/builddir",
-      "environment": [],
       "externalConsole": false,
+      "cwd": "/home/rayssaalves/c_ed1_work_init/question1/src/crud/matricula_crud",
+      "program": "/home/rayssaalves/c_ed1_work_init/question1/src/crud/matricula_crud/build/Debug/outDebug",
       "MIMode": "gdb",
+      "miDebuggerPath": "gdb",
       "setupCommands": [
         {
-          "description": "Ativar impressora automática de variáveis",
+          "description": "Enable pretty-printing for gdb",
           "text": "-enable-pretty-printing",
           "ignoreFailures": true
         }
-      ],
-      "preLaunchTask": "Build e testes",
-      "miDebuggerPath": "/usr/bin/gdb",
-      "logging": {
-        "moduleLoad": false,
-        "trace": false
-      }
+      ]
     }
   ]
 }
