@@ -2,12 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <aluno_crud.h>
-#include <curso_crud.h>
-#include <matricula_crud.h>
-#include <nota_crud.h>
+#include "aluno_crud.h"
+#include "../curso_crud/curso_crud.h"
+#include "../matricula_crud/matricula_crud.h"
+#include "../nota_crud/nota_crud.h"
 
-#include <utils.h>
+#include "../../utils/utils.h"
 
 /**
  * @brief Aloca memória para uma nova estrutura ListAluno e inicializa seus membros.

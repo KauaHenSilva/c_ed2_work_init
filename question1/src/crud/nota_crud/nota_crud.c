@@ -1,10 +1,11 @@
-#include <nota_crud.h>
-#include <matricula_crud.h>
-#include <disciplina_crud.h>
-
 #include <stdlib.h>
 #include <stdio.h>
-#include <utils.h>
+
+#include "../nota_crud/nota_crud.h"
+#include "../matricula_crud/matricula_crud.h"
+#include "../disciplina_crud/disciplina_crud.h"
+
+#include "../../utils/utils.h"
 
 /**
  * @brief Aloca memória para uma nova nota.
@@ -174,58 +175,58 @@ void inserctionNota(NodeNota **raiz, NodeNota *new)
   }
 }
 
-NodeMatricula *remover(NodeMatricula *raiz, int codDisciplina)
-{
+// NodeMatricula *remover(NodeMatricula *raiz, int codDisciplina)
+// {
 
-  if (raiz != NULL)
-  {
-    if (raiz->codDisciplina == codDisciplina)
-    {
-      // remove nos folhas
-      if (raiz->esq == NULL && raiz->dir == NULL)
-      {
-        free(raiz);
-        return NULL;
-      }
-      else
-      {
-        // remove nos que possui apenas um filho
-        if (raiz->esq == NULL || raiz->dir == NULL)
-        {
-          NodeMatricula *temp;
-          if (raiz->esq != NULL)
-          {
-            temp = raiz->esq;
-          }
-          else
-          {
-            temp = raiz->dir;  
-          }
-          free(raiz);
-          return temp;
+//   if (raiz != NULL)
+//   {
+//     if (raiz->codDisciplina == codDisciplina)
+//     {
+//       // remove nos folhas
+//       if (raiz->esq == NULL && raiz->dir == NULL)
+//       {
+//         free(raiz);
+//         return NULL;
+//       }
+//       else
+//       {
+//         // remove nos que possui apenas um filho
+//         if (raiz->esq == NULL || raiz->dir == NULL)
+//         {
+//           NodeMatricula *temp;
+//           if (raiz->esq != NULL)
+//           {
+//             temp = raiz->esq;
+//           }
+//           else
+//           {
+//             temp = raiz->dir;  
+//           }
+//           free(raiz);
+//           return temp;
 
-        }else{
-          NodeMatricula *aux = raiz->esq;
-          while(aux->dir != NULL){
-            aux = aux->dir;
-          } 
-          raiz->codDisciplina = aux->codDisciplina;
-          aux->codDisciplina = codDisciplina;
-          raiz->esq = remover(raiz->esq, codDisciplina);
-          return raiz;
-        }
-      }
-    }
-    else
-    {
-      if (raiz->esq > codDisciplina)
-        raiz->esq = remover(raiz->esq, codDisciplina);
-      else
-        raiz->dir = remover(raiz->dir, codDisciplina);
-      return raiz;
-    }
-  }
-}
+//         }else{
+//           NodeMatricula *aux = raiz->esq;
+//           while(aux->dir != NULL){
+//             aux = aux->dir;
+//           } 
+//           raiz->codDisciplina = aux->codDisciplina;
+//           aux->codDisciplina = codDisciplina;
+//           raiz->esq = remover(raiz->esq, codDisciplina);
+//           return raiz;
+//         }
+//       }
+//     }
+//     else
+//     {
+//       if (raiz->esq->codDisciplina > codDisciplina)
+//         raiz->esq = remover(raiz->esq, codDisciplina);
+//       else
+//         raiz->dir = remover(raiz->dir, codDisciplina);
+//       return raiz;
+//     }
+//   }
+// }
 
 /**
  * @brief Exibe todas as notas de uma árvore binária.

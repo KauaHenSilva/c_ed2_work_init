@@ -1,7 +1,7 @@
 #pragma once
 
-#include <struct_aluno.h>
-#include <struct_curso.h>
+#include "../../structs/struct_aluno.h"
+#include "../../structs/struct_curso.h"
 
 // Auxs
 

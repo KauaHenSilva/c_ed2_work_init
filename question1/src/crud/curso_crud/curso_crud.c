@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <curso_crud.h>
-#include <struct_curso.h>
-#include <disciplina_crud.h>
-#include <utils.h>
+#include "../curso_crud/curso_crud.h"
+#include "../disciplina_crud/disciplina_crud.h"
+
+#include "../../utils/utils.h"
 
 /**
  * @brief Aloca memória para um novo curso e inicializa seus atributos.

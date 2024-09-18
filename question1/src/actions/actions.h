@@ -1,5 +1,7 @@
 #pragma once
 
+int helloWorld();
+
 // - Listar todos os alunos de um determinado curso.
 void mostrarTodosOsAlunosDeUmCurso();
 

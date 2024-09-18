@@ -1,6 +1,6 @@
 #pragma once
 
-#include <struct_curso.h>
+#include "../../structs/struct_curso.h"
 
 // Auxs
 

@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <utils.h>
 #include <ctype.h>
 
+#include "utils.h"
 
 int debug_index = 0;
 char *getDebugInput()
