@@ -102,12 +102,12 @@ static int prencherDisciplina(NodeDisciplina *node)
 }
 
 /*
-* @brief Exibe as informações de uma disciplina.
-* Esta função imprime no console as informações de uma disciplina, incluindo
-* o código da disciplina e nome.
-*
-* @param disciplina Ponteiro para a estrutura NodeDisciplina que contém as informações da disciplina.
-*/
+ * @brief Exibe as informações de uma disciplina.
+ * Esta função imprime no console as informações de uma disciplina, incluindo
+ * o código da disciplina e nome.
+ *
+ * @param disciplina Ponteiro para a estrutura NodeDisciplina que contém as informações da disciplina.
+ */
 static void showDisciplina(NodeDisciplina *disciplina)
 {
   printf("Disciplina: \n");
