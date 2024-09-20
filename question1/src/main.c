@@ -84,22 +84,47 @@ int main()
   NodeCurso *curso;
   NodeDisciplina *disciplina;
 
-  int codCurso;
+  printf("Remover disciplina de um aluno:\n");
+
+  int MatAluno;
+  ListAluno *aluno;
   int codDisciplina;
+
+  printf("Informe a matricula do aluno: \n");
+  scanf("%d", &MatAluno);
+  aluno = buscarAluno(alunos, MatAluno);
+  if (aluno != NULL)
+  {
+    printf("Informe o codigo da disciplina: \n");
+    scanf("%d", &codDisciplina);
+
+    alunos->aluno.nodeMatricula = removerMatricula(alunos->aluno.nodeMatricula, codDisciplina);
+    printf("Disciplina removida com sucesso.\n");
+  }
+  showAllAlunos(alunos);
+
+  int codCurso;
+
+  showAllCurso(cursos);
 
   printf("Digite o codigo do curso: ");
   scanf("%d", &codCurso);
   curso = buscarCurso(cursos, codCurso);
-  
+
   printf("Digite o codigo da disciplina: ");
   scanf("%d", &codDisciplina);
-  disciplina = buscar_disciplina(cursos->curso.nodeDisciplina, codDisciplina);
-  
-  if (disciplina->esq == NULL && disciplina->dir == NULL)
+  disciplina = buscarDisciplina(cursos->curso.nodeDisciplina, codDisciplina);
+  int encontrou = VerificarAlunosMatriculados(alunos, codDisciplina);
+  if (encontrou == 0)
   {
-    curso->curso.nodeDisciplina = removerDisciplinaDeUmCurso(curso->curso.nodeDisciplina, codDisciplina);
-    printf("Disciplina removida com sucesso.\n");
+    if (disciplina)
+    {
+      curso->curso.nodeDisciplina = removerDisciplinaCurso(cursos->curso.nodeDisciplina, codDisciplina);
+      printf("Disciplina removida com sucesso.\n");
+    }
   }
+
+  showAllCurso(cursos);
 
   freeAlunosList(alunos);
   freeNodeCursos(cursos);
