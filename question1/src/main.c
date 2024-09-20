@@ -77,7 +77,7 @@ int main()
   {
     printf("Cadrastrando Disciplina: \n\n");
     // tem que fazer uma função para passar o curso desejado.
-    if (!cadastrarDisciplinas(cursos))
+    if (!cadastrarDisciplinas(cursos, (rand() % cursos->curso.quantidadeDePeriodo + 1)))
       printf("Erro ao cadastrar disciplina\n");
     printf("\n");
   }

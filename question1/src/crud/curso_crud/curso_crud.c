@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
 #include "../curso_crud/curso_crud.h"
 #include "../disciplina_crud/disciplina_crud.h"
 #include "../aluno_crud/aluno_crud.h"
@@ -122,7 +121,8 @@ static void showCurso(NodeCurso *nodeCurso)
 {
   printf("Curso: \n");
   printf("\tid: %d\n", nodeCurso->curso.codigo);
-  printf("\tNome: %s\n", nodeCurso->curso.nomeDoCurso);
+  printf("\tNome: %s", nodeCurso->curso.nomeDoCurso);
+  printf("\tQuantidade de periodo: %d\n", nodeCurso->curso.quantidadeDePeriodo);
   showAllDisciplina(nodeCurso->curso.nodeDisciplina);
 }
 
@@ -328,18 +328,26 @@ int cadastrarCursos(NodeCurso **nodeCurso)
 
 //   return raiz;
 // }
-NodeCurso *buscarCurso(NodeCurso *curso, int codigo) {
-    NodeCurso *aux = NULL;
-    if (curso != NULL) {
-        if (codigo == curso->curso.codigo) {
-            aux = curso;
-        } else {
-            if (codigo < curso->curso.codigo) {
-                aux = buscarCurso(curso->esq, codigo);
-            } else {
-                aux = buscarCurso(curso->dir, codigo);
-            }
-        }
+NodeCurso *buscarCurso(NodeCurso *curso, int codigo)
+{
+  NodeCurso *aux = NULL;
+  if (curso != NULL)
+  {
+    if (codigo == curso->curso.codigo)
+    {
+      aux = curso;
     }
-    return aux;
+    else
+    {
+      if (codigo < curso->curso.codigo)
+      {
+        aux = buscarCurso(curso->esq, codigo);
+      }
+      else
+      {
+        aux = buscarCurso(curso->dir, codigo);
+      }
+    }
+  }
+  return aux;
 }

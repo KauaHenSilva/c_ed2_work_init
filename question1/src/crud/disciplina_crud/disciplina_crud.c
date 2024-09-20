@@ -68,21 +68,17 @@ void freeNodeDisciplinas(NodeDisciplina *raiz)
  * @return Retorna 1 se os dados foram preenchidos com sucesso, ou 0 se houve algum erro.
  *
  */
-static int prencherDisciplina(NodeDisciplina *node)
+static int prencherDisciplina(NodeDisciplina *node, int periodo)
 {
   printf("Para sair só digite 'sair'.\n");
 
   int confirm = 1;
   char *enunciado;
 
+  node->disciplina.periodo = periodo;
+
   enunciado = "Digite o codigo da disciplina: ";
   confirm = getInt(&node->disciplina.codDisciplina, enunciado);
-
-  if (confirm)
-  {
-    enunciado = "Digite o periodo da disciplina: ";
-    confirm = getInt(&node->disciplina.periodo, enunciado);
-  }
 
   if (confirm)
   {
@@ -190,14 +186,14 @@ static int inserction(NodeDisciplina **raiz, NodeDisciplina *node)
  *
  * @param curso Ponteiro para o nó raiz da árvore de cursos.
  */
-int cadastrarDisciplinas(NodeCurso *curso)
+int cadastrarDisciplinas(NodeCurso *curso, int periodo)
 {
   int confirm = 1;
 
   NodeDisciplina *new;
   alocDisciplina(&new);
 
-  if (prencherDisciplina(new))
+  if (prencherDisciplina(new, periodo))
   {
     freeNodeDisciplina(new);
     confirm = 0;
