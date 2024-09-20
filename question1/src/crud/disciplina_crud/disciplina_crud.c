@@ -18,10 +18,10 @@
 static void alocDisciplina(NodeDisciplina **new)
 {
   *new = (NodeDisciplina *)malloc(sizeof(NodeDisciplina));
-  (*new)->cargaHoraria = -1;
-  (*new)->codDisciplina = -1;
-  (*new)->periodo = -1;
-  (*new)->nomeDaDisciplina = NULL;
+  (*new)->disciplina.cargaHoraria = -1;
+  (*new)->disciplina.codDisciplina = -1;
+  (*new)->disciplina.periodo = -1;
+  (*new)->disciplina.nomeDaDisciplina = NULL;
   (*new)->dir = NULL;
   (*new)->esq = NULL;
 }
@@ -35,8 +35,8 @@ static void alocDisciplina(NodeDisciplina **new)
  */
 static void freeNodeDisciplina(NodeDisciplina *node)
 {
-  if (node->nomeDaDisciplina)
-    free(node->nomeDaDisciplina);
+  if (node->disciplina.nomeDaDisciplina)
+    free(node->disciplina.nomeDaDisciplina);
 
   free(node);
 }
@@ -76,24 +76,24 @@ static int prencherDisciplina(NodeDisciplina *node)
   char *enunciado;
 
   enunciado = "Digite o codigo da disciplina: ";
-  confirm = getInt(&node->codDisciplina, enunciado);
+  confirm = getInt(&node->disciplina.codDisciplina, enunciado);
 
   if (confirm)
   {
     enunciado = "Digite o periodo da disciplina: ";
-    confirm = getInt(&node->periodo, enunciado);
+    confirm = getInt(&node->disciplina.periodo, enunciado);
   }
 
   if (confirm)
   {
     enunciado = "Digite a carga horaria da disciplina: ";
-    confirm = getInt(&node->cargaHoraria, enunciado);
+    confirm = getInt(&node->disciplina.cargaHoraria, enunciado);
   }
 
   if (confirm)
   {
     enunciado = "Digite o nome da disciplina: ";
-    confirm = getString(&node->nomeDaDisciplina, enunciado);
+    confirm = getString(&node->disciplina.nomeDaDisciplina, enunciado);
   }
 
   if (!confirm)
@@ -103,17 +103,17 @@ static int prencherDisciplina(NodeDisciplina *node)
 }
 
 /*
-* @brief Exibe as informações de uma disciplina.
-* Esta função imprime no console as informações de uma disciplina, incluindo
-* o código da disciplina e nome.
-*
-* @param disciplina Ponteiro para a estrutura NodeDisciplina que contém as informações da disciplina.
-*/
+ * @brief Exibe as informações de uma disciplina.
+ * Esta função imprime no console as informações de uma disciplina, incluindo
+ * o código da disciplina e nome.
+ *
+ * @param disciplina Ponteiro para a estrutura NodeDisciplina que contém as informações da disciplina.
+ */
 static void showDisciplina(NodeDisciplina *disciplina)
 {
   printf("Disciplina: \n");
-  printf("\tid: %d\n", disciplina->codDisciplina);
-  printf("\tNome: %s\n", disciplina->nomeDaDisciplina);
+  printf("\tid: %d\n", disciplina->disciplina.codDisciplina);
+  printf("\tNome: %s\n", disciplina->disciplina.nomeDaDisciplina);
 }
 
 /**
@@ -146,20 +146,18 @@ void showAllDisciplina(NodeDisciplina *disciplina)
   }
 }
 
-
 void search_disciplina(NodeDisciplina *raiz, int code, NodeDisciplina **result)
 {
   if (raiz)
   {
-    if (raiz->codDisciplina == code)
+    if (raiz->disciplina.codDisciplina == code)
       *result = raiz;
-    else if (raiz->codDisciplina < code)
+    else if (raiz->disciplina.codDisciplina < code)
       search_disciplina(raiz->dir, code, result);
-    else if (raiz->codDisciplina > code)
+    else if (raiz->disciplina.codDisciplina > code)
       search_disciplina(raiz->esq, code, result);
   }
 }
-
 
 /**
  * @brief Insere um novo nó na árvore binária de disciplinas.
@@ -172,17 +170,23 @@ void search_disciplina(NodeDisciplina *raiz, int code, NodeDisciplina **result)
  * @param raiz Ponteiro duplo para o nó raiz da árvore de disciplinas.
  * @param node Ponteiro para o nó de disciplina a ser inserido.
  */
-static void inserction(NodeDisciplina **raiz, NodeDisciplina *node)
+static int inserction(NodeDisciplina **raiz, NodeDisciplina *node)
 {
+  int insert = 1;
+
   if (!*raiz)
     *raiz = node;
   else
   {
-    if (node->codDisciplina < (*raiz)->codDisciplina)
-      inserction(&(*raiz)->esq, node);
+    if (node->disciplina.codDisciplina < (*raiz)->disciplina.codDisciplina)
+      insert = inserction(&(*raiz)->esq, node);
+    else if (node->disciplina.codDisciplina > (*raiz)->disciplina.codDisciplina)
+      insert = inserction(&(*raiz)->dir, node);
     else
-      inserction(&(*raiz)->dir, node);
+      insert = 0;
   }
+
+  return insert;
 }
 
 /**
@@ -194,17 +198,98 @@ static void inserction(NodeDisciplina **raiz, NodeDisciplina *node)
  *
  * @param curso Ponteiro para o nó raiz da árvore de cursos.
  */
-void cadastrarDisciplinas(NodeCurso *curso)
+int cadastrarDisciplinas(NodeCurso *curso)
 {
+  int confirm = 1;
+
   NodeDisciplina *new;
   alocDisciplina(&new);
 
   if (prencherDisciplina(new))
+  {
     freeNodeDisciplina(new);
+    confirm = 0;
+  }
 
   if (new)
   {
     NodeCurso *aux = curso;
-    inserction(&(aux->nodeDisciplina), new);
+    if (!inserction(&(aux->curso.nodeDisciplina), new))
+    {
+      freeNodeDisciplina(new);
+      confirm = 0;
+    }
   }
+
+  return confirm;
+}
+
+NodeDisciplina *buscar_disciplina(NodeDisciplina *raiz, int codigo)
+{
+  NodeDisciplina *aux = NULL;
+  if (raiz != NULL)
+  {
+    if (codigo == raiz->disciplina.codDisciplina)
+    {
+      aux = raiz;
+    }
+    else
+    {
+      if (codigo < raiz->disciplina.codDisciplina)
+      {
+        aux = buscar_disciplina(raiz->esq, codigo);
+      }
+      else
+      {
+        aux = buscar_disciplina(raiz->dir, codigo);
+      }
+    }
+  }
+  return aux;
+}
+
+NodeDisciplina *removerDisciplinaDeUmCurso(NodeDisciplina *raiz, int codDisciplina)
+{
+  if (raiz != NULL)
+  {
+    if (raiz->disciplina.codDisciplina == codDisciplina)
+    {
+      if (raiz->esq == NULL && raiz->dir != NULL)
+      {
+        free(raiz);
+        raiz = NULL;
+      }
+      else if (raiz->esq == NULL || raiz->dir == NULL)
+      {
+        NodeDisciplina *aux;
+        if (raiz->esq == NULL)
+        {
+          aux = raiz;
+          raiz = raiz->dir;
+        }
+        else
+        {
+          aux = raiz;
+          raiz = raiz->esq;
+        }
+        free(aux);
+      }
+      else
+      {
+        NodeDisciplina *aux = raiz->dir;
+        while (aux->esq != NULL)
+          aux = aux->esq;
+        raiz->disciplina.codDisciplina = aux->disciplina.codDisciplina;
+        raiz->dir = removerDisciplinaDeUmCurso(raiz->dir, aux->disciplina.codDisciplina);
+      }
+    }
+    else
+    {
+      if (codDisciplina < raiz->disciplina.codDisciplina)
+        raiz->esq = removerDisciplinaDeUmCurso(raiz->esq, codDisciplina);
+      else
+        raiz->dir = removerDisciplinaDeUmCurso(raiz->dir, codDisciplina);
+    }
+  }
+  return raiz;
 }

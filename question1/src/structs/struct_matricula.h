@@ -8,3 +8,4 @@ typedef struct stNodeMatricula
   struct stNodeMatricula *dir;
   struct stNodeMatricula *esq;
 } NodeMatricula;
+

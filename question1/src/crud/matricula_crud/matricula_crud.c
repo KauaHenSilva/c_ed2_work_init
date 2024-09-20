@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "../matricula_crud/matricula_crud.h"
 #include "../disciplina_crud/disciplina_crud.h"
@@ -83,85 +84,6 @@ void showAllMatriculas(NodeMatricula *raiz)
   }
 }
 
-#if DEBUG_MODE
-/**
- * @brief Insere uma nova matricula na árvore binária de matriculas.
- *
- * Esta função solicita ao usuário que insira o codigo da matricula.
- *
- * @param node Ponteiro para a estrutura NodeMatricula onde os dados da matricula serão armazenados.
- *
- * @return Retorna 1 se os dados foram preenchidos com sucesso, ou 0 se houve algum erro.
- *
- */
-static int prencherMatricula(NodeMatricula *new, NodeDisciplina *raizDisciplina, NodeMatricula *matricula)
-{
-  printf("Para sair só digite 'sair'.\n");
-
-  int confirm;
-  char *eneunciado;
-
-  NodeDisciplina *searchDisciplina;
-  NodeMatricula *searchMatricula;
-  do
-  {
-    searchDisciplina = NULL;
-    searchMatricula = NULL;
-
-    eneunciado = "Digite o codigo da disciplina: ";
-
-    if (new->codDisciplina == -1)
-      confirm = getInt(&new->codDisciplina, eneunciado);
-    else
-      printf("[DEBUG]: procurando disciplinas com o id: %d\n", --new->codDisciplina);
-
-    search_disciplina(raizDisciplina, new->codDisciplina, &searchDisciplina);
-    search_matricula(matricula, new->codDisciplina, &searchMatricula);
-
-    // Logica do while
-    // Caso ele ache a disciplina (searchDisciplina != NULL) e caso a disiplina não esteja nas disciplinas já matriculadas. o mesmo deve sair do while.
-
-  } while (!(searchDisciplina && !searchMatricula));
-
-  if (!confirm)
-    printf("Não foi possivel execultar o prencher disciplina: ");
-
-  return !confirm;
-}
-#else
-/**
- * @brief Insere uma nova matricula na árvore binária de matriculas.
- *
- * Esta função solicita ao usuário que insira o codigo da matricula.
- *
- * @param node Ponteiro para a estrutura NodeMatricula onde os dados da matricula serão armazenados.
- *
- * @return Retorna 1 se os dados foram preenchidos com sucesso, ou 0 se houve algum erro.
- *
- */
-int prencherMatricula(NodeMatricula *node, NodeDisciplina *raizDisciplina)
-{
-  printf("Para sair só digite 'sair'.\n");
-
-  int confirm;
-  char *eneunciado;
-
-  NodeDisciplina *search = NULL;
-  do
-  {
-    eneunciado = "Digite o codigo da disciplina: ";
-    confirm = getInt(&node->codDisciplina, eneunciado);
-
-    search_disciplina(raizDisciplina, node->codDisciplina, &search);
-  } while (!search);
-
-  if (!confirm)
-    printf("Não foi possivel execultar o prencher disciplina: ");
-
-  return !confirm;
-}
-#endif
-
 /**
  * @brief Insere um novo nó na árvore binária de matriculas.
  *
@@ -172,17 +94,23 @@ int prencherMatricula(NodeMatricula *node, NodeDisciplina *raizDisciplina)
  * @param raiz Ponteiro duplo para o nó raiz da árvore de disciplinas.
  * @param node Ponteiro para o nó de disciplina a ser inserido.
  */
-void inserctionMatricula(NodeMatricula **raiz, NodeMatricula *new)
+int inserctionMatricula(NodeMatricula **raiz, NodeMatricula *new)
 {
+  int confirm = 1;
+
   if (!*raiz)
     *raiz = new;
   else
   {
     if (new->codDisciplina < (*raiz)->codDisciplina)
-      inserctionMatricula(&(*raiz)->esq, new);
+      confirm = inserctionMatricula(&(*raiz)->esq, new);
+    else if (new->codDisciplina > (*raiz)->codDisciplina)
+      confirm = inserctionMatricula(&(*raiz)->dir, new);
     else
-      inserctionMatricula(&(*raiz)->dir, new);
+      confirm = 0;
   }
+
+  return confirm;
 }
 
 void search_matricula(NodeMatricula *raiz, int code, NodeMatricula **result)
@@ -207,31 +135,108 @@ NodeMatricula *esqRoot(NodeMatricula *node)
 }
 
 // Tem que testar ainda. (Quebrou a parte que os cursos não tem o codigo correto.)
-void removerDisciplinaDaArvoreDeMatricula(NodeMatricula **matricula, int codDisciplina)
+int removerDisciplinaDaArvoreDeMatricula(NodeMatricula **matricula, int codDisciplina)
 {
-  NodeMatricula *atual = *matricula;
-  NodeMatricula *temp = *matricula;
-
-  if (matricula)
+  int confirm = 1;
+  if (*matricula)
   {
-    if (atual->codDisciplina > codDisciplina)
-      removerDisciplinaDaArvoreDeMatricula(&(atual->esq), codDisciplina);
-    else if (atual->codDisciplina < codDisciplina)
-      removerDisciplinaDaArvoreDeMatricula(&(atual->dir), codDisciplina);
+    if ((*matricula)->codDisciplina < codDisciplina)
+      confirm = removerDisciplinaDaArvoreDeMatricula(&((*matricula)->esq), codDisciplina);
+    else if ((*matricula)->codDisciplina > codDisciplina)
+      confirm = removerDisciplinaDaArvoreDeMatricula(&((*matricula)->dir), codDisciplina);
     else
     {
-      if (atual->esq == NULL)
-        temp = atual->dir;
-      else if (atual->dir == NULL)
-        temp = atual->esq;
+      if (!(*matricula)->esq && !(*matricula)->dir)
+      {
+        freeNodeMatricula(*matricula);
+        *matricula = NULL;
+      }
+      else if (!(*matricula)->esq && (*matricula)->dir)
+      {
+        NodeMatricula *temp = *matricula;
+        *matricula = (*matricula)->dir;
+        freeNodeMatricula(temp);
+      }
+      else if (!(*matricula)->dir && (*matricula)->esq)
+      {
+        NodeMatricula *temp = *matricula;
+        *matricula = (*matricula)->esq;
+        freeNodeMatricula(temp);
+      }
       else
-        temp = esqRoot(atual->dir);
-
-      *matricula = temp;
-      free(atual);
+      {
+        NodeMatricula *temp = esqRoot((*matricula)->dir);
+        (*matricula)->codDisciplina = temp->codDisciplina;
+        removerDisciplinaDaArvoreDeMatricula(&((*matricula)->dir), temp->codDisciplina);
+      }
     }
   }
+
+  return confirm;
 }
+
+
+
+
+//precia testar esta função de remoção 
+NodeMatricula* removerMatricula(NodeMatricula *raiz, int codDisciplina) {
+    if (raiz == NULL) {
+        return NULL; // Disciplina não encontrada
+    }
+
+    if (raiz->codDisciplina == codDisciplina) {
+        // Caso 1: Nódulo sem filhos
+        if (raiz->esq == NULL && raiz->dir == NULL) {
+            free(raiz);
+            return NULL;
+        }
+        // Caso 2: Nódulo com apenas um filho
+        else if (raiz->esq == NULL) {
+            NodeMatricula *temp = raiz->dir;
+            free(raiz);
+            return temp;
+        } else if (raiz->dir == NULL) {
+            NodeMatricula *temp = raiz->esq;
+            free(raiz);
+            return temp;
+        }
+        // Caso 3: Nódulo com dois filhos
+        else {
+            NodeMatricula *aux = raiz->esq;
+            while (aux->dir != NULL) {
+                aux = aux->dir;
+            }
+            raiz->codDisciplina = aux->codDisciplina;
+            raiz->esq = removerMatricula(raiz->esq, aux->codDisciplina);
+        }
+    } else if (codDisciplina < raiz->codDisciplina) {
+        raiz->esq = removerMatricula(raiz->esq, codDisciplina);
+    } else {
+        raiz->dir = removerMatricula(raiz->dir, codDisciplina);
+    }
+
+    return raiz;
+}
+
+// Função para remover uma disciplina de um aluno
+ListAluno *removerDisciplinaAluno(ListAluno *aluno, int codDisciplina) {
+    if (aluno != NULL) {
+        aluno->aluno.nodeMatricula = removerMatricula(aluno->aluno.nodeMatricula, codDisciplina);
+    }
+  return aluno;
+}
+
+ListAluno *buscarAluno(ListAluno *alunos, const char *nome) {
+    while (alunos != NULL) {
+        if (strcmp(alunos->aluno.nome, nome) == 0) {
+            return alunos;
+        }
+        alunos = alunos->prox;
+    }
+    return NULL;
+}
+
+
 
 /**
  * @brief Cadastra uma nova matrícula para um aluno em uma disciplina.
@@ -242,17 +247,24 @@ void removerDisciplinaDaArvoreDeMatricula(NodeMatricula **matricula, int codDisc
  * @param aluno Lista de alunos onde a matrícula será adicionada.
  * @param raizDisciplina Raiz da árvore de disciplinas disponíveis.
  */
-void cadastrarMatriculas(ListAluno *aluno, NodeDisciplina *raizDisciplina)
+int cadastrarMatriculas(ListAluno *aluno, int idDisciplina)
 {
+  int confirm = 1;
+
   NodeMatricula *new;
   alocMatricula(&new);
 
-  if (prencherMatricula(new, raizDisciplina, aluno->nodeMatricula))
-    freeNodeMatriculas(new);
+  new->codDisciplina = idDisciplina;
 
   if (new)
   {
     ListAluno *auxAluno = aluno;
-    inserctionMatricula(&(auxAluno->nodeMatricula), new);
+    if(!inserctionMatricula(&(auxAluno->aluno.nodeMatricula), new))
+    {
+      freeNodeMatricula(new);
+      confirm = 0;
+    }
   }
+
+  return confirm;
 }
