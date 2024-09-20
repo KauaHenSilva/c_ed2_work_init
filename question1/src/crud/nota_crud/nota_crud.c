@@ -80,6 +80,9 @@ static int prencherNota(NodeNota *raizNota, int codDisciplina)
   enunciado = "Digite a nota final do aluno: ";
   confirm = getInt(&raizNota->nota.notaFinal, enunciado);
 
+  enunciado = "Digite o semestre cursado: ";
+  confirm = getInt(&raizNota->nota.semestreCursado, enunciado);
+
   if (!confirm)
     printf("Não foi possivel execultar o prencher a nota: ");
 
@@ -137,6 +140,7 @@ void showNota(NodeNota *node)
   printf("Notas:\n");
   printf("\tCodDisciplina: %d\n", node->nota.codDisciplina);
   printf("\tNotaFinal: %d\n", node->nota.notaFinal);
+  printf("\tSemestreCursado: %d\n", node->nota.semestreCursado);
 }
 
 /**
@@ -252,16 +256,16 @@ int cadastrarNotas(ListAluno *aluno, int codDisciplina)
   {
     ListAluno *auxAluno = aluno;
 
-    if (removerDisciplinaDaArvoreDeMatricula(&aluno->aluno.nodeMatricula, new->nota.codDisciplina) && confirm)
-    {
-      freeNodeNota(new);
-      confirm = 0;
-    }
+    // if(!removerDisciplinaDaArvoreDeMatricula(&aluno->aluno.nodeMatricula, new->nota.codDisciplina) && confirm)
+    // {
+    //   freeNodeNota(new);
+    //   confirm = 0;
+    // }
 
-    if (inserctionNota(&auxAluno->aluno.nodeNota, new) && confirm)
+    if (!inserctionNota(&auxAluno->aluno.nodeNota, new) && confirm)
     {
-      freeNodeNota(new);
       confirm = 0;
+      freeNodeNota(new);
     }
   }
 

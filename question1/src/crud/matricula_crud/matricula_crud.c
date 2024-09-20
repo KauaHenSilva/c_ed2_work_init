@@ -171,6 +171,10 @@ int removerDisciplinaDaArvoreDeMatricula(NodeMatricula **matricula, int codDisci
       }
     }
   }
+  else
+  {
+    confirm = 0;
+  }
 
   return confirm;
 }

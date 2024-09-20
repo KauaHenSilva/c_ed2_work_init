@@ -30,6 +30,27 @@ void mainCadrastrarAllMatriculaCurse(ListAluno *aluno, NodeCurso *curso)
   }
 }
 
+void mainCadrastrarNota(ListAluno *aluno, NodeDisciplina *disciplina)
+{
+  if (disciplina)
+  {
+    cadastrarNotas(aluno, disciplina->disciplina.codDisciplina);
+    mainCadrastrarNota(aluno, disciplina->esq);
+    mainCadrastrarNota(aluno, disciplina->dir);
+  }
+}
+
+void mainCadrastrarAllNotaCurse(ListAluno *aluno, NodeCurso *curso)
+{
+  if (curso)
+  {
+    if (curso->curso.codigo == aluno->aluno.codigoDoCurso)
+      mainCadrastrarNota(aluno, curso->curso.nodeDisciplina);
+    mainCadrastrarAllNotaCurse(aluno, curso->esq);
+    mainCadrastrarAllNotaCurse(aluno, curso->dir);
+  }
+}
+
 int main()
 {
   ListAluno *alunos = NULL;
@@ -51,6 +72,7 @@ int main()
     printf("\n");
   }
 
+  // Cadrastrando 5 disciplinas para o curso 1
   for (int x = 0; x < 5; x++)
   {
     printf("Cadrastrando Disciplina: \n\n");
@@ -60,18 +82,16 @@ int main()
     printf("\n");
   }
 
+  // Cadrastrando aluno 1 em todas as disciplinas do curso 1
   printf("Cadrastrando todas as Matricula do curso do aluno 1: \n\n");
   mainCadrastrarAllMatriculaCurse(alunos, cursos);
 
-  // for (int x = 0; x < 5; x++)
-  // {
-  //   printf("Cadrastrando Nota: \n\n");
-  //   // tem que fazer uma função para passar o aluno e o codigo da disciplina desejado.
-  //   if (!cadastrarNotas(alunos, (cursos->curso).nodeDisciplina->disciplina.codDisciplina))
-  //     printf("Erro ao cadastrar nota\n");
+  // Cadrastrando todas as Notas do curso do aluno 1
+  printf("Cadrastrando todas as Notas do curso do aluno 1: \n\n");
+  mainCadrastrarAllNotaCurse(alunos, cursos);
 
-  //   printf("\n");
-  // }
+  printf("Cadrastrando todas as Matricula do curso do aluno 1: \n\n");
+  mainCadrastrarAllMatriculaCurse(alunos, cursos);
 
   printf("Todos os campus cadastrados! \n\n");
   getchar();
