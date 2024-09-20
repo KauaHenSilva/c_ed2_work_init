@@ -95,10 +95,10 @@ static int prencherAluno(Aluno *aluno, int codigoCurso)
 void showAluno(ListAluno *listAluno)
 {
   printf("Aluno: \n");
-  printf("\tid: %d\n", listAluno->aluno.codigoDoCurso);
+  printf("\tCursoId: %d\n", listAluno->aluno.codigoDoCurso);
   printf("\tMatricula: %d\n", listAluno->aluno.matricula);
   printf("\tNome: %s\n", listAluno->aluno.nome);
-
+  
   showAllMatriculas(listAluno->aluno.nodeMatricula);
   showAllNotas(listAluno->aluno.nodeNota);
 }

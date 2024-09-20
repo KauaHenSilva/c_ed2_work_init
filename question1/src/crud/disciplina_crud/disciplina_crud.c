@@ -109,24 +109,16 @@ static int prencherDisciplina(NodeDisciplina *node)
  *
  * @param disciplina Ponteiro para a estrutura NodeDisciplina que contém as informações da disciplina.
  */
-static void showDisciplina(NodeDisciplina *disciplina)
+void showDisciplina(NodeDisciplina *disciplina)
 {
   printf("Disciplina: \n");
   printf("\tid: %d\n", disciplina->disciplina.codDisciplina);
-  printf("\tNome: %s\n", disciplina->disciplina.nomeDaDisciplina);
+  printf("\tNome: %s", disciplina->disciplina.nomeDaDisciplina);
+  printf("\tPeriodo: %d\n", disciplina->disciplina.periodo);
+  printf("\tCarga Horaria: %d\n", disciplina->disciplina.cargaHoraria);
 }
 
-/**
- * @brief Exibe todas as disciplinas.
- *
- * Função recursiva que percorre a arvore de disciplinas e exibe as
- * informações de cada disciplina. A função chama `showAllDisciplina` para percorret
- * todos os nós, e em seguida chama `showDisciplina` para exibir
- * a disciplina atual.
- *
- * @param disciplina Ponteiro para o nó raiz da arvore de disciplinas.
- */
-/**
+/*
  * @brief Exibe todas as disciplinas.
  *
  * Função recursiva que percorre a arvore de disciplinas e exibe as

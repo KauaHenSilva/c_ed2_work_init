@@ -60,7 +60,7 @@ int main()
     printf("\n");
   }
 
-  printf("Cadrastrando Matricula: \n\n");
+  printf("Cadrastrando todas as Matricula do curso do aluno 1: \n\n");
   mainCadrastrarAllMatriculaCurse(alunos, cursos);
 
   // for (int x = 0; x < 5; x++)
@@ -76,7 +76,29 @@ int main()
   printf("Todos os campus cadastrados! \n\n");
   getchar();
 
+  printf("Mostar todos alunos de um curso: \n\n");
+  printf("Curso: %d\n", cursos->curso.codigo);
   mostrarTodosOsAlunosDeUmCurso(cursos, alunos);
+
+  getchar();
+
+  printf("Mostar todos cursos do campus: \n\n");
+  MostrarTodosOsCursosDoCampus(cursos);
+
+  getchar();
+
+  printf("Mostar todas disciplinas de um curso: \n\n");
+  printf("Curso: %d\n", cursos->curso.codigo);
+  mostrarTodasAsDisciplinasDeUmCurso(cursos);
+
+  getchar();
+
+  printf("Mostar todas disciplinas de um periodo de um curso: \n\n");
+  printf("Curso: %d\n", cursos->curso.codigo);
+  printf("Periodo: %d\n", cursos->curso.nodeDisciplina->disciplina.periodo);
+  mostrarDisciplinasDeUmPeriodoDeUmCurso(cursos, cursos->curso.nodeDisciplina->disciplina.periodo);
+
+  getchar();
 
   printf("Testes de Raissa! \n\n");
   getchar();
@@ -90,11 +112,11 @@ int main()
   printf("Digite o codigo do curso: ");
   scanf("%d", &codCurso);
   curso = buscarCurso(cursos, codCurso);
-  
+
   printf("Digite o codigo da disciplina: ");
   scanf("%d", &codDisciplina);
   disciplina = buscar_disciplina(cursos->curso.nodeDisciplina, codDisciplina);
-  
+
   if (disciplina->esq == NULL && disciplina->dir == NULL)
   {
     curso->curso.nodeDisciplina = removerDisciplinaDeUmCurso(curso->curso.nodeDisciplina, codDisciplina);

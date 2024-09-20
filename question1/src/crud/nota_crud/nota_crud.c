@@ -57,20 +57,6 @@ void freeNodeNotas(NodeNota *raiz)
   }
 }
 
-/**
- * @brief Exibe os dados de uma nota.
- *
- * Mostra o código da disciplina associado à nota.
- *
- * @param node Ponteiro para o nó de nota a ser exibido.
- */
-static void showNota(NodeNota *node)
-{
-  printf("Notas:\n");
-  printf("\tCodDisciplina: %d\n", node->nota.codDisciplina);
-  printf("\tNotaFinal: %d\n", node->nota.notaFinal);
-}
-
 #if DEBUG_MODE
 /**
  * @brief Preenche os dados de uma nota com base na entrada do usuário.
@@ -138,6 +124,20 @@ static int prencherNota(NodeNota *raizNota, NodeMatricula *raizMatricula)
   return !confirm;
 }
 #endif
+
+/**
+ * @brief Exibe os dados de uma nota.
+ *
+ * Mostra o código da disciplina associado à nota.
+ *
+ * @param node Ponteiro para o nó de nota a ser exibido.
+ */
+void showNota(NodeNota *node)
+{
+  printf("Notas:\n");
+  printf("\tCodDisciplina: %d\n", node->nota.codDisciplina);
+  printf("\tNotaFinal: %d\n", node->nota.notaFinal);
+}
 
 /**
  * @brief Insere um novo nó de nota na árvore binária.
