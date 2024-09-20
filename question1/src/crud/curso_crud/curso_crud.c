@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
 
 #include "../curso_crud/curso_crud.h"
 #include "../disciplina_crud/disciplina_crud.h"
@@ -326,3 +328,18 @@ int cadastrarCursos(NodeCurso **nodeCurso)
 
 //   return raiz;
 // }
+NodeCurso *buscarCurso(NodeCurso *curso, int codigo) {
+    NodeCurso *aux = NULL;
+    if (curso != NULL) {
+        if (codigo == curso->curso.codigo) {
+            aux = curso;
+        } else {
+            if (codigo < curso->curso.codigo) {
+                aux = buscarCurso(curso->esq, codigo);
+            } else {
+                aux = buscarCurso(curso->dir, codigo);
+            }
+        }
+    }
+    return aux;
+}

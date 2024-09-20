@@ -78,6 +78,29 @@ int main()
 
   mostrarTodosOsAlunosDeUmCurso(cursos, alunos);
 
+  printf("Testes de Raissa! \n\n");
+  getchar();
+
+  NodeCurso *curso;
+  NodeDisciplina *disciplina;
+
+  int codCurso;
+  int codDisciplina;
+
+  printf("Digite o codigo do curso: ");
+  scanf("%d", &codCurso);
+  curso = buscarCurso(cursos, codCurso);
+  
+  printf("Digite o codigo da disciplina: ");
+  scanf("%d", &codDisciplina);
+  disciplina = buscar_disciplina(cursos->curso.nodeDisciplina, codDisciplina);
+  
+  if (disciplina->esq == NULL && disciplina->dir == NULL)
+  {
+    curso->curso.nodeDisciplina = removerDisciplinaDeUmCurso(curso->curso.nodeDisciplina, codDisciplina);
+    printf("Disciplina removida com sucesso.\n");
+  }
+
   freeAlunosList(alunos);
   freeNodeCursos(cursos);
   return 0;
