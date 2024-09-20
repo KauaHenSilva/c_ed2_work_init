@@ -308,18 +308,15 @@ ListAluno *buscarAluno(ListAluno *alunos, const char *nome) {
  */
 void cadastrarMatriculas(ListAluno *aluno, NodeDisciplina *raizDisciplina)
 {
-    NodeMatricula *new;
-    alocMatricula(&new);
+  NodeMatricula *new;
+  alocMatricula(&new);
 
-    if (prencherMatricula(aluno->nodeMatricula, raizDisciplina))
-    {
-        freeNodeMatriculas(new); // Libera se o preenchimento for bem-sucedido
-        new = NULL; // Evita usar um ponteiro inválido após a liberação
-    }
+  if (prencherMatricula(new, raizDisciplina, aluno->nodeMatricula))
+    freeNodeMatriculas(new);
 
-    if (new) // Garante que new só será inserido se não tiver sido liberado
-    {
-        ListAluno *auxAluno = aluno;
-        inserctionMatricula(&(auxAluno->nodeMatricula), new);
-    }
+  if (new)
+  {
+    ListAluno *auxAluno = aluno;
+    inserctionMatricula(&(auxAluno->nodeMatricula), new);
+  }
 }

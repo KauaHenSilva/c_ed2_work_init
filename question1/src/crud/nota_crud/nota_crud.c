@@ -126,24 +126,16 @@ static int prencherNota(NodeNota *raizNota, NodeMatricula *raizMatricula)
  */
 static int prencherNota(NodeNota *raizNota, NodeMatricula *raizMatricula)
 {
-  printf("Para sair só digite 'sair'.\n");
-
-  int confirm;
-  char *eneunciado;
-
-  NodeMatricula *search = NULL;
-  do
-  {
-    eneunciado = "Digite o codigo da disciplina da nota: ";
+   eneunciado = "Digite o codigo da disciplina da nota: ";
     confirm = getInt(&raizMatricula->codDisciplina, eneunciado);
 
-    search_matricula(raizMatricula, raizMatricula->codDisciplina, &search);
+    search_matricula(raizDisciplina, raizMatricula->codDisciplina, &search);
   } while (!search);
 
   if (confirm)
   {
-    eneunciado = "Digite a nota final do aluno: ";
-    confirm = getInt(&raizNota->notaFinal, eneunciado);
+    enunciado = "Digite a nota final do aluno: ";
+    confirm = getInt(&raizNota->notaFinal, enunciado);
   }
 
   if (!confirm)

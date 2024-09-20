@@ -11,7 +11,6 @@ void showAllMatriculas(NodeMatricula *raiz);
 void search_matricula(NodeMatricula *raiz, int code, NodeMatricula **result);
 
 // ---------------------------------------------------------------------------------------
-int prencherMatricula(NodeMatricula *node, NodeDisciplina *raizDisciplina);
 // - Permitir o cadastro de uma matrícula.
 // - A matrícula deve ser organizada e conter somente um código de disciplina do curso do aluno.
 void cadastrarMatriculas(ListAluno *aluno, NodeDisciplina *raizDisciplina);

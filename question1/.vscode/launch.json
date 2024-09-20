@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": "/home/rayssaalves/c_ed1_work_init/question1/src/crud/matricula_crud",
-      "program": "/home/rayssaalves/c_ed1_work_init/question1/src/crud/matricula_crud/build/Debug/outDebug",
+      "cwd": "/home/rayssaalves/c_ed1_work_init/question1/src",
+      "program": "/home/rayssaalves/c_ed1_work_init/question1/src/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
