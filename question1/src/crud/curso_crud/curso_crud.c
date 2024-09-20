@@ -20,10 +20,10 @@
 static NodeCurso *alocCurso()
 {
   NodeCurso *new = (NodeCurso *)malloc(sizeof(NodeCurso));
-  new->codigo = -1;
-  new->quantidadeDePeriodo = -1;
-  new->nodeDisciplina = NULL;
-  new->nomeDoCurso = NULL;
+  new->curso.codigo = -1;
+  new->curso.quantidadeDePeriodo = -1;
+  new->curso.nodeDisciplina = NULL;
+  new->curso.nomeDoCurso = NULL;
   new->dir = NULL;
   new->esq = NULL;
   return new;
@@ -40,11 +40,11 @@ static NodeCurso *alocCurso()
  */
 static void freeNodeCurso(NodeCurso *node)
 {
-  if (node->nomeDoCurso)
-    free(node->nomeDoCurso);
+  if (node->curso.nomeDoCurso)
+    free(node->curso.nomeDoCurso);
 
-  if (node->nodeDisciplina)
-    freeNodeDisciplinas(node->nodeDisciplina);
+  if (node->curso.nodeDisciplina)
+    freeNodeDisciplinas(node->curso.nodeDisciplina);
 
   free(node);
 }
@@ -86,18 +86,18 @@ static int prencherCurso(NodeCurso *node)
   char *enunciado;
 
   enunciado = "Digite o codigo do curso: ";
-  confirm = getInt(&node->codigo, enunciado);
+  confirm = getInt(&node->curso.codigo, enunciado);
 
   if (confirm)
   {
     enunciado = "Digite a quantidade de periodo do curso: ";
-    confirm = getInt(&node->quantidadeDePeriodo, enunciado);
+    confirm = getInt(&node->curso.quantidadeDePeriodo, enunciado);
   }
 
   if (confirm)
   {
     enunciado = "Digite o nome do curso: ";
-    confirm = getString(&node->nomeDoCurso, enunciado);
+    confirm = getString(&node->curso.nomeDoCurso, enunciado);
   }
 
   // Falta outros.
@@ -116,12 +116,12 @@ static int prencherCurso(NodeCurso *node)
  *
  * @param curso Ponteiro para o curso a ser exibido.
  */
-static void showCurso(NodeCurso *curso)
+static void showCurso(NodeCurso *nodeCurso)
 {
   printf("Curso: \n");
-  printf("\tid: %d\n", curso->codigo);
-  printf("\tNome: %s\n", curso->nomeDoCurso);
-  showAllDisciplina(curso->nodeDisciplina);
+  printf("\tid: %d\n", nodeCurso->curso.codigo);
+  printf("\tNome: %s\n", nodeCurso->curso.nomeDoCurso);
+  showAllDisciplina(nodeCurso->curso.nodeDisciplina);
 }
 
 /**
@@ -132,13 +132,13 @@ static void showCurso(NodeCurso *curso)
  *
  * @param curso Ponteiro para o nó raiz da árvore de cursos.
  */
-void showAllCurso(NodeCurso *curso)
+void showAllCurso(NodeCurso *nodeCurso)
 {
-  if (curso)
+  if (nodeCurso)
   {
-    showAllCurso(curso->esq);
-    showAllCurso(curso->dir);
-    showCurso(curso);
+    showAllCurso(nodeCurso->esq);
+    showAllCurso(nodeCurso->dir);
+    showCurso(nodeCurso);
   }
 }
 
@@ -157,11 +157,11 @@ void isCurseOpen(NodeCurso *node, int id, int *bool)
 {
   if (node)
   {
-    if (node->codigo == id)
+    if (node->curso.codigo == id)
       *bool = 1;
     else
     {
-      if (node->codigo < id)
+      if (node->curso.codigo < id)
         isCurseOpen(node->dir, id, bool);
       else
         isCurseOpen(node->esq, id, bool);
@@ -171,11 +171,11 @@ void isCurseOpen(NodeCurso *node, int id, int *bool)
 
 void search_course(NodeCurso *raiz, int code, NodeCurso *result)
 {
-  if (raiz->codigo == code || !raiz)
+  if (raiz->curso.codigo == code || !raiz)
     result = raiz;
-  else if (raiz->codigo < code)
+  else if (raiz->curso.codigo < code)
     search_course(raiz->dir, code, result);
-  else if (raiz->codigo > code)
+  else if (raiz->curso.codigo > code)
     search_course(raiz->esq, code, result);
 }
 
@@ -195,7 +195,7 @@ void inserctionCurso(NodeCurso **raiz, NodeCurso *node)
     *raiz = node;
   else
   {
-    if (node->codigo < (*raiz)->codigo)
+    if (node->curso.codigo < (*raiz)->curso.codigo)
       inserctionCurso(&(*raiz)->esq, node);
     else
       inserctionCurso(&(*raiz)->dir, node);
@@ -304,10 +304,10 @@ int cadastrarCursos(NodeCurso **nodeCurso)
 // {
 
 //   int encontrou = buscarDisciplina(aluno, codDisciplina);
-  
+
 //   if (encontrou == 0)
 //   {
-//     raiz->nodeDisciplina = removerDisciplina(raiz->nodeDisciplina, codDisciplina, aluno);  
+//     raiz->nodeDisciplina = removerDisciplina(raiz->nodeDisciplina, codDisciplina, aluno);
 //   }
 
 //   return raiz;

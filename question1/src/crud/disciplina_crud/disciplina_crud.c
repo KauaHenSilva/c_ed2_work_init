@@ -18,10 +18,10 @@
 static void alocDisciplina(NodeDisciplina **new)
 {
   *new = (NodeDisciplina *)malloc(sizeof(NodeDisciplina));
-  (*new)->cargaHoraria = -1;
-  (*new)->codDisciplina = -1;
-  (*new)->periodo = -1;
-  (*new)->nomeDaDisciplina = NULL;
+  (*new)->disciplina.cargaHoraria = -1;
+  (*new)->disciplina.codDisciplina = -1;
+  (*new)->disciplina.periodo = -1;
+  (*new)->disciplina.nomeDaDisciplina = NULL;
   (*new)->dir = NULL;
   (*new)->esq = NULL;
 }
@@ -35,8 +35,8 @@ static void alocDisciplina(NodeDisciplina **new)
  */
 static void freeNodeDisciplina(NodeDisciplina *node)
 {
-  if (node->nomeDaDisciplina)
-    free(node->nomeDaDisciplina);
+  if (node->disciplina.nomeDaDisciplina)
+    free(node->disciplina.nomeDaDisciplina);
 
   free(node);
 }
@@ -76,24 +76,24 @@ static int prencherDisciplina(NodeDisciplina *node)
   char *enunciado;
 
   enunciado = "Digite o codigo da disciplina: ";
-  confirm = getInt(&node->codDisciplina, enunciado);
+  confirm = getInt(&node->disciplina.codDisciplina, enunciado);
 
   if (confirm)
   {
     enunciado = "Digite o periodo da disciplina: ";
-    confirm = getInt(&node->periodo, enunciado);
+    confirm = getInt(&node->disciplina.periodo, enunciado);
   }
 
   if (confirm)
   {
     enunciado = "Digite a carga horaria da disciplina: ";
-    confirm = getInt(&node->cargaHoraria, enunciado);
+    confirm = getInt(&node->disciplina.cargaHoraria, enunciado);
   }
 
   if (confirm)
   {
     enunciado = "Digite o nome da disciplina: ";
-    confirm = getString(&node->nomeDaDisciplina, enunciado);
+    confirm = getString(&node->disciplina.nomeDaDisciplina, enunciado);
   }
 
   if (!confirm)
@@ -112,8 +112,8 @@ static int prencherDisciplina(NodeDisciplina *node)
 static void showDisciplina(NodeDisciplina *disciplina)
 {
   printf("Disciplina: \n");
-  printf("\tid: %d\n", disciplina->codDisciplina);
-  printf("\tNome: %s\n", disciplina->nomeDaDisciplina);
+  printf("\tid: %d\n", disciplina->disciplina.codDisciplina);
+  printf("\tNome: %s\n", disciplina->disciplina.nomeDaDisciplina);
 }
 
 /**
@@ -146,20 +146,18 @@ void showAllDisciplina(NodeDisciplina *disciplina)
   }
 }
 
-
 void search_disciplina(NodeDisciplina *raiz, int code, NodeDisciplina **result)
 {
   if (raiz)
   {
-    if (raiz->codDisciplina == code)
+    if (raiz->disciplina.codDisciplina == code)
       *result = raiz;
-    else if (raiz->codDisciplina < code)
+    else if (raiz->disciplina.codDisciplina < code)
       search_disciplina(raiz->dir, code, result);
-    else if (raiz->codDisciplina > code)
+    else if (raiz->disciplina.codDisciplina > code)
       search_disciplina(raiz->esq, code, result);
   }
 }
-
 
 /**
  * @brief Insere um novo nó na árvore binária de disciplinas.
@@ -178,7 +176,7 @@ static void inserction(NodeDisciplina **raiz, NodeDisciplina *node)
     *raiz = node;
   else
   {
-    if (node->codDisciplina < (*raiz)->codDisciplina)
+    if (node->disciplina.codDisciplina < (*raiz)->disciplina.codDisciplina)
       inserction(&(*raiz)->esq, node);
     else
       inserction(&(*raiz)->dir, node);
@@ -205,6 +203,6 @@ void cadastrarDisciplinas(NodeCurso *curso)
   if (new)
   {
     NodeCurso *aux = curso;
-    inserction(&(aux->nodeDisciplina), new);
+    inserction(&(aux->curso.nodeDisciplina), new);
   }
 }
