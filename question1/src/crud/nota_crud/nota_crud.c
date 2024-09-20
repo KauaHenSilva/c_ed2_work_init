@@ -137,13 +137,13 @@ static int prencherNota(NodeNota *raizNota, NodeMatricula *raizMatricula)
     eneunciado = "Digite o codigo da disciplina da nota: ";
     confirm = getInt(&raizMatricula->codDisciplina, eneunciado);
 
-    search_matricula(raizDisciplina, raizMatricula->codDisciplina, &search);
+    search_matricula(raizMatricula, raizMatricula->codDisciplina, &search);
   } while (!search);
 
   if (confirm)
   {
-    enunciado = "Digite a nota final do aluno: ";
-    confirm = getInt(&raizNota->notaFinal, enunciado);
+    eneunciado = "Digite a nota final do aluno: ";
+    confirm = getInt(&raizNota->notaFinal, eneunciado);
   }
 
   if (!confirm)
