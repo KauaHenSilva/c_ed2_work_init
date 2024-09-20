@@ -25,6 +25,8 @@ void freeAlunosList(ListAluno *alunos);
  */
 void showAllAlunos(ListAluno *alunos);
 
+void showAluno(ListAluno *aluno);
+
 // ---------------------------------------------------------------------------------------
 
 /**
@@ -41,4 +43,4 @@ void showAllAlunos(ListAluno *alunos);
  * @param cursos Ponteiro para a lista de cursos.
  * @return Retorna 1 se o aluno foi cadastrado com sucesso, caso contrário, retorna 0.
  */
-int cadastrarAlunos(ListAluno **aluno, NodeCurso *cursos);
+int cadastrarAlunos(ListAluno **alunos, int codigoCurso);

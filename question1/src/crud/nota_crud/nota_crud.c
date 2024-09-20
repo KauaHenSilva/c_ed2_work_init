@@ -20,9 +20,9 @@
 static void alocNota(NodeNota **node)
 {
   *node = (NodeNota *)malloc(sizeof(NodeNota));
-  (*node)->codDisciplina = -1;
-  (*node)->notaFinal = -1;
-  (*node)->semestreCursado = -1;
+  (*node)->nota.codDisciplina = -1;
+  (*node)->nota.notaFinal = -1;
+  (*node)->nota.semestreCursado = -1;
   (*node)->dir = NULL;
   (*node)->esq = NULL;
 }
@@ -67,8 +67,8 @@ void freeNodeNotas(NodeNota *raiz)
 static void showNota(NodeNota *node)
 {
   printf("Notas:\n");
-  printf("\tCodDisciplina: %d\n", node->codDisciplina);
-  printf("\tNotaFinal: %d\n", node->notaFinal);
+  printf("\tCodDisciplina: %d\n", node->nota.codDisciplina);
+  printf("\tNotaFinal: %d\n", node->nota.notaFinal);
 }
 
 #if DEBUG_MODE
@@ -82,31 +82,17 @@ static void showNota(NodeNota *node)
  * @param raizMatricula Ponteiro para a raiz de matricula a ser escolhida.
  * @return Retorna 1 se o preenchimento foi bem-sucedido, 0 caso contrário.
  */
-static int prencherNota(NodeNota *raizNota, NodeMatricula *raizMatricula)
+static int prencherNota(NodeNota *raizNota, int codDisciplina)
 {
   printf("Para sair só digite 'sair'.\n");
 
-  int confirm;
+  int confirm = 1;
   char *enunciado;
 
-  NodeMatricula *search = NULL;
-  do
-  {
-    enunciado = "Digite o codigo da disciplina da nota: ";
+  raizNota->nota.codDisciplina = codDisciplina;
 
-    if (raizNota->codDisciplina == -1)
-      confirm = getInt(&raizNota->codDisciplina, enunciado);
-    else
-      printf("[DEBUG]: procurando disciplinas com o id: %d\n", --raizNota->codDisciplina);
-
-    search_matricula(raizMatricula, raizNota->codDisciplina, &search);
-  } while (!search);
-
-  if (confirm)
-  {
-    enunciado = "Digite a nota final do aluno: ";
-    confirm = getInt(&raizNota->notaFinal, enunciado);
-  }
+  enunciado = "Digite a nota final do aluno: ";
+  confirm = getInt(&raizNota->nota.notaFinal, enunciado);
 
   if (!confirm)
     printf("Não foi possivel execultar o prencher a nota: ");
@@ -154,59 +140,73 @@ static int prencherNota(NodeNota *raizNota, NodeMatricula *raizMatricula)
  * @param raiz Ponteiro para o ponteiro do nó raiz da árvore de notas.
  * @param new Ponteiro para o novo nó de nota a ser inserido.
  */
-void inserctionNota(NodeNota **raiz, NodeNota *new)
+int inserctionNota(NodeNota **raiz, NodeNota *new)
 {
+  int confirm = 1;
+
   if (!*raiz)
     *raiz = new;
-
   else
   {
-    if (new->codDisciplina < (*raiz)->codDisciplina)
-      inserctionNota(&(*raiz)->esq, new);
+    if (new->nota.codDisciplina < (*raiz)->nota.codDisciplina)
+      confirm = inserctionNota(&(*raiz)->esq, new);
+    else if (new->nota.codDisciplina > (*raiz)->nota.codDisciplina)
+      confirm = inserctionNota(&(*raiz)->dir, new);
     else
-      inserctionNota(&(*raiz)->dir, new);
+      confirm = 0;
   }
+
+  return confirm;
 }
 
-NodeMatricula *remover(NodeMatricula *raiz, int codDisciplina) {
-    if (raiz == NULL) {
-        return NULL;
-    }
+NodeMatricula *remover(NodeMatricula *raiz, int codDisciplina)
+{
+  if (raiz == NULL)
+  {
+    return NULL;
+  }
 
-    // Caso base: encontrar o nó a ser removido
-    if (raiz->codDisciplina == codDisciplina) {
-        // Caso 1: Nó folha
-        if (raiz->esq == NULL && raiz->dir == NULL) {
-            free(raiz);
-            return NULL;
-        }
-        // Caso 2: Nó com um filho
-        else if (raiz->esq == NULL || raiz->dir == NULL) {
-            NodeMatricula *temp = (raiz->esq != NULL) ? raiz->esq : raiz->dir;
-            free(raiz);
-            return temp;
-        }
-        // Caso 3: Nó com dois filhos
-        else {
-            NodeMatricula *aux = raiz->esq;
-            while (aux->dir != NULL) {
-                aux = aux->dir;
-            }
-            raiz->codDisciplina = aux->codDisciplina;
-            raiz->esq = remover(raiz->esq, aux->codDisciplina);
-            return raiz;
-        }
+  // Caso base: encontrar o nó a ser removido
+  if (raiz->codDisciplina == codDisciplina)
+  {
+    // Caso 1: Nó folha
+    if (raiz->esq == NULL && raiz->dir == NULL)
+    {
+      free(raiz);
+      return NULL;
     }
-    // Se o código da disciplina a ser removido é menor que o código do nó atual, continue na subárvore esquerda
-    else if (codDisciplina < raiz->codDisciplina) {
-        raiz->esq = remover(raiz->esq, codDisciplina);
+    // Caso 2: Nó com um filho
+    else if (raiz->esq == NULL || raiz->dir == NULL)
+    {
+      NodeMatricula *temp = (raiz->esq != NULL) ? raiz->esq : raiz->dir;
+      free(raiz);
+      return temp;
     }
-    // Se o código da disciplina a ser removido é maior que o código do nó atual, continue na subárvore direita
-    else {
-        raiz->dir = remover(raiz->dir, codDisciplina);
+    // Caso 3: Nó com dois filhos
+    else
+    {
+      NodeMatricula *aux = raiz->esq;
+      while (aux->dir != NULL)
+      {
+        aux = aux->dir;
+      }
+      raiz->codDisciplina = aux->codDisciplina;
+      raiz->esq = remover(raiz->esq, aux->codDisciplina);
+      return raiz;
     }
+  }
+  // Se o código da disciplina a ser removido é menor que o código do nó atual, continue na subárvore esquerda
+  else if (codDisciplina < raiz->codDisciplina)
+  {
+    raiz->esq = remover(raiz->esq, codDisciplina);
+  }
+  // Se o código da disciplina a ser removido é maior que o código do nó atual, continue na subárvore direita
+  else
+  {
+    raiz->dir = remover(raiz->dir, codDisciplina);
+  }
 
-    return raiz;
+  return raiz;
 }
 
 /**
@@ -227,19 +227,35 @@ void showAllNotas(NodeNota *raiz)
   }
 }
 
-void cadastrarNotas(ListAluno *aluno)
+int cadastrarNotas(ListAluno *aluno, int codDisciplina)
 {
+  int confirm = 1;
+
   NodeNota *new;
   alocNota(&new);
 
-  if (prencherNota(new, aluno->nodeMatricula))
+  if (prencherNota(new, codDisciplina))
+  {
     freeNodeNotas(new);
+    confirm = 0;
+  }
 
   if (new)
   {
     ListAluno *auxAluno = aluno;
-    removerDisciplinaDaArvoreDeMatricula(&aluno->nodeMatricula, new->codDisciplina);
-    // isso está errado, ele tá pegando de uma
-    inserctionNota(&auxAluno->nodeNota, new);
+
+    if (removerDisciplinaDaArvoreDeMatricula(&aluno->aluno.nodeMatricula, new->nota.codDisciplina) && confirm)
+    {
+      freeNodeNota(new);
+      confirm = 0;
+    }
+
+    if (inserctionNota(&auxAluno->aluno.nodeNota, new) && confirm)
+    {
+      freeNodeNota(new);
+      confirm = 0;
+    }
   }
+
+  return confirm;
 }

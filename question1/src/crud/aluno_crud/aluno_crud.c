@@ -21,11 +21,11 @@
 static void alocAluno(ListAluno **new)
 {
   *new = (ListAluno *)malloc(sizeof(ListAluno));
-  (*new)->codigoDoCurso = -1;
-  (*new)->matricula = -1;
-  (*new)->nome = NULL;
-  (*new)->nodeMatricula = NULL;
-  (*new)->nodeNota = NULL;
+  (*new)->aluno.codigoDoCurso = -1;
+  (*new)->aluno.matricula = -1;
+  (*new)->aluno.nome = NULL;
+  (*new)->aluno.nodeMatricula = NULL;
+  (*new)->aluno.nodeNota = NULL;
   (*new)->ant = NULL;
   (*new)->prox = NULL;
 }
@@ -38,13 +38,12 @@ static void alocAluno(ListAluno **new)
  *
  * @param aluno Ponteiro para o uma struct ListAluno que será liberado.
  */
-static void freeAluno(ListAluno *aluno)
+static void freeAluno(ListAluno *listAluno)
 {
-  if (aluno->nome)
-    free(aluno->nome);
+  if (listAluno->aluno.nome)
+    free(listAluno->aluno.nome);
 
-  freeNodeMatriculas(aluno->nodeMatricula);
-  free(aluno);
+  freeNodeMatriculas(listAluno->aluno.nodeMatricula);
 }
 
 /**
@@ -59,29 +58,17 @@ static void freeAluno(ListAluno *aluno)
  *
  * @return Retorna 0 se os dados foram preenchidos com sucesso, ou 1 se houve algum erro.
  */
-static int prencherAluno(ListAluno *aluno, NodeCurso *cursos)
+static int prencherAluno(Aluno *aluno, int codigoCurso)
 {
   printf("Para sair só digite 'sair'.\n");
 
   int confirm = 1;
   char *enunciado;
 
-  enunciado = "Digite o codigo do Curso: ";
-  confirm = getInt(&aluno->codigoDoCurso, enunciado);
+  aluno->codigoDoCurso = codigoCurso;
 
-  int verificacao = 0;
-  isCurseOpen(cursos, aluno->codigoDoCurso, &verificacao);
-  if (verificacao)
-  {
-    printf("Curso não cadastrado!\n");
-    return 1;
-  }
-
-  if (confirm)
-  {
-    enunciado = "Digite a matricula do aluno: ";
-    confirm = getInt(&aluno->matricula, enunciado);
-  }
+  enunciado = "Digite a matricula do aluno: ";
+  confirm = getInt(&aluno->matricula, enunciado);
 
   if (confirm)
   {
@@ -105,15 +92,15 @@ static int prencherAluno(ListAluno *aluno, NodeCurso *cursos)
  *
  * @param aluno Ponteiro para a estrutura ListAluno que contém as informações do aluno.
  */
-static void showAluno(ListAluno *aluno)
+void showAluno(ListAluno *listAluno)
 {
   printf("Aluno: \n");
-  printf("\tid: %d\n", aluno->codigoDoCurso);
-  printf("\tMatricula: %d\n", aluno->matricula);
-  printf("\tNome: %s\n", aluno->nome);
+  printf("\tid: %d\n", listAluno->aluno.codigoDoCurso);
+  printf("\tMatricula: %d\n", listAluno->aluno.matricula);
+  printf("\tNome: %s\n", listAluno->aluno.nome);
 
-  showAllMatriculas(aluno->nodeMatricula);
-  showAllNotas(aluno->nodeNota);
+  showAllMatriculas(listAluno->aluno.nodeMatricula);
+  showAllNotas(listAluno->aluno.nodeNota);
 }
 
 /**
@@ -126,44 +113,60 @@ static void showAluno(ListAluno *aluno)
  * @param alunos Ponteiro duplo para a lista de alunos.
  * @param new Ponteiro para o novo aluno a ser inserido.
  */
-void inserctionAluno(ListAluno **alunos, ListAluno *new)
+void inserctionAluno(ListAluno **listAlunos, Aluno new)
 {
-  if (!*alunos)
-    *alunos = new;
+  if (!*listAlunos)
+  {
+    *listAlunos = (ListAluno *)malloc(sizeof(ListAluno));
+    (*listAlunos)->ant = NULL;
+    (*listAlunos)->prox = NULL;
+    (*listAlunos)->aluno = new;
+  }
   else
   {
     // Adidiconar no inicio
-    if (new->codigoDoCurso < (*alunos)->codigoDoCurso)
+    if (strcmp(new.nome, (*listAlunos)->aluno.nome) < 0)
     {
-      new->prox = *alunos;
-      (*alunos)->ant = new;
-      *alunos = new;
+      ListAluno *aux = *listAlunos;
+      *listAlunos = (ListAluno *)malloc(sizeof(ListAluno));
+      (*listAlunos)->aluno = new;
+      (*listAlunos)->prox = aux;
+      aux->ant = *listAlunos;
     }
     else
     {
       // Adicionar no final
-      if (!(*alunos)->prox)
+      if (!(*listAlunos)->prox)
       {
-        new->ant = *alunos;
-        (*alunos)->prox = new;
+        ListAluno *aux = *listAlunos;
+        while (aux->prox)
+          aux = aux->prox;
+
+        aux->prox = (ListAluno *)malloc(sizeof(ListAluno));
+        aux->prox->ant = aux;
+        aux->prox->aluno = new;
       }
 
       // Adicionar no meio
       else
       {
-        ListAluno *aux = *alunos;
-        while (aux->prox && strcmp(new->nome, aux->prox->nome))
+        ListAluno *aux = *listAlunos;
+        while (aux->prox && strcmp(new.nome, aux->prox->aluno.nome) > 0)
           aux = aux->prox;
 
-        new->prox = aux;
-        new->ant = aux->ant;
-        aux->ant->prox = new;
-        aux->ant = new;
+        if (aux->prox)
+        {
+          ListAluno *temp = aux->prox;
+          aux->prox = (ListAluno *)malloc(sizeof(ListAluno));
+          aux->prox->ant = aux;
+          aux->prox->prox = temp;
+          aux->prox->aluno = new;
+          temp->ant = aux->prox;
+        }
       }
     }
   }
 }
-
 /**
  * @brief Exibe todos os alunos da lista.
  *
@@ -182,7 +185,6 @@ void showAllAlunos(ListAluno *alunos)
     showAluno(alunos);
   }
 }
-
 
 /**
  * @brief Libera a memória alocada para a lista de alunos.
@@ -215,16 +217,16 @@ void freeAlunosList(ListAluno *alunos)
  *
  * @return Retorna 1 se o cadastro foi bem-sucedido, ou 0 caso contrário.
  */
-int cadastrarAlunos(ListAluno **alunos, NodeCurso *cursos)
+int cadastrarAlunos(ListAluno **alunos, int codigoCurso)
 {
   ListAluno *new;
   alocAluno(&new);
 
-  if (prencherAluno(new, cursos))
+  if (prencherAluno(&new->aluno, codigoCurso))
     freeAluno(new);
-
+  
   if (new)
-    inserctionAluno(alunos, new);
+    inserctionAluno(alunos, new->aluno);
 
   return new ? 1 : 0;
 }
