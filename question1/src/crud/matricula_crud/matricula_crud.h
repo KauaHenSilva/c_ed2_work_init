@@ -18,3 +18,5 @@ void cadastrarMatriculas(ListAluno *aluno, NodeDisciplina *raizDisciplina);
 
 // - Permitir a remoção de uma disciplina da árvore de matrícula de um determinado aluno.
 void removerDisciplinaDaArvoreDeMatricula(NodeMatricula **matricula, int codDisciplina);
+
+NodeMatricula* removerMatricula(NodeMatricula *raiz, int codDisciplina);

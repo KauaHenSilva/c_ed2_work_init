@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
 
 #include "../curso_crud/curso_crud.h"
 #include "../disciplina_crud/disciplina_crud.h"
@@ -225,90 +227,18 @@ int cadastrarCursos(NodeCurso **nodeCurso)
   return new ? 1 : 0;
 }
 
-// int buscarDisciplina(ListAluno *alunos, int codDisciplina)
-// {
-//   ListAluno *aux = alunos;
-//   int encontrou = 0;
-//   while (aux != NULL)
-//   {
-//     NodeDisciplina *disciplina = aux->aluno->nodeDisciplina;
-//     while (disciplina != NULL)
-//     {
-//       if (disciplina->codDisciplina == codDisciplina)
-//       {
-//         encontrou = 1;
-//       }
-//       disciplina = disciplina->dir;
-//     }
-//     aux = aux->prox;
-//   }
-//   return encontrou;
-// }
-
-// NodeDisciplina *removerDisciplina(NodeDisciplina *raiz, int codDisciplina, ListAluno *aluno)
-// {
-
-//   if (raiz != NULL)
-//   {
-//     if (raiz->codDisciplina == codDisciplina)
-//     {
-//       // remove nos folhas
-//       if (raiz->esq == NULL && raiz->dir == NULL)
-//       {
-//         free(raiz);
-//         return NULL;
-//       }
-//       else
-//       {
-//         // remove nos que possui apenas um filho
-//         if (raiz->esq == NULL || raiz->dir == NULL)
-//         {
-//           NodeDisciplina *temp;
-//           if (raiz->esq != NULL)
-//           {
-//             temp = raiz->esq;
-//           }
-//           else
-//           {
-//             temp = raiz->dir;
-//           }
-//           free(raiz);
-//           return temp;
-//         }
-//         else
-//         {
-//           NodeDisciplina *aux = raiz->esq;
-//           while (aux->dir != NULL)
-//           {
-//             aux = aux->dir;
-//           }
-//           raiz->codDisciplina = aux->codDisciplina;
-//           aux->codDisciplina = codDisciplina;
-//           raiz->esq = removerDisciplina(raiz->esq, codDisciplina);
-//           return raiz;
-//         }
-//       }
-//     }
-//     else
-//     {
-//       if (raiz->esq > codDisciplina)
-//         raiz->esq = removerDisciplina(raiz->esq, codDisciplina);
-//       else
-//         raiz->dir = removerDisciplina(raiz->dir, codDisciplina);
-//       return raiz;
-//     }
-//   }
-// }
-
-// NodeCurso *removerDisciplinaCurso(ListAluno *aluno, int codDisciplina)
-// {
-
-//   int encontrou = buscarDisciplina(aluno, codDisciplina);
-  
-//   if (encontrou == 0)
-//   {
-//     raiz->nodeDisciplina = removerDisciplina(raiz->nodeDisciplina, codDisciplina, aluno);  
-//   }
-
-//   return raiz;
-// }
+NodeCurso *buscarCurso(NodeCurso *curso, int codigo) {
+    NodeCurso *aux = NULL;
+    if (curso != NULL) {
+        if (codigo == curso->codigo) {
+            aux = curso;
+        } else {
+            if (codigo < curso->codigo) {
+                aux = buscarCurso(curso->esq, codigo);
+            } else {
+                aux = buscarCurso(curso->dir, codigo);
+            }
+        }
+    }
+    return aux;
+}

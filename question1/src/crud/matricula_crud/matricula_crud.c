@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "../matricula_crud/matricula_crud.h"
 #include "../disciplina_crud/disciplina_crud.h"
@@ -234,42 +235,67 @@ void removerDisciplinaDaArvoreDeMatricula(NodeMatricula **matricula, int codDisc
 }
 
 
+
+
 //precia testar esta função de remoção 
-// NodeMatricula *removerMatricula(NodeMatricula *raiz, int codDisciplina) {
-//     if (raiz == NULL) {
-//         return NULL;
-//     }
+NodeMatricula* removerMatricula(NodeMatricula *raiz, int codDisciplina) {
+    if (raiz == NULL) {
+        return NULL; // Disciplina não encontrada
+    }
 
-//     if (raiz->codDisciplina == codDisciplina) {
-//         // Remove nos folhas
-//         if (raiz->esq == NULL && raiz->dir == NULL) {
-//             free(raiz);
-//             return NULL;
-//         }
-//         // Remove nós que possuem apenas um filho
-//         else if (raiz->esq == NULL || raiz->dir == NULL) {
-//             NodeMatricula *temp = (raiz->esq != NULL) ? raiz->esq : raiz->dir;
-//             free(raiz);
-//             return temp;
-//         }
-//         // Remove nós que possuem dois filhos
-//         else {
-//             NodeMatricula *aux = raiz->esq;
-//             while (aux->dir != NULL) {
-//                 aux = aux->dir;
-//             }
-//             raiz->codDisciplina = aux->codDisciplina;
-//             raiz->esq = removerMatricula(raiz->esq, aux->codDisciplina);
-//             return raiz;
-//         }
-//     } else if (raiz->codDisciplina > codDisciplina) {
-//         raiz->esq = removerMatricula(raiz->esq, codDisciplina);
-//     } else {
-//         raiz->dir = removerMatricula(raiz->dir, codDisciplina);
-//     }
+    if (raiz->codDisciplina == codDisciplina) {
+        // Caso 1: Nódulo sem filhos
+        if (raiz->esq == NULL && raiz->dir == NULL) {
+            free(raiz);
+            return NULL;
+        }
+        // Caso 2: Nódulo com apenas um filho
+        else if (raiz->esq == NULL) {
+            NodeMatricula *temp = raiz->dir;
+            free(raiz);
+            return temp;
+        } else if (raiz->dir == NULL) {
+            NodeMatricula *temp = raiz->esq;
+            free(raiz);
+            return temp;
+        }
+        // Caso 3: Nódulo com dois filhos
+        else {
+            NodeMatricula *aux = raiz->esq;
+            while (aux->dir != NULL) {
+                aux = aux->dir;
+            }
+            raiz->codDisciplina = aux->codDisciplina;
+            raiz->esq = removerMatricula(raiz->esq, aux->codDisciplina);
+        }
+    } else if (codDisciplina < raiz->codDisciplina) {
+        raiz->esq = removerMatricula(raiz->esq, codDisciplina);
+    } else {
+        raiz->dir = removerMatricula(raiz->dir, codDisciplina);
+    }
 
-//     return raiz;
-// }
+    return raiz;
+}
+
+// Função para remover uma disciplina de um aluno
+ListAluno *removerDisciplinaAluno(ListAluno *aluno, int codDisciplina) {
+    if (aluno != NULL) {
+        aluno->nodeMatricula = removerMatricula(aluno->nodeMatricula, codDisciplina);
+    }
+  return aluno;
+}
+
+ListAluno *buscarAluno(ListAluno *alunos, const char *nome) {
+    while (alunos != NULL) {
+        if (strcmp(alunos->nome, nome) == 0) {
+            return alunos;
+        }
+        alunos = alunos->prox;
+    }
+    return NULL;
+}
+
+
 
 /**
  * @brief Cadastra uma nova matrícula para um aluno em uma disciplina.

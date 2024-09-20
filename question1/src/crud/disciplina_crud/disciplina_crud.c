@@ -208,3 +208,68 @@ void cadastrarDisciplinas(NodeCurso *curso)
     inserction(&(aux->nodeDisciplina), new);
   }
 }
+
+
+
+NodeDisciplina *buscar_disciplina(NodeDisciplina *raiz, int codigo)
+{
+    NodeDisciplina *aux = NULL;
+    if (raiz != NULL)
+    {
+        if (codigo == raiz->codDisciplina)
+        {
+            aux = raiz;
+        }
+        else
+        {
+            if (codigo < raiz->codDisciplina)
+            {
+                aux = buscar_disciplina(raiz->esq, codigo);
+            }
+            else
+            {
+                aux = buscar_disciplina(raiz->dir, codigo);
+            }
+        }
+    }
+    return aux;
+}
+
+NodeDisciplina *removerDisciplinaDeUmCurso(NodeDisciplina *raiz, int codDisciplina){
+  if (raiz != NULL)
+  {
+    if (raiz->codDisciplina == codDisciplina)
+    {
+      if(raiz->esq == NULL && raiz->dir != NULL){
+        free(raiz);
+        raiz = NULL;
+      }else if(raiz->esq == NULL || raiz->dir == NULL){
+        NodeDisciplina *aux;
+        if (raiz->esq == NULL)
+        {
+          aux = raiz;
+          raiz = raiz->dir;
+        }
+        else{
+          aux = raiz;
+          raiz = raiz->esq; 
+        }
+        free(aux); 
+      }
+      else{
+        NodeDisciplina *aux = raiz->dir;
+        while(aux->esq!= NULL)
+          aux = aux->esq;
+        raiz->codDisciplina = aux->codDisciplina;
+        raiz->dir = removerDisciplinaDeUmCurso(raiz->dir, aux->codDisciplina);
+      }
+    }else{
+      if (codDisciplina < raiz->codDisciplina)
+        raiz->esq = removerDisciplinaDeUmCurso(raiz->esq, codDisciplina);
+      else
+        raiz->dir = removerDisciplinaDeUmCurso(raiz->dir, codDisciplina);
+    }
+    
+  }
+  return raiz;
+}
