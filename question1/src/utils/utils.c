@@ -52,7 +52,7 @@ int getInt(int *inteiro, const char *msg)
   printf("%s", msg);
 
   // Simulate user input
-  int valor =  rand() % 200000;
+  int valor = rand() % 2000000;
   snprintf(buffer, sizeof(buffer), "25%d\n", valor);
 
   printf("%s", buffer);

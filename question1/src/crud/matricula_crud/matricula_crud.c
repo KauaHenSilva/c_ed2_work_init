@@ -93,17 +93,23 @@ void showAllMatriculas(NodeMatricula *raiz)
  * @param raiz Ponteiro duplo para o nó raiz da árvore de disciplinas.
  * @param node Ponteiro para o nó de disciplina a ser inserido.
  */
-void inserctionMatricula(NodeMatricula **raiz, NodeMatricula *new)
+int inserctionMatricula(NodeMatricula **raiz, NodeMatricula *new)
 {
+  int confirm = 1;
+
   if (!*raiz)
     *raiz = new;
   else
   {
     if (new->codDisciplina < (*raiz)->codDisciplina)
-      inserctionMatricula(&(*raiz)->esq, new);
+      confirm = inserctionMatricula(&(*raiz)->esq, new);
+    else if (new->codDisciplina > (*raiz)->codDisciplina)
+      confirm = inserctionMatricula(&(*raiz)->dir, new);
     else
-      inserctionMatricula(&(*raiz)->dir, new);
+      confirm = 0;
   }
+
+  return confirm;
 }
 
 void search_matricula(NodeMatricula *raiz, int code, NodeMatricula **result)
@@ -128,30 +134,44 @@ NodeMatricula *esqRoot(NodeMatricula *node)
 }
 
 // Tem que testar ainda. (Quebrou a parte que os cursos não tem o codigo correto.)
-void removerDisciplinaDaArvoreDeMatricula(NodeMatricula **matricula, int codDisciplina)
+int removerDisciplinaDaArvoreDeMatricula(NodeMatricula **matricula, int codDisciplina)
 {
-  NodeMatricula *atual = *matricula;
-  NodeMatricula *temp = *matricula;
-
-  if (matricula)
+  int confirm = 1;
+  if (*matricula)
   {
-    if (atual->codDisciplina > codDisciplina)
-      removerDisciplinaDaArvoreDeMatricula(&(atual->esq), codDisciplina);
-    else if (atual->codDisciplina < codDisciplina)
-      removerDisciplinaDaArvoreDeMatricula(&(atual->dir), codDisciplina);
+    if ((*matricula)->codDisciplina < codDisciplina)
+      confirm = removerDisciplinaDaArvoreDeMatricula(&((*matricula)->esq), codDisciplina);
+    else if ((*matricula)->codDisciplina > codDisciplina)
+      confirm = removerDisciplinaDaArvoreDeMatricula(&((*matricula)->dir), codDisciplina);
     else
     {
-      if (atual->esq == NULL)
-        temp = atual->dir;
-      else if (atual->dir == NULL)
-        temp = atual->esq;
+      if (!(*matricula)->esq && !(*matricula)->dir)
+      {
+        freeNodeMatricula(*matricula);
+        *matricula = NULL;
+      }
+      else if (!(*matricula)->esq && (*matricula)->dir)
+      {
+        NodeMatricula *temp = *matricula;
+        *matricula = (*matricula)->dir;
+        freeNodeMatricula(temp);
+      }
+      else if (!(*matricula)->dir && (*matricula)->esq)
+      {
+        NodeMatricula *temp = *matricula;
+        *matricula = (*matricula)->esq;
+        freeNodeMatricula(temp);
+      }
       else
-        temp = esqRoot(atual->dir);
-
-      *matricula = temp;
-      free(atual);
+      {
+        NodeMatricula *temp = esqRoot((*matricula)->dir);
+        (*matricula)->codDisciplina = temp->codDisciplina;
+        removerDisciplinaDaArvoreDeMatricula(&((*matricula)->dir), temp->codDisciplina);
+      }
     }
   }
+
+  return confirm;
 }
 
 
@@ -201,16 +221,24 @@ void removerDisciplinaDaArvoreDeMatricula(NodeMatricula **matricula, int codDisc
  * @param aluno Lista de alunos onde a matrícula será adicionada.
  * @param raizDisciplina Raiz da árvore de disciplinas disponíveis.
  */
-void cadastrarMatriculas(ListAluno *aluno, int idDisciplina)
+int cadastrarMatriculas(ListAluno *aluno, int idDisciplina)
 {
+  int confirm = 1;
+
   NodeMatricula *new;
   alocMatricula(&new);
-  
+
   new->codDisciplina = idDisciplina;
 
   if (new)
   {
     ListAluno *auxAluno = aluno;
-    inserctionMatricula(&(auxAluno->aluno.nodeMatricula), new);
+    if(!inserctionMatricula(&(auxAluno->aluno.nodeMatricula), new))
+    {
+      freeNodeMatricula(new);
+      confirm = 0;
+    }
   }
+
+  return confirm;
 }

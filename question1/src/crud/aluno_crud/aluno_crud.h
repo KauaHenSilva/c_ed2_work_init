@@ -25,6 +25,8 @@ void freeAlunosList(ListAluno *alunos);
  */
 void showAllAlunos(ListAluno *alunos);
 
+void showAluno(ListAluno *aluno);
+
 // ---------------------------------------------------------------------------------------
 
 /**

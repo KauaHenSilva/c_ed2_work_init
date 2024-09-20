@@ -148,18 +148,23 @@ static int prencherNota(NodeNota *raizNota, NodeMatricula *raizMatricula)
  * @param raiz Ponteiro para o ponteiro do nó raiz da árvore de notas.
  * @param new Ponteiro para o novo nó de nota a ser inserido.
  */
-void inserctionNota(NodeNota **raiz, NodeNota *new)
+int inserctionNota(NodeNota **raiz, NodeNota *new)
 {
+  int confirm = 1;
+
   if (!*raiz)
     *raiz = new;
-
   else
   {
     if (new->nota.codDisciplina < (*raiz)->nota.codDisciplina)
-      inserctionNota(&(*raiz)->esq, new);
+      confirm = inserctionNota(&(*raiz)->esq, new);
+    else if (new->nota.codDisciplina > (*raiz)->nota.codDisciplina)
+      confirm = inserctionNota(&(*raiz)->dir, new);
     else
-      inserctionNota(&(*raiz)->dir, new);
+      confirm = 0;
   }
+
+  return confirm;
 }
 
 NodeMatricula *remover(NodeMatricula *raiz, int codDisciplina)
@@ -230,18 +235,35 @@ void showAllNotas(NodeNota *raiz)
   }
 }
 
-void cadastrarNotas(ListAluno *aluno, int codDisciplina)
+int cadastrarNotas(ListAluno *aluno, int codDisciplina)
 {
+  int confirm = 1;
+
   NodeNota *new;
   alocNota(&new);
 
   if (prencherNota(new, codDisciplina))
+  {
     freeNodeNotas(new);
+    confirm = 0;
+  }
 
   if (new)
   {
     ListAluno *auxAluno = aluno;
-    removerDisciplinaDaArvoreDeMatricula(&aluno->aluno.nodeMatricula, new->nota.codDisciplina);
-    inserctionNota(&auxAluno->aluno.nodeNota, new);
+
+    if (removerDisciplinaDaArvoreDeMatricula(&aluno->aluno.nodeMatricula, new->nota.codDisciplina) && confirm)
+    {
+      freeNodeNota(new);
+      confirm = 0;
+    }
+
+    if (inserctionNota(&auxAluno->aluno.nodeNota, new) && confirm)
+    {
+      freeNodeNota(new);
+      confirm = 0;
+    }
   }
+
+  return confirm;
 }

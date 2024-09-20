@@ -3,6 +3,8 @@
     ".env.*": "dotenv",
     ".prettierrc": "json",
     "*.css": "css",
-    "disciplina_crud.h": "c"
+    "disciplina_crud.h": "c",
+    "matricula_crud.h": "c",
+    "struct_curso.h": "c"
   }
 }

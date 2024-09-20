@@ -170,17 +170,23 @@ void search_disciplina(NodeDisciplina *raiz, int code, NodeDisciplina **result)
  * @param raiz Ponteiro duplo para o nó raiz da árvore de disciplinas.
  * @param node Ponteiro para o nó de disciplina a ser inserido.
  */
-static void inserction(NodeDisciplina **raiz, NodeDisciplina *node)
+static int inserction(NodeDisciplina **raiz, NodeDisciplina *node)
 {
+  int insert = 1;
+
   if (!*raiz)
     *raiz = node;
   else
   {
     if (node->disciplina.codDisciplina < (*raiz)->disciplina.codDisciplina)
-      inserction(&(*raiz)->esq, node);
+      insert = inserction(&(*raiz)->esq, node);
+    else if (node->disciplina.codDisciplina > (*raiz)->disciplina.codDisciplina)
+      insert = inserction(&(*raiz)->dir, node);
     else
-      inserction(&(*raiz)->dir, node);
+      insert = 0;
   }
+
+  return insert;
 }
 
 /**
@@ -192,17 +198,28 @@ static void inserction(NodeDisciplina **raiz, NodeDisciplina *node)
  *
  * @param curso Ponteiro para o nó raiz da árvore de cursos.
  */
-void cadastrarDisciplinas(NodeCurso *curso)
+int cadastrarDisciplinas(NodeCurso *curso)
 {
+  int confirm = 1;
+
   NodeDisciplina *new;
   alocDisciplina(&new);
 
   if (prencherDisciplina(new))
+  {
     freeNodeDisciplina(new);
+    confirm = 0;
+  }
 
   if (new)
   {
     NodeCurso *aux = curso;
-    inserction(&(aux->curso.nodeDisciplina), new);
+    if(!inserction(&(aux->curso.nodeDisciplina), new))
+    {
+      freeNodeDisciplina(new);
+      confirm = 0;
+    }
   }
+
+  return confirm;
 }

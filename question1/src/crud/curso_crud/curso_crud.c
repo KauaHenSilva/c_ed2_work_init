@@ -189,17 +189,23 @@ void search_course(NodeCurso *raiz, int code, NodeCurso *result)
  * @param raiz Ponteiro para o ponteiro do nó raiz da árvore de cursos.
  * @param node Ponteiro para o novo nó de curso a ser inserido.
  */
-void inserctionCurso(NodeCurso **raiz, NodeCurso *node)
+int inserctionCurso(NodeCurso **raiz, NodeCurso *node)
 {
+  int confirm = 1;
+
   if (!*raiz)
     *raiz = node;
   else
   {
     if (node->curso.codigo < (*raiz)->curso.codigo)
-      inserctionCurso(&(*raiz)->esq, node);
+      confirm = inserctionCurso(&(*raiz)->esq, node);
+    else if (node->curso.codigo > (*raiz)->curso.codigo)
+      confirm = inserctionCurso(&(*raiz)->dir, node);
     else
-      inserctionCurso(&(*raiz)->dir, node);
+      confirm = 0;
   }
+
+  return confirm;
 }
 
 /**
@@ -215,14 +221,22 @@ void inserctionCurso(NodeCurso **raiz, NodeCurso *node)
  */
 int cadastrarCursos(NodeCurso **nodeCurso)
 {
+  int confirm = 1;
   NodeCurso *new = alocCurso();
   if (prencherCurso(new))
+  {
     freeNodeCurso(new);
+    confirm = 0;
+  }
 
-  if (new)
-    inserctionCurso(nodeCurso, new);
+  if (confirm)
+    if (!inserctionCurso(nodeCurso, new))
+    {
+      freeNodeCurso(new);
+      confirm = 0;
+    }
 
-  return new ? 1 : 0;
+  return confirm;
 }
 
 // int buscarDisciplina(ListAluno *alunos, int codDisciplina)

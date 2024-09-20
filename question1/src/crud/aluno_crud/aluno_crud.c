@@ -92,7 +92,7 @@ static int prencherAluno(Aluno *aluno, int codigoCurso)
  *
  * @param aluno Ponteiro para a estrutura ListAluno que contém as informações do aluno.
  */
-static void showAluno(ListAluno *listAluno)
+void showAluno(ListAluno *listAluno)
 {
   printf("Aluno: \n");
   printf("\tid: %d\n", listAluno->aluno.codigoDoCurso);
