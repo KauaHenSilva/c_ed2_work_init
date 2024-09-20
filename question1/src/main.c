@@ -117,6 +117,7 @@ int main()
   int encontrou = VerificarAlunosMatriculados(alunos, codDisciplina);
   if (encontrou == 0)
   {
+
     if (disciplina)
     {
       curso->curso.nodeDisciplina = removerDisciplinaCurso(cursos->curso.nodeDisciplina, codDisciplina);
