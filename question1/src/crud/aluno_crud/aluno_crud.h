@@ -46,3 +46,7 @@ void search_aluno(ListAluno *aluno, int code, ListAluno **result);
  * @return Retorna 1 se o aluno foi cadastrado com sucesso, caso contrário, retorna 0.
  */
 int cadastrarAlunos(ListAluno **alunos, int codigoCurso);
+
+void mostrarNotasDeUmAlunoPorPeriodo(NodeNota *raiz, int periodo);
+
+NodeNota *buscarNota(NodeNota *raiz, int codDisciplina);

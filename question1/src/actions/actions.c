@@ -99,3 +99,18 @@ void mostrarNotasDeUmAlunoPorPeriodo(ListAluno *aluno, NodeCurso *curso, int per
     mostrarNotasDeUmAlunoPorPeriodo(aluno, curso->dir, periodo);
   }
 }
+
+
+void mostrarNotasDeUmAlunoPorPeriodo(NodeNota *raiz, int periodo)
+{
+  if (raiz != NULL)
+  {
+    mostrarNotasDeUmAlunoPorPeriodo(raiz->esq, periodo);
+    if (raiz->nota.semestreCursado == periodo){
+      printf("Codigo da disciplina: %d\n", raiz->nota.codDisciplina);
+      printf("Semestre cursado: %d\n", raiz->nota.semestreCursado);
+      printf("Nota Final: %d\n", raiz->nota.notaFinal);
+    }
+    mostrarNotasDeUmAlunoPorPeriodo(raiz->dir, periodo);
+  }
+}
