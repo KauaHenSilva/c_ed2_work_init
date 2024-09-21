@@ -82,14 +82,14 @@ static int prencherDisciplina(NodeDisciplina *node, int periodo)
 
   if (confirm)
   {
-    enunciado = "Digite a carga horaria da disciplina: ";
-    confirm = getInt(&node->disciplina.cargaHoraria, enunciado);
+    enunciado = "Digite o nome da disciplina: ";
+    confirm = getString(&node->disciplina.nomeDaDisciplina, enunciado);
   }
 
   if (confirm)
   {
-    enunciado = "Digite o nome da disciplina: ";
-    confirm = getString(&node->disciplina.nomeDaDisciplina, enunciado);
+    enunciado = "Digite a carga horaria da disciplina: ";
+    confirm = getInt(&node->disciplina.cargaHoraria, enunciado);
   }
 
   if (!confirm)

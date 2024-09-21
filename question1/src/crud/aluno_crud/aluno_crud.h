@@ -27,6 +27,8 @@ void showAllAlunos(ListAluno *alunos);
 
 void showAluno(ListAluno *aluno);
 
+void search_aluno(ListAluno *aluno, int code, ListAluno **result);
+
 // ---------------------------------------------------------------------------------------
 
 /**

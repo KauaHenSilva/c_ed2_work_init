@@ -9,6 +9,8 @@
 
 #include "actions/actions.h"
 
+#include "menu/menu.h"
+
 void mainCadrastrarMatricula(ListAluno *aluno, NodeDisciplina *disciplina)
 {
   if (disciplina)
@@ -55,6 +57,8 @@ int main()
 {
   ListAluno *alunos = NULL;
   NodeCurso *cursos = NULL;
+
+  initMenu(alunos, cursos);
 
   for (int x = 0; x < 10; x++)
   {

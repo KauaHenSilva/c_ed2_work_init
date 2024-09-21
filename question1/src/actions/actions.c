@@ -66,7 +66,7 @@ static void showDisciplinaAndCurso(NodeMatricula *matricula, NodeDisciplina *dis
 
 void mostrarDisciplinasDeUmAluno(ListAluno *aluno, NodeCurso *curso)
 {
-  if (aluno)
+  if (curso)
   {
     if (aluno->aluno.codigoDoCurso == curso->curso.codigo)
       showDisciplinaAndCurso(aluno->aluno.nodeMatricula, curso->curso.nodeDisciplina);

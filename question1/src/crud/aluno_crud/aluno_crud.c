@@ -103,6 +103,17 @@ void showAluno(ListAluno *listAluno)
   showAllNotas(listAluno->aluno.nodeNota);
 }
 
+void search_aluno(ListAluno *aluno, int code, ListAluno **result)
+{
+  if (aluno)
+  {
+    if (aluno->aluno.matricula == code && !*result)
+      *result = aluno;
+
+    search_aluno(aluno->prox, code, result);
+  }
+}
+
 /**
  * @brief Insere um novo aluno na lista de alunos de forma ordenada.
  *
