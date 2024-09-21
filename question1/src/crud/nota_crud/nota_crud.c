@@ -252,17 +252,18 @@ int cadastrarNotas(ListAluno *aluno, int codDisciplina)
   {
     ListAluno *auxAluno = aluno;            
 
+    if (inserctionNota(&auxAluno->aluno.nodeNota, new) && confirm)
+    {
+      freeNodeNota(new);
+      confirm = 0;
+    }
+
     if (removerMatricula(aluno->aluno.nodeMatricula, codDisciplina))
     {
       freeNodeNota(new);
       confirm = 0;
     }
 
-    if (inserctionNota(&auxAluno->aluno.nodeNota, new) && confirm)
-    {
-      freeNodeNota(new);
-      confirm = 0;
-    }
   }
 
   return confirm;
