@@ -231,19 +231,7 @@ int cadastrarAlunos(ListAluno **alunos, int codigoCurso)
   return new ? 1 : 0;
 }
 
-void mostrarNotasDeUmAlunoPorPeriodo(NodeNota *raiz, int periodo)
-{
-  if (raiz != NULL)
-  {
-    mostrarNotasDeUmAlunoPorPeriodo(raiz->esq, periodo);
-    if (raiz->nota.semestreCursado == periodo){
-      printf("Codigo da disciplina: %d\n", raiz->nota.codDisciplina);
-      printf("Semestre cursado: %d\n", raiz->nota.semestreCursado);
-      printf("Nota Final: %d\n", raiz->nota.notaFinal);
-    }
-    mostrarNotasDeUmAlunoPorPeriodo(raiz->dir, periodo);
-  }
-}
+
 
 NodeNota *buscarNota(NodeNota *raiz, int codDisciplina){
   NodeNota *aux = NULL;
