@@ -16,6 +16,7 @@ void mostrarTodosOsAlunosDeUmCurso(NodeCurso *curso, ListAluno *alunos)
   }
 }
 
+
 void MostrarTodosOsCursosDoCampus(NodeCurso *cursos)
 {
   showAllCurso(cursos);
@@ -99,3 +100,4 @@ void mostrarNotasDeUmAlunoPorPeriodo(ListAluno *aluno, NodeCurso *curso, int per
     mostrarNotasDeUmAlunoPorPeriodo(aluno, curso->dir, periodo);
   }
 }
+
