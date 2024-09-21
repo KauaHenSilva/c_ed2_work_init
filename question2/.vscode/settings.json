@@ -5,6 +5,7 @@
     ".prettierrc": "json",
     "*.css": "css",
     "matricula_crud.h": "c",
-    "disciplina_crud.h": "c"
+    "disciplina_crud.h": "c",
+    "curso_crud.h": "c"
   }
 }

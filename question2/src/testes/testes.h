@@ -2,8 +2,25 @@
 
 #include "../structs/struct_curso.h"
 
-#define QTDCURSO 10000
-#define QTDTESTES 10
+#define QTDCURSO 666
+#define QTDNOTAS 666
 
-double tempInsercionCurse(NodeCurso *nodeCurso, int qtdCursos);
-void testTimeCurso();
+#define QTDTESTES 30
+
+typedef enum enTipoDeOrdenacao
+{
+  CRESCENTE,
+  DECRESCENTE,
+  ALEATORIO,
+} TipoDeOrdenacao;
+
+typedef struct stRelatorio
+{
+  char *titulo;
+  double tempo;
+  int qtdFalhas;
+} Relatorio;
+
+Relatorio *testTimeCurso();
+Relatorio **testTimeBuscaNotaDisciplina();
+void testAll();
