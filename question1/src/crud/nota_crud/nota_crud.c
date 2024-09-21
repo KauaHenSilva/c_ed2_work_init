@@ -254,17 +254,10 @@ int cadastrarNotas(ListAluno *aluno, int codDisciplina)
 
   if (new)
   {
-<<<<<<< HEAD
-    ListAluno *auxAluno = aluno;            
-=======
-    ListAluno *auxAluno = aluno;
 
-    // if(!removerDisciplinaDaArvoreDeMatricula(&aluno->aluno.nodeMatricula, new->nota.codDisciplina) && confirm)
-    // {
-    //   freeNodeNota(new);
-    //   confirm = 0;
-    // }
->>>>>>> devKaua
+    ListAluno *auxAluno = aluno;            
+
+
 
     if (!inserctionNota(&auxAluno->aluno.nodeNota, new) && confirm)
     {

@@ -119,11 +119,12 @@ int main()
   getchar();
 
   printf("Mostrar todas as notas de um aluno de um periodo:\n");
-
+  getchar();
   printf(" alunos periodo:\n");
   ListAluno *aluno;
   int MatAluno;
-
+  getchar();
+  
   int periodo;
   printf("Informe a matricula do aluno: \n");
   scanf("%d", &MatAluno);
@@ -174,21 +175,18 @@ int main()
 
   showAllCurso(cursos);
 
+
+
   printf("Digite o codigo do curso: ");
   scanf("%d", &codCurso);
+
   curso = buscarCurso(cursos, codCurso);
 
   printf("Digite o codigo da disciplina: ");
   scanf("%d", &codDisciplina);
-<<<<<<< HEAD
   disciplina = buscarDisciplina(cursos->curso.nodeDisciplina, codDisciplina);
   int encontrou = VerificarAlunosMatriculados(alunos, codDisciplina);
   if (encontrou == 0)
-=======
-  disciplina = buscar_disciplina(cursos->curso.nodeDisciplina, codDisciplina);
-
-  if (disciplina->esq == NULL && disciplina->dir == NULL)
->>>>>>> devKaua
   {
 
     if (disciplina)

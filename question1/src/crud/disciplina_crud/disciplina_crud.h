@@ -9,7 +9,7 @@ void freeNodeDisciplinas(NodeDisciplina *raiz);
 void showAllDisciplina(NodeDisciplina *disciplina);
 void search_disciplina(NodeDisciplina *raiz, int code, NodeDisciplina **result);
 void showDisciplina(NodeDisciplina *disciplina);
-NodeDisciplina *buscar_disciplina(NodeDisciplina *raiz, int codigo);
+
 
 // ---------------------------------------------------------------------------------------
 
@@ -19,9 +19,8 @@ NodeDisciplina *buscar_disciplina(NodeDisciplina *raiz, int codigo);
 // - A carga horária deve ser múltiplo de 15, variando entre 30 e 90.
 int cadastrarDisciplinas(NodeCurso *curso, int periodo);
 
-<<<<<<< HEAD
+
 NodeDisciplina *buscarDisciplina(NodeDisciplina *raiz, int codigo);
-=======
->>>>>>> devKaua
+
 
 NodeDisciplina *removerDisciplinaCurso(NodeDisciplina *raiz, int codDisciplina);

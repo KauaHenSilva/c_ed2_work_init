@@ -180,10 +180,10 @@ NodeMatricula *removerMatricula(NodeMatricula *raiz, int codDisciplina)
       raiz->dir = removerMatricula(raiz->dir, codDisciplina);
     }
   }
-  else
-  {
-    confirm = 0;
-  }
+  // else
+  // {
+  //   confirm = 0;
+  // }
 
   return raiz;
 }

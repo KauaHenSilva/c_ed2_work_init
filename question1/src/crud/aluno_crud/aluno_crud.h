@@ -45,6 +45,6 @@ void showAluno(ListAluno *aluno);
  */
 int cadastrarAlunos(ListAluno **alunos, int codigoCurso);
 
-void mostrarNotasDeUmAlunoPorPeriodo(NodeNota *raiz, int periodo);
+
 
 NodeNota *buscarNota(NodeNota *raiz, int codDisciplina);

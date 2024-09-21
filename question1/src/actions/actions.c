@@ -6,8 +6,6 @@
 #include "../crud/nota_crud/nota_crud.h"
 #include "../crud/matricula_crud/matricula_crud.h"
 
-<<<<<<< HEAD
-=======
 void mostrarTodosOsAlunosDeUmCurso(NodeCurso *curso, ListAluno *alunos)
 {
   if (alunos)
@@ -101,4 +99,3 @@ void mostrarNotasDeUmAlunoPorPeriodo(ListAluno *aluno, NodeCurso *curso, int per
     mostrarNotasDeUmAlunoPorPeriodo(aluno, curso->dir, periodo);
   }
 }
->>>>>>> devKaua
