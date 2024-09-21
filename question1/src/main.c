@@ -34,7 +34,7 @@ void mainCadrastrarNota(ListAluno *aluno, NodeDisciplina *disciplina)
 {
   if (disciplina)
   {
-    cadastrarNotas(aluno, disciplina->disciplina.codDisciplina);
+    cadastrarNotas(aluno, disciplina->disciplina.codDisciplina, rand() % disciplina->disciplina.periodo + 1);
     mainCadrastrarNota(aluno, disciplina->esq);
     mainCadrastrarNota(aluno, disciplina->dir);
   }
