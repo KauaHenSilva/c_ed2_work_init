@@ -140,66 +140,70 @@ NodeMatricula *removerMatricula(NodeMatricula *raiz, int codDisciplina)
   {
     if (raiz->codDisciplina == codDisciplina)
     {
-      // Caso 1: Nódulo sem filhos
-      if (raiz->esq == NULL && raiz->dir == NULL)
+      if (raiz->esq != NULL && raiz->dir != NULL)
       {
         free(raiz);
-        return NULL;
+        raiz = NULL;
       }
-      // Caso 2: Nódulo com apenas um filho
-      else if (raiz->esq == NULL)
+      else if (raiz->esq == NULL || raiz->dir == NULL)
       {
-        NodeMatricula *temp = raiz->dir;
-        free(raiz);
-        return temp;
+
+        if (raiz->esq == NULL)
+        {
+          NodeMatricula *aux = raiz;
+          raiz = raiz->dir;         
+          free(aux);                 
+        }
+        else if (raiz->dir == NULL)
+        {
+          NodeMatricula *aux = raiz; 
+          raiz = raiz->esq;          
+          free(aux);                
+        }
       }
-      else if (raiz->dir == NULL)
-      {
-        NodeMatricula *temp = raiz->esq;
-        free(raiz);
-        return temp;
-      }
-      // Caso 3: Nódulo com dois filhos
       else
       {
-        NodeMatricula *aux = raiz->esq;
-        while (aux->dir != NULL)
+        NodeMatricula *aux = raiz->dir;
+        while (aux->esq != NULL)
         {
-          aux = aux->dir;
+          aux = aux->esq;
         }
         raiz->codDisciplina = aux->codDisciplina;
-        raiz->esq = removerMatricula(raiz->esq, aux->codDisciplina);
+        raiz->dir = removerMatricula(raiz->dir, aux->codDisciplina);
       }
-    }
-    else if (codDisciplina < raiz->codDisciplina)
-    {
-      raiz->esq = removerMatricula(raiz->esq, codDisciplina);
     }
     else
     {
-      raiz->dir = removerMatricula(raiz->dir, codDisciplina);
+      if (codDisciplina < raiz->codDisciplina)
+        raiz->esq = removerMatricula(raiz->esq, codDisciplina);
+      else
+        raiz->dir = removerMatricula(raiz->dir, codDisciplina);
     }
   }
-
   return raiz;
 }
 
-NodeMatricula *buscarMatriculas(NodeMatricula *raiz, int codDisciplina) {
-    NodeMatricula *aux = NULL; // Inicializa o ponteiro
+NodeMatricula *buscarMatriculas(NodeMatricula *raiz, int codDisciplina)
+{
+  NodeMatricula *aux = NULL; 
 
-    if (raiz != NULL) {
-        if (codDisciplina == raiz->codDisciplina) {
-            aux = raiz; 
-        } else if (codDisciplina < raiz->codDisciplina) {
-            aux = buscarMatriculas(raiz->esq, codDisciplina); 
-        } else {
-            aux = buscarMatriculas(raiz->dir, codDisciplina); 
-        }
+  if (raiz != NULL)
+  {
+    if (codDisciplina == raiz->codDisciplina)
+    {
+      aux = raiz;
     }
-    return aux; // Retorna o ponteiro encontrado ou NULL
+    else if (codDisciplina < raiz->codDisciplina)
+    {
+      aux = buscarMatriculas(raiz->esq, codDisciplina);
+    }
+    else
+    {
+      aux = buscarMatriculas(raiz->dir, codDisciplina);
+    }
+  }
+  return aux; 
 }
-
-// Função para remover uma disciplina de um aluno
 
 ListAluno *buscarAluno(ListAluno *alunos, int matricula)
 {
@@ -211,10 +215,17 @@ ListAluno *buscarAluno(ListAluno *alunos, int matricula)
   return aluno;
 }
 
-int VerificarAlunosMatriculados(ListAluno *aluno, int disciplina){
+/*
+* @brief Verifica se tem alunos matriculados em uma disciplina
+*/
+
+int VerificarAlunosMatriculados(ListAluno *aluno, int disciplina)
+{
   int encontrou = 0;
-  while (aluno!= NULL){
-    if (aluno->aluno.nodeMatricula!= NULL && aluno->aluno.nodeMatricula->codDisciplina == disciplina){
+  while (aluno != NULL)
+  {
+    if (aluno->aluno.nodeMatricula != NULL && aluno->aluno.nodeMatricula->codDisciplina == disciplina)
+    {
       encontrou += 1;
     }
     aluno = aluno->prox;

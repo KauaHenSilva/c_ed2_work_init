@@ -237,34 +237,39 @@ void showAllNotas(NodeNota *raiz)
 
 int cadastrarNotas(ListAluno *aluno, int codDisciplina)
 {
-  int confirm = 1;
+    int confirm = 1;
 
-  NodeNota *new;
-  alocNota(&new);
+    NodeNota *new;
+    alocNota(&new);
 
-  if (prencherNota(new, codDisciplina))
-  {
-    freeNodeNotas(new);
-    confirm = 0;
-  }
-
-  if (new)
-  {
-    ListAluno *auxAluno = aluno;            
-
-    if (inserctionNota(&auxAluno->aluno.nodeNota, new) && confirm)
+    if (prencherNota(new, codDisciplina))
     {
-      freeNodeNota(new);
-      confirm = 0;
+        freeNodeNotas(new);
+        new = NULL;  
+        confirm = 0;
     }
 
-    if (removerMatricula(aluno->aluno.nodeMatricula, codDisciplina))
+    if (new) 
     {
-      freeNodeNota(new);
-      confirm = 0;
+        ListAluno *auxAluno = aluno;            
+
+        if (inserctionNota(&auxAluno->aluno.nodeNota, new) && confirm)
+        {
+            freeNodeNota(new);
+            new = NULL;  
+            confirm = 0;
+        }
+
+        if (removerMatricula(aluno->aluno.nodeMatricula, codDisciplina))
+        {
+            if (new) {
+                freeNodeNota(new);
+                new = NULL; 
+            }
+            confirm = 0;
+        }
     }
 
-  }
-
-  return confirm;
+    return confirm;
 }
+
