@@ -1,0 +1,11 @@
+{
+  "C_Cpp_Runner.msvcBatchPath": "",
+  "files.associations": {
+    ".env.*": "dotenv",
+    ".prettierrc": "json",
+    "*.css": "css",
+    "matricula_crud.h": "c",
+    "disciplina_crud.h": "c",
+    "curso_crud.h": "c"
+  }
+}

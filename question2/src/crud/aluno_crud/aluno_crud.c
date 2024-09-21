@@ -224,7 +224,7 @@ int cadastrarAlunos(ListAluno **alunos, int codigoCurso)
 
   if (prencherAluno(&new->aluno, codigoCurso))
     freeAluno(new);
-
+  
   if (new)
     inserctionAluno(alunos, new->aluno);
 
@@ -232,18 +232,3 @@ int cadastrarAlunos(ListAluno **alunos, int codigoCurso)
 }
 
 
-
-NodeNota *buscarNota(NodeNota *raiz, int codDisciplina){
-  NodeNota *aux = NULL;
-  if(raiz != NULL){
-    if (raiz->nota.codDisciplina == codDisciplina){
-      aux = raiz;
-    }else{
-      if(raiz->nota.codDisciplina < codDisciplina)
-        aux = buscarNota(raiz->dir, codDisciplina);
-      else
-        aux = buscarNota(raiz->esq, codDisciplina);
-    }
-  }
-  return aux;
-}

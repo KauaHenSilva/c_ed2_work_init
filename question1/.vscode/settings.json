@@ -55,8 +55,5 @@
   "C_Cpp_Runner.useLeakSanitizer": false,
   "C_Cpp_Runner.showCompilationTime": false,
   "C_Cpp_Runner.useLinkTimeOptimization": false,
-  "C_Cpp_Runner.msvcSecureNoWarnings": false,
-  "mesonbuild.configureOnOpen": true,
-  "C_Cpp.default.compileCommands": "/home/rayssaalves/c_ed1_work_init/question1/builddir/compile_commands.json",
-  "C_Cpp.default.configurationProvider": "mesonbuild.mesonbuild"
+  "C_Cpp_Runner.msvcSecureNoWarnings": false
 }

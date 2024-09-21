@@ -90,9 +90,9 @@ static void showAllNotasByPeriod(NodeNota *nota, NodeDisciplina *disciplina, int
 
 void mostrarNotasDeUmAlunoPorPeriodo(ListAluno *aluno, NodeCurso *curso, int periodo)
 {
-  if (curso)
+  if (aluno)
   {
-    if (aluno->aluno.codigoDoCurso == curso->curso.codigo)
+    if(aluno->aluno.codigoDoCurso == curso->curso.codigo)
       showAllNotasByPeriod(aluno->aluno.nodeNota, curso->curso.nodeDisciplina, periodo);
 
     mostrarNotasDeUmAlunoPorPeriodo(aluno, curso->esq, periodo);

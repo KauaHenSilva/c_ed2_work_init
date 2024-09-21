@@ -19,7 +19,7 @@ void mostrarDisciplinasDeUmPeriodoDeUmCurso(NodeCurso *curso, int periodo);
 void mostrarDisciplinasDeUmAluno(ListAluno *aluno, NodeCurso *curso);
 
 // - Listar todas as notas de disciplinas de um determinado período para um determinado aluno.
-void mostrarNotasDeUmAlunoPorPeriodo(ListAluno *aluno, NodeCurso *curso, int periodo);
+void mostrarNotasDeUmAlunoPorPeriodo();
 
 // - Mostrar a nota de uma disciplina para um determinado aluno, incluindo o período e a carga horária da disciplina.
 void MostrarNotaDeUmaDisciplina();

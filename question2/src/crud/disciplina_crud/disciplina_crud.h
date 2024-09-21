@@ -9,7 +9,7 @@ void freeNodeDisciplinas(NodeDisciplina *raiz);
 void showAllDisciplina(NodeDisciplina *disciplina);
 void search_disciplina(NodeDisciplina *raiz, int code, NodeDisciplina **result);
 void showDisciplina(NodeDisciplina *disciplina);
-
+NodeDisciplina *buscar_disciplina(NodeDisciplina *raiz, int codigo);
 
 // ---------------------------------------------------------------------------------------
 
@@ -20,7 +20,4 @@ void showDisciplina(NodeDisciplina *disciplina);
 int cadastrarDisciplinas(NodeCurso *curso, int periodo);
 
 
-NodeDisciplina *buscarDisciplina(NodeDisciplina *raiz, int codigo);
-
-
-NodeDisciplina *removerDisciplinaCurso(NodeDisciplina *raiz, int codDisciplina);
+NodeDisciplina *removerDisciplinaDeUmCurso(NodeDisciplina *raiz, int codDisciplina);
