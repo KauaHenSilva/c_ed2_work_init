@@ -25,7 +25,10 @@ void menu(int *opcao)
   printf("9 - Mostrar Disciplinas de um Período de um Curso\n");
   printf("10 - Mostrar Disciplinas de um Aluno\n");
   printf("11 - Mostrar Notas de um Aluno por Período\n");
-  printf("12 - Sair\n");
+  printf("12 - Mostrar Nota de uma Disciplina [falta implementar]\n");
+  printf("13 - Remover Disciplina de um Curso\n");
+  printf("14 - Remover Disciplina da Árvore de Matrícula\n");
+  printf("15 - Mostrar Histórico de um Aluno [falta implementar]\n");
   printf("Digite a opção desejada: ");
   scanf("%d", opcao);
   printf("--------------------------------------------------------------\n");
@@ -88,7 +91,7 @@ void initMenu(ListAluno *alunos, NodeCurso *cursos)
 
         if (!cadastrarNotas(
                 alunos,
-                (rand() % alunos->aluno.nodeMatricula->codDisciplina),
+                alunos->aluno.nodeMatricula->codDisciplina,
                 (rand() % cursos->curso.quantidadeDePeriodo + 1)))
           printf("Erro ao cadastrar nota\n");
       }
@@ -140,6 +143,47 @@ void initMenu(ListAluno *alunos, NodeCurso *cursos)
       }
       else
         printf("Nenhum curso ou aluno cadastrado, ou curso sem disciplinas, ou aluno não matriculado em nenhuma disciplina!\n");
+      break;
+    case 11:
+      if (alunos && cursos && alunos->aluno.nodeNota)
+      {
+        printf("[DUBUG] aluno escolhido vugo primeiro [id]: %d\n", alunos->aluno.matricula);
+        printf("[DUBUG] periodo escolhido vugo primeiro: %d\n", cursos->curso.nodeDisciplina->disciplina.periodo);
+        mostrarNotasDeUmAlunoPorPeriodo(alunos, cursos, cursos->curso.nodeDisciplina->disciplina.periodo);
+      }
+      else
+        printf("Nenhum aluno ou curso cadastrado, ou aluno sem notas cadastradas!\n");
+      break;
+    case 12:
+      printf("Mostrar Nota de uma Disciplina\n");
+      break;
+    case 13:
+      if (cursos && cursos->curso.nodeDisciplina)
+      {
+        int codDisciplina = cursos->curso.nodeDisciplina->disciplina.codDisciplina;
+        int codCurso = cursos->curso.codigo;
+        printf("[DUBUG] curso escolhido vugo primeiro [id]: %d\n", codCurso);
+        printf("[DUBUG] disciplina escolhida vugo primeiro [id]: %d\n", codDisciplina);
+        cursos->curso.nodeDisciplina = removerDisciplina(cursos->curso.nodeDisciplina, codDisciplina);
+        printf("Tem que ter um valor que diz que a disciplina foi removida\n");
+      }
+      else
+        printf("Nenhum curso cadastrado, ou curso sem disciplinas!\n");
+      break;
+    case 14:
+      if (alunos && alunos->aluno.nodeMatricula)
+      {
+        int codDisciplina = alunos->aluno.nodeMatricula->codDisciplina;
+        printf("[DUBUG] aluno escolhido vugo primeiro [id]: %d\n", alunos->aluno.matricula);
+        printf("[DUBUG] disciplina escolhida vugo primeiro [id]: %d\n", codDisciplina);
+        alunos->aluno.nodeMatricula = removerMatricula(alunos->aluno.nodeMatricula, codDisciplina);
+        printf("Tem que ter um valor que diz que a disciplina foi removida\n");
+      }
+      else
+        printf("Nenhum aluno cadastrado, ou aluno sem matriculas!\n");
+      break;
+    case 15:
+      printf("Mostrar Histórico de um Aluno\n");
       break;
     }
     printf("--------------------------------------------------------------\n");

@@ -136,19 +136,16 @@ int main()
   printf("Informe o periodo: ");
   scanf("%d", &periodo);
 
-  mostrarNotasDeUmAlunoPorPeriodo(alunos->aluno.nodeNota, periodo);
+  mostrarNotasDeUmAlunoPorPeriodo(alunos, cursos, periodo);
 
-
-  //imprimir todas as notas de um aluno em uma disciplina
-  //NodeNota *buscarNota(NodeNota *raiz, int codDisciplina)
-
+  // imprimir todas as notas de um aluno em uma disciplina
+  // NodeNota *buscarNota(NodeNota *raiz, int codDisciplina)
 
   NodeCurso *curso;
   NodeDisciplina *disciplina;
 
   printf("Remover disciplina de um aluno:\n");
 
-  
   int codDisciplina;
 
   printf("Informe a matricula do aluno: \n");
@@ -168,7 +165,6 @@ int main()
   {
     showAllAlunos(alunos);
   }
-  
 
   showAllAlunos(alunos);
 
@@ -188,10 +184,9 @@ int main()
   int encontrou = VerificarAlunosMatriculados(alunos, codDisciplina);
   if (encontrou == 0)
   {
-
     if (disciplina)
     {
-      curso->curso.nodeDisciplina = removerDisciplinaCurso(cursos->curso.nodeDisciplina, codDisciplina);
+      curso->curso.nodeDisciplina = removerDisciplina(cursos->curso.nodeDisciplina, codDisciplina);
       printf("Disciplina removida com sucesso.\n");
     }
   }

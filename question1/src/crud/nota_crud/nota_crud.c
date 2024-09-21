@@ -81,7 +81,6 @@ static int prencherNota(NodeNota *raizNota, int codDisciplina, int semestreCursa
   enunciado = "Digite a nota final do aluno: ";
   confirm = getInt(&raizNota->nota.notaFinal, enunciado);
 
-
   if (!confirm)
     printf("Não foi possivel execultar o prencher a nota: ");
 
@@ -244,20 +243,24 @@ int cadastrarNotas(ListAluno *aluno, int codDisciplina, int semestreCursado)
 
   if (new)
   {
-    ListAluno *auxAluno = aluno;            
+    ListAluno *auxAluno = aluno;
 
-    if (inserctionNota(&auxAluno->aluno.nodeNota, new) && confirm)
+    if (!inserctionNota(&auxAluno->aluno.nodeNota, new) && confirm)
     {
       freeNodeNota(new);
+      new = NULL;
       confirm = 0;
     }
 
-    if (inserctionNota(&auxAluno->aluno.nodeNota, new) && confirm)
+    if (!removerMatricula(aluno->aluno.nodeMatricula, codDisciplina))
     {
-      freeNodeNota(new);
+      if (new)
+      {
+        freeNodeNota(new);
+        new = NULL;
+      }
       confirm = 0;
     }
-
   }
 
   return confirm;

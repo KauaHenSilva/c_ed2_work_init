@@ -236,7 +236,7 @@ NodeDisciplina *buscarDisciplina(NodeDisciplina *raiz, int codigo)
   return aux;
 }
 
-NodeDisciplina *removerDisciplinaCurso(NodeDisciplina *raiz, int codDisciplina)
+NodeDisciplina *removerDisciplina(NodeDisciplina *raiz, int codDisciplina)
 {
   if (raiz != NULL)
   {
@@ -268,15 +268,15 @@ NodeDisciplina *removerDisciplinaCurso(NodeDisciplina *raiz, int codDisciplina)
         while (aux->esq != NULL)
           aux = aux->esq;
         raiz->disciplina.codDisciplina = aux->disciplina.codDisciplina;
-        raiz->dir = removerDisciplinaCurso(raiz->dir, aux->disciplina.codDisciplina);
+        raiz->dir = removerDisciplina(raiz->dir, aux->disciplina.codDisciplina);
       }
     }
     else
     {
       if (codDisciplina < raiz->disciplina.codDisciplina)
-        raiz->esq = removerDisciplinaCurso(raiz->esq, codDisciplina);
+        raiz->esq = removerDisciplina(raiz->esq, codDisciplina);
       else
-        raiz->dir = removerDisciplinaCurso(raiz->dir, codDisciplina);
+        raiz->dir = removerDisciplina(raiz->dir, codDisciplina);
     }
   }
   return raiz;

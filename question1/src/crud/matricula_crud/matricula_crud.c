@@ -136,17 +136,14 @@ NodeMatricula *esqRoot(NodeMatricula *node)
 // Tem que testar ainda. (Quebrou a parte que os cursos não tem o codigo correto.)
 NodeMatricula *removerMatricula(NodeMatricula *raiz, int codDisciplina)
 {
+  // int confirm = 1;
   if (raiz != NULL)
   {
     if (raiz->codDisciplina == codDisciplina)
     {
       // Caso 1: Nódulo sem filhos
       if (raiz->esq == NULL && raiz->dir == NULL)
-      {
         free(raiz);
-        return NULL;
-      }
-      // Caso 2: Nódulo com apenas um filho
       else if (raiz->esq == NULL)
       {
         NodeMatricula *temp = raiz->dir;
@@ -182,7 +179,7 @@ NodeMatricula *removerMatricula(NodeMatricula *raiz, int codDisciplina)
   }
   else
   {
-    confirm = 0;
+    // confirm = 0;
   }
 
   return raiz;

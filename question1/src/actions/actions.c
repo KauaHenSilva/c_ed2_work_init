@@ -78,7 +78,7 @@ void mostrarDisciplinasDeUmAluno(ListAluno *aluno, NodeCurso *curso)
 
 static void showAllNotasByPeriod(NodeNota *nota, NodeDisciplina *disciplina, int periodo)
 {
-  if (nota)
+  if (disciplina)
   {
     if (disciplina->disciplina.periodo == periodo)
       showNota(nota);
@@ -90,9 +90,9 @@ static void showAllNotasByPeriod(NodeNota *nota, NodeDisciplina *disciplina, int
 
 void mostrarNotasDeUmAlunoPorPeriodo(ListAluno *aluno, NodeCurso *curso, int periodo)
 {
-  if (aluno)
+  if (curso)
   {
-    if(aluno->aluno.codigoDoCurso == curso->curso.codigo)
+    if (aluno->aluno.codigoDoCurso == curso->curso.codigo)
       showAllNotasByPeriod(aluno->aluno.nodeNota, curso->curso.nodeDisciplina, periodo);
 
     mostrarNotasDeUmAlunoPorPeriodo(aluno, curso->esq, periodo);
@@ -100,17 +100,17 @@ void mostrarNotasDeUmAlunoPorPeriodo(ListAluno *aluno, NodeCurso *curso, int per
   }
 }
 
-
-void mostrarNotasDeUmAlunoPorPeriodo(NodeNota *raiz, int periodo)
-{
-  if (raiz != NULL)
-  {
-    mostrarNotasDeUmAlunoPorPeriodo(raiz->esq, periodo);
-    if (raiz->nota.semestreCursado == periodo){
-      printf("Codigo da disciplina: %d\n", raiz->nota.codDisciplina);
-      printf("Semestre cursado: %d\n", raiz->nota.semestreCursado);
-      printf("Nota Final: %d\n", raiz->nota.notaFinal);
-    }
-    mostrarNotasDeUmAlunoPorPeriodo(raiz->dir, periodo);
-  }
-}
+// void mostrarNotasDeUmAlunoPorPeriodo(NodeNota *raiz, int periodo)
+// {
+//   if (raiz)
+//   {
+//     mostrarNotasDeUmAlunoPorPeriodo(raiz->esq, periodo);
+//     if (raiz->nota.semestreCursado == periodo)
+//     {
+//       printf("Codigo da disciplina: %d\n", raiz->nota.codDisciplina);
+//       printf("Semestre cursado: %d\n", raiz->nota.semestreCursado);
+//       printf("Nota Final: %d\n", raiz->nota.notaFinal);
+//     }
+//     mostrarNotasDeUmAlunoPorPeriodo(raiz->dir, periodo);
+//   }
+// }

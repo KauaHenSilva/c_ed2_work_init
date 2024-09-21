@@ -21,4 +21,4 @@ int cadastrarDisciplinas(NodeCurso *curso, int periodo);
 
 NodeDisciplina *buscarDisciplina(NodeDisciplina *raiz, int codigo);
 
-NodeDisciplina *removerDisciplinaCurso(NodeDisciplina *raiz, int codDisciplina);
+NodeDisciplina *removerDisciplina(NodeDisciplina *raiz, int codDisciplina);

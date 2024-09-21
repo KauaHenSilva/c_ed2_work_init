@@ -258,7 +258,3 @@ NodeNota *buscarNota(NodeNota *raiz, int codDisciplina){
   }
   return aux;
 }
-
-void MostrarNotaDeUmaDisciplina(){
-
-}
