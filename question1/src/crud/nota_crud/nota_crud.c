@@ -278,3 +278,25 @@ int cadastrarNotas(ListAluno *aluno, int codDisciplina)
 
   return confirm;
 }
+
+int buscar_nota(NodeNota *raiz, int codigo, NodeNota *valor)
+{
+  int encontrou = 1;
+
+  if (raiz != NULL)
+  {
+    if (codigo == raiz->nota.codDisciplina)
+      valor = raiz;
+    else
+    {
+      if (codigo < raiz->nota.codDisciplina)
+        encontrou = buscar_nota(raiz->esq, codigo, valor);
+      else if (codigo > raiz->nota.codDisciplina)
+        encontrou = buscar_nota(raiz->dir, codigo, valor);
+      else
+        encontrou = 0;
+    }
+  }
+
+  return encontrou;
+}
