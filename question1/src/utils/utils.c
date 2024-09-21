@@ -32,12 +32,12 @@ int getString(char **string, const char *msg)
     if (fgets(buffer, sizeof(buffer), stdin) != NULL)
     {
       buffer[strcspn(buffer, "\n")] = '\0';
-      if (strcmp(buffer, "sair") == 0)
-        return 0;
-
-      *string = (char *)malloc(strlen(buffer) + 1);
-      if (*string != NULL)
-        strcpy(*string, buffer);
+      if (strcmp(buffer, "sair") != 0)
+      {
+        *string = (char *)malloc(strlen(buffer) + 1);
+        if (*string != NULL)
+          strcpy(*string, buffer);
+      }
 
       return string ? 1 : 0;
     }
@@ -78,19 +78,17 @@ int getInt(int *inteiro, const char *msg)
     {
       buffer[strcspn(buffer, "\n")] = '\0';
       if (strcmp(buffer, "sair") == 0)
-        return 0;
-
-      int is_number = 1;
-      for (int i = 0; buffer[i] != '\0' && isdigit(buffer[i]); i++)
-        is_number = 0;
-
-      if (is_number)
       {
-        *inteiro = atoi(buffer);
-        return 1;
+        int is_number = 1;
+        for (int i = 0; buffer[i] != '\0' && isdigit(buffer[i]); i++)
+          is_number = 0;
+
+        if (is_number)
+          *inteiro = atoi(buffer);
+
+        return is_number;
       }
     }
-
     printf("Valor invalido!\n\n");
   }
 }
