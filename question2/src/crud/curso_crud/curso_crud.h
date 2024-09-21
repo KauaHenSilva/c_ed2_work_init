@@ -8,6 +8,7 @@ void freeNodeCursos(NodeCurso *node);
 void showAllCurso(NodeCurso *curso);
 void isCurseOpen(NodeCurso *curso, int id, int *bool);
 void search_course(NodeCurso *raiz, int code, NodeCurso *result);
+int inserctionCurso(NodeCurso **raiz, NodeCurso *node);
 
 // ---------------------------------------------------------------------------------------
 
