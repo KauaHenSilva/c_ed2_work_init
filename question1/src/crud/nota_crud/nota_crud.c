@@ -249,6 +249,7 @@ int cadastrarNotas(ListAluno *aluno, int codDisciplina)
   if (prencherNota(new, codDisciplina))
   {
     freeNodeNotas(new);
+    new = NULL;
     confirm = 0;
   }
 
@@ -263,11 +264,13 @@ int cadastrarNotas(ListAluno *aluno, int codDisciplina)
     {
       confirm = 0;
       freeNodeNota(new);
+      new = NULL;
     }
 
     if (removerMatricula(aluno->aluno.nodeMatricula, codDisciplina))
     {
       freeNodeNota(new);
+      new = NULL;
       confirm = 0;
     }
 

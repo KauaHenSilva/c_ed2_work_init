@@ -102,6 +102,14 @@ int main()
 
   getchar();
 
+  NodeCurso *curso = NULL;
+
+  int codCurso;
+  printf("Digite o codigo do curso: ");
+  scanf("%d", &codCurso);
+
+  curso = buscarCurso(cursos, codCurso);
+
   printf("Mostar todas disciplinas de um curso: \n\n");
   printf("Curso: %d\n", cursos->curso.codigo);
   mostrarTodasAsDisciplinasDeUmCurso(cursos);
@@ -140,7 +148,7 @@ int main()
   //NodeNota *buscarNota(NodeNota *raiz, int codDisciplina)
 
 
-  NodeCurso *curso;
+  //NodeCurso *curso;
   NodeDisciplina *disciplina;
 
   printf("Remover disciplina de um aluno:\n");
@@ -171,7 +179,7 @@ int main()
 
   printf("Remover disciplinas de um curso:\n");
 
-  int codCurso;
+  //int codCurso;
 
   showAllCurso(cursos);
 
@@ -200,5 +208,7 @@ int main()
 
   freeAlunosList(alunos);
   freeNodeCursos(cursos);
+  
+  
   return 0;
 }
