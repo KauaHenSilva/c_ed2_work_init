@@ -267,12 +267,12 @@ int cadastrarNotas(ListAluno *aluno, int codDisciplina)
       new = NULL;
     }
 
-    if (removerMatricula(aluno->aluno.nodeMatricula, codDisciplina))
-    {
-      freeNodeNota(new);
-      new = NULL;
-      confirm = 0;
-    }
+    // if (removerMatricula(aluno->aluno.nodeMatricula, codDisciplina))
+    // {
+    //   freeNodeNota(new);
+    //   new = NULL;
+    //   confirm = 0;
+    // }
 
   }
 

@@ -16,7 +16,6 @@ void mostrarTodosOsAlunosDeUmCurso(NodeCurso *curso, ListAluno *alunos)
   }
 }
 
-
 void MostrarTodosOsCursosDoCampus(NodeCurso *cursos)
 {
   showAllCurso(cursos);
@@ -91,13 +90,12 @@ static void showAllNotasByPeriod(NodeNota *nota, NodeDisciplina *disciplina, int
 
 void mostrarNotasDeUmAlunoPorPeriodo(ListAluno *aluno, NodeCurso *curso, int periodo)
 {
-  if (aluno)
+  if (curso)
   {
-    if(aluno->aluno.codigoDoCurso == curso->curso.codigo)
+    if (aluno->aluno.codigoDoCurso == curso->curso.codigo)
       showAllNotasByPeriod(aluno->aluno.nodeNota, curso->curso.nodeDisciplina, periodo);
 
     mostrarNotasDeUmAlunoPorPeriodo(aluno, curso->esq, periodo);
     mostrarNotasDeUmAlunoPorPeriodo(aluno, curso->dir, periodo);
   }
 }
-
