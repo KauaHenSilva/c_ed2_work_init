@@ -171,55 +171,55 @@ int inserctionNota(NodeNota **raiz, NodeNota *new)
   return confirm;
 }
 
-// NodeMatricula *remover(NodeMatricula *raiz, int codDisciplina)
-// {
-//   if (raiz == NULL)
-//   {
-//     return NULL;
-//   }
+NodeMatricula *remover(NodeMatricula *raiz, int codDisciplina)
+{
+  if (raiz == NULL)
+  {
+    return NULL;
+  }
 
-//   // Caso base: encontrar o nó a ser removido
-//   if (raiz->codDisciplina == codDisciplina)
-//   {
-//     // Caso 1: Nó folha
-//     if (raiz->esq == NULL && raiz->dir == NULL)
-//     {
-//       free(raiz);
-//       return NULL;
-//     }
-//     // Caso 2: Nó com um filho
-//     else if (raiz->esq == NULL || raiz->dir == NULL)
-//     {
-//       NodeMatricula *temp = (raiz->esq != NULL) ? raiz->esq : raiz->dir;
-//       free(raiz);
-//       return temp;
-//     }
-//     // Caso 3: Nó com dois filhos
-//     else
-//     {
-//       NodeMatricula *aux = raiz->esq;
-//       while (aux->dir != NULL)
-//       {
-//         aux = aux->dir;
-//       }
-//       raiz->codDisciplina = aux->codDisciplina;
-//       raiz->esq = remover(raiz->esq, aux->codDisciplina);
-//       return raiz;
-//     }
-//   }
-//   // Se o código da disciplina a ser removido é menor que o código do nó atual, continue na subárvore esquerda
-//   else if (codDisciplina < raiz->codDisciplina)
-//   {
-//     raiz->esq = remover(raiz->esq, codDisciplina);
-//   }
-//   // Se o código da disciplina a ser removido é maior que o código do nó atual, continue na subárvore direita
-//   else
-//   {
-//     raiz->dir = remover(raiz->dir, codDisciplina);
-//   }
+  // Caso base: encontrar o nó a ser removido
+  if (raiz->codDisciplina == codDisciplina)
+  {
+    // Caso 1: Nó folha
+    if (raiz->esq == NULL && raiz->dir == NULL)
+    {
+      free(raiz);
+      return NULL;
+    }
+    // Caso 2: Nó com um filho
+    else if (raiz->esq == NULL || raiz->dir == NULL)
+    {
+      NodeMatricula *temp = (raiz->esq != NULL) ? raiz->esq : raiz->dir;
+      free(raiz);
+      return temp;
+    }
+    // Caso 3: Nó com dois filhos
+    else
+    {
+      NodeMatricula *aux = raiz->esq;
+      while (aux->dir != NULL)
+      {
+        aux = aux->dir;
+      }
+      raiz->codDisciplina = aux->codDisciplina;
+      raiz->esq = remover(raiz->esq, aux->codDisciplina);
+      return raiz;
+    }
+  }
+  // Se o código da disciplina a ser removido é menor que o código do nó atual, continue na subárvore esquerda
+  else if (codDisciplina < raiz->codDisciplina)
+  {
+    raiz->esq = remover(raiz->esq, codDisciplina);
+  }
+  // Se o código da disciplina a ser removido é maior que o código do nó atual, continue na subárvore direita
+  else
+  {
+    raiz->dir = remover(raiz->dir, codDisciplina);
+  }
 
-//   return raiz;
-// }
+  return raiz;
+}
 
 /**
  * @brief Exibe todas as notas de uma árvore binária.
@@ -254,9 +254,6 @@ int cadastrarNotas(ListAluno *aluno, int codDisciplina)
 
   if (new)
   {
-<<<<<<< HEAD
-    ListAluno *auxAluno = aluno;            
-=======
     ListAluno *auxAluno = aluno;
 
     // if(!removerDisciplinaDaArvoreDeMatricula(&aluno->aluno.nodeMatricula, new->nota.codDisciplina) && confirm)
@@ -264,20 +261,12 @@ int cadastrarNotas(ListAluno *aluno, int codDisciplina)
     //   freeNodeNota(new);
     //   confirm = 0;
     // }
->>>>>>> devKaua
 
     if (!inserctionNota(&auxAluno->aluno.nodeNota, new) && confirm)
     {
       confirm = 0;
       freeNodeNota(new);
     }
-
-    if (removerMatricula(aluno->aluno.nodeMatricula, codDisciplina))
-    {
-      freeNodeNota(new);
-      confirm = 0;
-    }
-
   }
 
   return confirm;

@@ -134,18 +134,18 @@ void showAllDisciplina(NodeDisciplina *disciplina)
   }
 }
 
-// void search_disciplina(NodeDisciplina *raiz, int code, NodeDisciplina **result)
-// {
-//   if (raiz)
-//   {
-//     if (raiz->disciplina.codDisciplina == code)
-//       *result = raiz;
-//     else if (raiz->disciplina.codDisciplina < code)
-//       search_disciplina(raiz->dir, code, result);
-//     else if (raiz->disciplina.codDisciplina > code)
-//       search_disciplina(raiz->esq, code, result);
-//   }
-// }
+void search_disciplina(NodeDisciplina *raiz, int code, NodeDisciplina **result)
+{
+  if (raiz)
+  {
+    if (raiz->disciplina.codDisciplina == code)
+      *result = raiz;
+    else if (raiz->disciplina.codDisciplina < code)
+      search_disciplina(raiz->dir, code, result);
+    else if (raiz->disciplina.codDisciplina > code)
+      search_disciplina(raiz->esq, code, result);
+  }
+}
 
 /**
  * @brief Insere um novo nó na árvore binária de disciplinas.
@@ -212,7 +212,7 @@ int cadastrarDisciplinas(NodeCurso *curso, int periodo)
   return confirm;
 }
 
-NodeDisciplina *buscarDisciplina(NodeDisciplina *raiz, int codigo)
+NodeDisciplina *buscar_disciplina(NodeDisciplina *raiz, int codigo)
 {
   NodeDisciplina *aux = NULL;
   if (raiz != NULL)
@@ -225,18 +225,18 @@ NodeDisciplina *buscarDisciplina(NodeDisciplina *raiz, int codigo)
     {
       if (codigo < raiz->disciplina.codDisciplina)
       {
-        aux = buscarDisciplina(raiz->esq, codigo);
+        aux = buscar_disciplina(raiz->esq, codigo);
       }
       else
       {
-        aux = buscarDisciplina(raiz->dir, codigo);
+        aux = buscar_disciplina(raiz->dir, codigo);
       }
     }
   }
   return aux;
 }
 
-NodeDisciplina *removerDisciplinaCurso(NodeDisciplina *raiz, int codDisciplina)
+NodeDisciplina *removerDisciplinaDeUmCurso(NodeDisciplina *raiz, int codDisciplina)
 {
   if (raiz != NULL)
   {
@@ -268,15 +268,15 @@ NodeDisciplina *removerDisciplinaCurso(NodeDisciplina *raiz, int codDisciplina)
         while (aux->esq != NULL)
           aux = aux->esq;
         raiz->disciplina.codDisciplina = aux->disciplina.codDisciplina;
-        raiz->dir = removerDisciplinaCurso(raiz->dir, aux->disciplina.codDisciplina);
+        raiz->dir = removerDisciplinaDeUmCurso(raiz->dir, aux->disciplina.codDisciplina);
       }
     }
     else
     {
       if (codDisciplina < raiz->disciplina.codDisciplina)
-        raiz->esq = removerDisciplinaCurso(raiz->esq, codDisciplina);
+        raiz->esq = removerDisciplinaDeUmCurso(raiz->esq, codDisciplina);
       else
-        raiz->dir = removerDisciplinaCurso(raiz->dir, codDisciplina);
+        raiz->dir = removerDisciplinaDeUmCurso(raiz->dir, codDisciplina);
     }
   }
   return raiz;
