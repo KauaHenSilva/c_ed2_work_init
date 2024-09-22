@@ -89,7 +89,7 @@ static int prencherDisciplina(NodeDisciplina *node, int periodo)
   if (confirm)
   {
     enunciado = "Digite a carga horaria da disciplina: ";
-    confirm = getInt(&node->disciplina.cargaHoraria, enunciado);
+    confirm = getIntMult5(&node->disciplina.cargaHoraria, enunciado);
   }
 
   if (!confirm)
