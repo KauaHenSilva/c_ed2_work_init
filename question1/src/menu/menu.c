@@ -344,7 +344,24 @@ void initMenu(ListAluno *alunos, NodeCurso *cursos)
       break;
 
     case 12:
+    //Mostrar a nota de uma disciplina de um determinado aluno,  
+    //mostrando o período e a carga horária da disciplina. 
       printf("Mostrar Nota de uma Disciplina\n");
+      if (!alunos || !cursos)
+        printf("Nenhum aluno ou curso cadastrado\n");
+      else if (!getAlunoValido(&codAluno, alunos, &alunoAtual))
+        printf("sem aluno valido\n");
+      else
+      {
+        if((!getDisciplinaValida(&codDisciplina, cursoAtual->curso.nodeDisciplina, &disciplinaAtual))){
+          printf("Disciplina não encontrada\n");
+        }else{
+          NodeNota *notaEncontrada = buscarNotas(alunoAtual->aluno.nodeNota, codDisciplina);
+          if(notaEncontrada){
+            MostrarNotaDeUmaDisciplina(alunoAtual, notaEncontrada, disciplinaAtual);
+          }
+        }
+      }
       break;
 
     case 13:
@@ -375,6 +392,13 @@ void initMenu(ListAluno *alunos, NodeCurso *cursos)
 
     case 15:
       printf("Mostrar Histórico de um Aluno\n");
+      if (getAlunoValido(&codAluno, alunos, &alunoAtual))
+      {
+        //int *codigoDoCurso, NodeCurso *curso, NodeCurso **atual
+        imprimirHistoricoAluno(alunoAtual, &codCurso, cursos, &cursoAtual);
+      }
+      
+      
       break;
 
     default:

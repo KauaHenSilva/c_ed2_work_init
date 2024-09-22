@@ -3,6 +3,7 @@
 
 #include "../curso_crud/curso_crud.h"
 #include "../disciplina_crud/disciplina_crud.h"
+#include "../nota_crud/nota_crud.h"
 
 #include "../../utils/utils.h"
 
@@ -273,3 +274,4 @@ int removerDisciplina(NodeDisciplina **raiz, int codDisciplina)
 
   return confirm;
 }
+

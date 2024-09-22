@@ -141,27 +141,6 @@ int removerMatricula(NodeMatricula **raiz, int codDisciplina)
   {
     if ((*raiz)->codDisciplina == codDisciplina)
     {
-<<<<<<< HEAD
-      if (raiz->esq != NULL && raiz->dir != NULL)
-      {
-        free(raiz);
-        raiz = NULL;
-      }
-      else if (raiz->esq == NULL || raiz->dir == NULL)
-      {
-
-        if (raiz->esq == NULL)
-        {
-          NodeMatricula *aux = raiz;
-          raiz = raiz->dir;         
-          free(aux);                 
-        }
-        else if (raiz->dir == NULL)
-        {
-          NodeMatricula *aux = raiz; 
-          raiz = raiz->esq;          
-          free(aux);                
-=======
       if ((*raiz)->esq != NULL && (*raiz)->dir != NULL)
       {
         free((*raiz));
@@ -180,42 +159,24 @@ int removerMatricula(NodeMatricula **raiz, int codDisciplina)
           NodeMatricula *aux = (*raiz);
           (*raiz) = (*raiz)->esq;
           free(aux);
->>>>>>> master
         }
       }
       else
       {
-<<<<<<< HEAD
-        NodeMatricula *aux = raiz->dir;
-        while (aux->esq != NULL)
-        {
-          aux = aux->esq;
-        }
-        raiz->codDisciplina = aux->codDisciplina;
-        raiz->dir = removerMatricula(raiz->dir, aux->codDisciplina);
-=======
         NodeMatricula *aux = (*raiz)->dir;
         while (aux->esq != NULL)
           aux = aux->esq;
 
         (*raiz)->codDisciplina = aux->codDisciplina;
         confirm = removerMatricula(&(*raiz)->dir, aux->codDisciplina);
->>>>>>> master
       }
     }
     else
     {
-<<<<<<< HEAD
-      if (codDisciplina < raiz->codDisciplina)
-        raiz->esq = removerMatricula(raiz->esq, codDisciplina);
-      else
-        raiz->dir = removerMatricula(raiz->dir, codDisciplina);
-=======
       if (codDisciplina < (*raiz)->codDisciplina)
         confirm = removerMatricula(&(*raiz)->esq, codDisciplina);
       else
         confirm = removerMatricula(&(*raiz)->dir, codDisciplina);
->>>>>>> master
     }
   }
 
@@ -224,11 +185,7 @@ int removerMatricula(NodeMatricula **raiz, int codDisciplina)
 
 NodeMatricula *buscarMatriculas(NodeMatricula *raiz, int codDisciplina)
 {
-<<<<<<< HEAD
-  NodeMatricula *aux = NULL; 
-=======
   NodeMatricula *aux = NULL; // Inicializa o ponteiro
->>>>>>> master
 
   if (raiz != NULL)
   {
@@ -245,12 +202,10 @@ NodeMatricula *buscarMatriculas(NodeMatricula *raiz, int codDisciplina)
       aux = buscarMatriculas(raiz->dir, codDisciplina);
     }
   }
-<<<<<<< HEAD
-  return aux; 
-=======
   return aux; // Retorna o ponteiro encontrado ou NULL
->>>>>>> master
 }
+
+// Função para remover uma disciplina de um aluno
 
 ListAluno *buscarAluno(ListAluno *alunos, int matricula)
 {
@@ -262,15 +217,6 @@ ListAluno *buscarAluno(ListAluno *alunos, int matricula)
   return aluno;
 }
 
-<<<<<<< HEAD
-/*
-* @brief Verifica se tem alunos matriculados em uma disciplina
-*
-* @param aluno, disciplina
-*/
-
-=======
->>>>>>> master
 int VerificarAlunosMatriculados(ListAluno *aluno, int disciplina)
 {
   int encontrou = 0;

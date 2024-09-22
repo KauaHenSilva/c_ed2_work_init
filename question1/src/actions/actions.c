@@ -1,4 +1,5 @@
 #include "actions.h"
+#include <stdio.h>
 
 #include "../crud/aluno_crud/aluno_crud.h"
 #include "../crud/curso_crud/curso_crud.h"
@@ -97,4 +98,45 @@ void mostrarNotasDeUmAlunoPorPeriodo(NodeNota *raiz, int periodo)
     mostrarNotasDeUmAlunoPorPeriodo(raiz->esq, periodo);
     mostrarNotasDeUmAlunoPorPeriodo(raiz->dir, periodo);
   }
+}
+
+void MostrarNotaDeUmaDisciplina(ListAluno *aluno, NodeNota *notaAtual, NodeDisciplina *disciplina){
+  printf("Aluno: %s\n", aluno->aluno.nome);
+  printf("Disciplina: %s\n", disciplina->disciplina.nomeDaDisciplina);
+  printf("Nota: %d\n", notaAtual->nota.notaFinal);
+  printf("Periodo: %d\n", disciplina->disciplina.periodo);
+  printf("Carga Horaria: %d\n", disciplina->disciplina.cargaHoraria);
+}
+
+void imprimir_historico_disciplinas(NodeNota *notas, NodeDisciplina *disciplinas)
+{
+  if (disciplinas != NULL)
+  {
+    // Imprimir as notas da disciplina
+    NodeNota *nota = buscarNotas(notas, disciplinas->disciplina.codDisciplina);
+    if (nota != NULL)
+    {
+      printf("Disciplina: %s\n", disciplinas->disciplina.nomeDaDisciplina);
+      printf("Nota: %d\n", nota->nota.notaFinal);
+      printf("Semestre cursado: %d\n", nota->nota.semestreCursado);
+      printf("Carga horaria: %d\n", disciplinas->disciplina.cargaHoraria);
+      printf("Periodo: %d\n", disciplinas->disciplina.periodo);
+      printf("\n");
+    }
+
+    // Imprimir as disciplinas do lado esquerdo
+    imprimir_historico_disciplinas(notas, disciplinas->esq);
+
+    // Imprimir as disciplinas do lado direito
+    imprimir_historico_disciplinas(notas, disciplinas->dir);
+  }
+}
+
+void imprimirHistoricoAluno(ListAluno *aluno,int *codigoDoCurso, NodeCurso *curso, NodeCurso **atual){
+  NodeCurso *aux = getCursoValido(codigoDoCurso, curso, atual);
+  if(aux!= NULL){
+    printf("Curso: %s\n", curso->curso.nomeDoCurso);
+    imprimir_historico_disciplinas(aluno->aluno.nodeNota, curso->curso.nodeDisciplina);
+  }
+  
 }

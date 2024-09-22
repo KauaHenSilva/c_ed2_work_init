@@ -228,6 +228,30 @@ void showAllNotas(NodeNota *raiz)
   }
 }
 
+NodeNota *buscarNotas(NodeNota *nota, int codDisciplina)
+{
+  NodeNota *aux = NULL;
+  if (nota)
+  {
+    if (codDisciplina == nota->nota.codDisciplina)
+    {
+      aux = nota;
+    }
+    else
+    {
+      if (codDisciplina < nota->nota.codDisciplina)
+      {
+        aux = buscarNotas(nota->esq, codDisciplina);
+      }
+      else
+      {
+        aux = buscarNotas(nota->dir, codDisciplina);
+      }
+    }
+  }
+  return aux;
+}
+
 int cadastrarNotas(ListAluno *aluno, int codDisciplina, int semestreCursado)
 {
   int confirm = 1;

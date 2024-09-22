@@ -22,7 +22,9 @@ void mostrarDisciplinasDeUmAluno(NodeMatricula *matriculasAluno, NodeDisciplina 
 void mostrarNotasDeUmAlunoPorPeriodo(NodeNota *raiz, int periodo);
 
 // - Mostrar a nota de uma disciplina para um determinado aluno, incluindo o período e a carga horária da disciplina.
-void MostrarNotaDeUmaDisciplina();
+void MostrarNotaDeUmaDisciplina(ListAluno *aluno, NodeNota *notaAtual, NodeDisciplina *disciplinaAtual);
 
 // - Mostrar o histórico de um determinado aluno, incluindo o nome do curso, as disciplinas e suas respectivas notas organizadas pelo período.
-void mostrarHistoricoDeUmAluno();
+void imprimir_historico_disciplinas(NodeNota *notas, NodeDisciplina *disciplinas);
+
+void imprimirHistoricoAluno(ListAluno *aluno,int *codigoDoCurso, NodeCurso *curso, NodeCurso **atual);

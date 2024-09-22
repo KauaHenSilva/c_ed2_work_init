@@ -7,6 +7,8 @@
 
 void showAllNotas(NodeNota *raiz);
 void showNota(NodeNota *node);
+
+NodeNota *buscarNotas(NodeNota *nota, int codDisciplina);
 int buscar_nota(NodeNota *raiz, int codigo, NodeNota *valor);
 
 // - Permitir o cadastro de notas somente para disciplinas na árvore de matrícula.
