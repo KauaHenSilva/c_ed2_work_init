@@ -52,50 +52,49 @@ void showRelacaoMatriculaCurso(NodeCurso *curso, ListAluno *alunos)
   }
 }
 
-static void showDisciplinaAndCurso(NodeMatricula *matricula, NodeDisciplina *disciplina)
+void mostrarDisciplinasDeUmAluno(NodeMatricula *matriculasAluno, NodeDisciplina *disciplina)
 {
   if (disciplina)
   {
-    if (matricula->codDisciplina == disciplina->disciplina.codDisciplina)
+    if (matriculasAluno->codDisciplina == disciplina->disciplina.codDisciplina)
       showDisciplina(disciplina);
 
-    showDisciplinaAndCurso(matricula, disciplina->esq);
-    showDisciplinaAndCurso(matricula, disciplina->dir);
+    mostrarDisciplinasDeUmAluno(matriculasAluno, disciplina->esq);
+    mostrarDisciplinasDeUmAluno(matriculasAluno, disciplina->dir);
   }
 }
 
-void mostrarDisciplinasDeUmAluno(ListAluno *aluno, NodeCurso *curso)
+// static void showAllNotasByPeriod(NodeNota *nota, NodeDisciplina *disciplina, int periodo)
+// {
+//   if (disciplina)
+//   {
+//     if (disciplina->disciplina.periodo == periodo)
+//       showNota(nota);
+
+//     showAllNotasByPeriod(nota, disciplina->esq, periodo);
+//     showAllNotasByPeriod(nota, disciplina->dir, periodo);
+//   }
+// }
+
+// void mostrarNotasDeUmAlunoPorPeriodo(ListAluno *aluno, NodeCurso *curso, int periodo)
+// {
+//   if (curso)
+//   {
+//     if (aluno->aluno.codigoDoCurso == curso->curso.codigo)
+//       showAllNotasByPeriod(aluno->aluno.nodeNota, curso->curso.nodeDisciplina, periodo);
+
+//     mostrarNotasDeUmAlunoPorPeriodo(aluno, curso->esq, periodo);
+//     mostrarNotasDeUmAlunoPorPeriodo(aluno, curso->dir, periodo);
+//   }
+// }
+
+void mostrarNotasDeUmAlunoPorPeriodo(NodeNota *raiz, int periodo)
 {
-  if (aluno)
+  if (raiz)
   {
-    if (aluno->aluno.codigoDoCurso == curso->curso.codigo)
-      showDisciplinaAndCurso(aluno->aluno.nodeMatricula, curso->curso.nodeDisciplina);
-
-    mostrarDisciplinasDeUmAluno(aluno, curso->esq);
-    mostrarDisciplinasDeUmAluno(aluno, curso->dir);
-  }
-}
-
-static void showAllNotasByPeriod(NodeNota *nota, NodeDisciplina *disciplina, int periodo)
-{
-  if (nota)
-  {
-    if (disciplina->disciplina.periodo == periodo)
-      showNota(nota);
-
-    showAllNotasByPeriod(nota, disciplina->esq, periodo);
-    showAllNotasByPeriod(nota, disciplina->dir, periodo);
-  }
-}
-
-void mostrarNotasDeUmAlunoPorPeriodo(ListAluno *aluno, NodeCurso *curso, int periodo)
-{
-  if (curso)
-  {
-    if (aluno->aluno.codigoDoCurso == curso->curso.codigo)
-      showAllNotasByPeriod(aluno->aluno.nodeNota, curso->curso.nodeDisciplina, periodo);
-
-    mostrarNotasDeUmAlunoPorPeriodo(aluno, curso->esq, periodo);
-    mostrarNotasDeUmAlunoPorPeriodo(aluno, curso->dir, periodo);
+    if (raiz->nota.semestreCursado == periodo)
+      showNota(raiz);
+    mostrarNotasDeUmAlunoPorPeriodo(raiz->esq, periodo);
+    mostrarNotasDeUmAlunoPorPeriodo(raiz->dir, periodo);
   }
 }

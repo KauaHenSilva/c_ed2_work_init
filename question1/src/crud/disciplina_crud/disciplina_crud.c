@@ -82,14 +82,14 @@ static int prencherDisciplina(NodeDisciplina *node, int periodo)
 
   if (confirm)
   {
-    enunciado = "Digite a carga horaria da disciplina: ";
-    confirm = getInt(&node->disciplina.cargaHoraria, enunciado);
+    enunciado = "Digite o nome da disciplina: ";
+    confirm = getString(&node->disciplina.nomeDaDisciplina, enunciado);
   }
 
   if (confirm)
   {
-    enunciado = "Digite o nome da disciplina: ";
-    confirm = getString(&node->disciplina.nomeDaDisciplina, enunciado);
+    enunciado = "Digite a carga horaria da disciplina: ";
+    confirm = getIntMult5(&node->disciplina.cargaHoraria, enunciado);
   }
 
   if (!confirm)
@@ -212,72 +212,64 @@ int cadastrarDisciplinas(NodeCurso *curso, int periodo)
   return confirm;
 }
 
-NodeDisciplina *buscarDisciplina(NodeDisciplina *raiz, int codigo)
+void buscarDisciplina(NodeDisciplina *raiz, int codigo, NodeDisciplina **result)
 {
-  NodeDisciplina *aux = NULL;
-  if (raiz != NULL)
+  if (raiz)
   {
-    if (codigo == raiz->disciplina.codDisciplina)
-    {
-      aux = raiz;
-    }
-    else
-    {
-      if (codigo < raiz->disciplina.codDisciplina)
-      {
-        aux = buscarDisciplina(raiz->esq, codigo);
-      }
-      else
-      {
-        aux = buscarDisciplina(raiz->dir, codigo);
-      }
-    }
+    if (raiz->disciplina.codDisciplina == codigo)
+      *result = raiz;
+    else if (raiz->disciplina.codDisciplina < codigo)
+      buscarDisciplina(raiz->dir, codigo, result);
+    else if (raiz->disciplina.codDisciplina > codigo)
+      buscarDisciplina(raiz->esq, codigo, result);
   }
-  return aux;
 }
 
-NodeDisciplina *removerDisciplinaCurso(NodeDisciplina *raiz, int codDisciplina)
+int removerDisciplina(NodeDisciplina **raiz, int codDisciplina)
 {
-  if (raiz != NULL)
+  int confirm = 1;
+
+  if ((*raiz) != NULL)
   {
-    if (raiz->disciplina.codDisciplina == codDisciplina)
+    if ((*raiz)->disciplina.codDisciplina == codDisciplina)
     {
-      if (raiz->esq == NULL && raiz->dir != NULL)
+      if ((*raiz)->esq == NULL && (*raiz)->dir != NULL)
       {
-        free(raiz);
-        raiz = NULL;
+        free((*raiz));
+        (*raiz) = NULL;
       }
-      else if (raiz->esq == NULL || raiz->dir == NULL)
+      else if ((*raiz)->esq == NULL || (*raiz)->dir == NULL)
       {
         NodeDisciplina *aux;
-        if (raiz->esq == NULL)
+        if ((*raiz)->esq == NULL)
         {
-          aux = raiz;
-          raiz = raiz->dir;
+          aux = (*raiz);
+          (*raiz) = (*raiz)->dir;
         }
         else
         {
-          aux = raiz;
-          raiz = raiz->esq;
+          aux = (*raiz);
+          (*raiz) = (*raiz)->esq;
         }
         free(aux);
       }
       else
       {
-        NodeDisciplina *aux = raiz->dir;
+        NodeDisciplina *aux = (*raiz)->dir;
         while (aux->esq != NULL)
           aux = aux->esq;
-        raiz->disciplina.codDisciplina = aux->disciplina.codDisciplina;
-        raiz->dir = removerDisciplinaCurso(raiz->dir, aux->disciplina.codDisciplina);
+        (*raiz)->disciplina.codDisciplina = aux->disciplina.codDisciplina;
+        confirm = removerDisciplina(&(*raiz)->dir, aux->disciplina.codDisciplina);
       }
     }
     else
     {
-      if (codDisciplina < raiz->disciplina.codDisciplina)
-        raiz->esq = removerDisciplinaCurso(raiz->esq, codDisciplina);
+      if (codDisciplina < (*raiz)->disciplina.codDisciplina)
+        confirm = removerDisciplina(&(*raiz)->esq, codDisciplina);
       else
-        raiz->dir = removerDisciplinaCurso(raiz->dir, codDisciplina);
+        confirm = removerDisciplina(&(*raiz)->dir, codDisciplina);
     }
   }
-  return raiz;
+
+  return confirm;
 }

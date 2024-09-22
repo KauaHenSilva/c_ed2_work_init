@@ -68,7 +68,7 @@ void freeNodeNotas(NodeNota *raiz)
  * @param raizMatricula Ponteiro para a raiz de matricula a ser escolhida.
  * @return Retorna 1 se o preenchimento foi bem-sucedido, 0 caso contrário.
  */
-static int prencherNota(NodeNota *raizNota, int codDisciplina)
+static int prencherNota(NodeNota *raizNota, int codDisciplina, int semestreCursado)
 {
   printf("Para sair só digite 'sair'.\n");
 
@@ -76,12 +76,10 @@ static int prencherNota(NodeNota *raizNota, int codDisciplina)
   char *enunciado;
 
   raizNota->nota.codDisciplina = codDisciplina;
+  raizNota->nota.semestreCursado = semestreCursado;
 
   enunciado = "Digite a nota final do aluno: ";
   confirm = getInt(&raizNota->nota.notaFinal, enunciado);
-
-  enunciado = "Digite o semestre cursado: ";
-  confirm = getInt(&raizNota->nota.semestreCursado, enunciado);
 
   if (!confirm)
     printf("Não foi possivel execultar o prencher a nota: ");
@@ -99,27 +97,18 @@ static int prencherNota(NodeNota *raizNota, int codDisciplina)
  * @param raizDisciplina Ponteiro para a raiz de nota a ser preenchido.
  * @return Retorna 1 se o preenchimento foi bem-sucedido, 0 caso contrário.
  */
-static int prencherNota(NodeNota *raizNota, NodeMatricula *raizMatricula)
+static int prencherNota(NodeNota *raizNota, int codDisciplina, int semestreCursado)
 {
   printf("Para sair só digite 'sair'.\n");
 
   int confirm;
-  char *eneunciado;
+  char *enunciado;
 
-  NodeMatricula *search = NULL;
-  do
-  {
-    eneunciado = "Digite o codigo da disciplina da nota: ";
-    confirm = getInt(&raizMatricula->codDisciplina, eneunciado);
+  raizNota->nota.codDisciplina = codDisciplina;
+  raizNota->nota.semestreCursado = semestreCursado;
 
-    search_matricula(raizDisciplina, raizMatricula->codDisciplina, &search);
-  } while (!search);
-
-  if (confirm)
-  {
-    enunciado = "Digite a nota final do aluno: ";
-    confirm = getInt(&raizNota->notaFinal, enunciado);
-  }
+  enunciado = "Digite a nota final do aluno: ";
+  confirm = getInt(&raizNota->nota.notaFinal, enunciado);
 
   if (!confirm)
     printf("Não foi possivel execultar o prencher a nota: ");
@@ -239,14 +228,14 @@ void showAllNotas(NodeNota *raiz)
   }
 }
 
-int cadastrarNotas(ListAluno *aluno, int codDisciplina)
+int cadastrarNotas(ListAluno *aluno, int codDisciplina, int semestreCursado)
 {
   int confirm = 1;
 
   NodeNota *new;
   alocNota(&new);
 
-  if (prencherNota(new, codDisciplina))
+  if (prencherNota(new, codDisciplina, semestreCursado))
   {
     freeNodeNotas(new);
     new = NULL;
@@ -255,25 +244,24 @@ int cadastrarNotas(ListAluno *aluno, int codDisciplina)
 
   if (new)
   {
-
-    ListAluno *auxAluno = aluno;            
-
-
+    ListAluno *auxAluno = aluno;
 
     if (!inserctionNota(&auxAluno->aluno.nodeNota, new) && confirm)
     {
-      confirm = 0;
       freeNodeNota(new);
       new = NULL;
+      confirm = 0;
     }
 
-    // if (removerMatricula(aluno->aluno.nodeMatricula, codDisciplina))
-    // {
-    //   freeNodeNota(new);
-    //   new = NULL;
-    //   confirm = 0;
-    // }
-
+    if (!removerMatricula(&(aluno->aluno.nodeMatricula), codDisciplina))
+    {
+      if (new)
+      {
+        freeNodeNota(new);
+        new = NULL;
+      }
+      confirm = 0;
+    }
   }
 
   return confirm;

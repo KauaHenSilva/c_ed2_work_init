@@ -31,13 +31,12 @@ int getString(char **string, const char *msg)
     printf("%s", msg);
     if (fgets(buffer, sizeof(buffer), stdin) != NULL)
     {
-      buffer[strcspn(buffer, "\n")] = '\0';
-      if (strcmp(buffer, "sair") == 0)
-        return 0;
-
-      *string = (char *)malloc(strlen(buffer) + 1);
-      if (*string != NULL)
-        strcpy(*string, buffer);
+      if (strcmp(buffer, "sair") != 0)
+      {
+        *string = (char *)malloc(strlen(buffer) + 1);
+        if (*string != NULL)
+          strcpy(*string, buffer);
+      }
 
       return string ? 1 : 0;
     }
@@ -67,31 +66,54 @@ int getInt(int *inteiro, const char *msg)
 
   return is_number;
 }
+int getIntMult5(int *inteiro, const char *msg)
+{
+  int isOk = 1;
+
+  int mult5entre30e90[] = {30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90};
+
+  printf("%s", msg);
+  inteiro = mult5entre30e90[rand() % 13];
+
+  return isOk;
+}
 #else
 int getInt(int *inteiro, const char *msg)
 {
-  char buffer[1024];
-  while (1)
+  int isOk = 1;
+
+  printf("%s", msg);
+  if (scanf("%d", inteiro) == 0)
+    isOk = 0;
+
+  while (getchar() != '\n')
+    ;
+  return isOk;
+}
+
+int getIntMult5(int *inteiro, const char *msg)
+{
+  int isOk;
+  int mult5entre30e90[] = {30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90};
+
+  do
   {
     printf("%s", msg);
-    if (fgets(buffer, sizeof(buffer), stdin) != NULL)
-    {
-      buffer[strcspn(buffer, "\n")] = '\0';
-      if (strcmp(buffer, "sair") == 0)
-        return 0;
+    scanf("%d", inteiro);
 
-      int is_number = 1;
-      for (int i = 0; buffer[i] != '\0' && isdigit(buffer[i]); i++)
-        is_number = 0;
+    while (getchar() != '\n')
+      ;
 
-      if (is_number)
-      {
-        *inteiro = atoi(buffer);
-        return 1;
-      }
-    }
+    isOk = 0;
+    for (int i = 0; i < 13 && !isOk; i++)
+      if (*inteiro == mult5entre30e90[i])
+        isOk = 1;
 
-    printf("Valor invalido!\n\n");
-  }
+    if (!isOk)
+      printf("Valor inválido! Digite um valor múltiplo de 5 entre 30 e 90.\n");
+
+  } while (!isOk);
+
+  return isOk;
 }
 #endif
