@@ -194,33 +194,196 @@ void initMenu(ListAluno *alunos, NodeCurso *cursos)
 {
   (void)alunos;
   int opcao = 0;
-  int codigoDoCurso = 0;
-  int periodo = 0;
 
   while (opcao != 12)
   {
     menu(&opcao);
+
     NodeCurso *cursoAtual = NULL;
+    NodeDisciplina *disciplinaAtual = NULL;
+    NodeMatricula *matriculaAtual = NULL;
+    ListAluno *alunoAtual = NULL;
+
+    int codCurso = 0;
+    int codDisciplina = 0;
+    int codMatricula = 0;
+    int codAluno = 0;
+    int periodo = 0;
 
     switch (opcao)
     {
     case 1:
-      cadastrarCursos(&cursos);
+      if (!cadastrarCursos(&cursos))
+        printf("Erro ao cadastrar curso\n");
       break;
 
     case 2:
+      if (!cursos)
+        printf("Nenhum curso cadastrado!\n");
+      else if (!getCursoValido(&codCurso, cursos, &cursoAtual))
+        printf("Erro ao achar curso valido\n");
+      else if (!getPeriodoValido(&periodo, cursoAtual->curso.quantidadeDePeriodo))
+        printf("Erro ao achar periodo valido\n");
+      else if (!cadastrarDisciplinas(cursoAtual, periodo))
+        printf("Erro ao cadastrar disciplina\n");
+      break;
 
-      isCursoValido(&codigoDoCurso, cursos, &cursoAtual);
+    case 3:
+      if (!cursos)
+        printf("Nenhum curso cadastrado!\n");
+      else if (!getCursoValido(&codCurso, cursos, &cursoAtual))
+        printf("Erro ao achar curso valido\n");
+      else if (!cadastrarAlunos(&alunos, cursoAtual->curso.codigo))
+        printf("Erro ao cadastrar aluno\n");
+      break;
 
-      isPeriodoValido(&periodo, cursos->curso.quantidadeDePeriodo);
+    case 4:
+      if (!alunos || !cursos)
+        printf("Nenhum aluno ou curso cadastrado!\n");
+      else if (!getCursoValido(&codCurso, cursos, &cursoAtual))
+        printf("Erro ao achar curso valido\n");
+      else if (!getAlunoValido(&codAluno, alunos, &alunoAtual))
+        printf("Erro ao achar aluno valido\n");
+      else if (!cursoAtual->curso.nodeDisciplina)
+        printf("Curso sem disciplinas\n");
+      else if (!getDisciplinaValida(&codDisciplina, cursoAtual->curso.nodeDisciplina, &disciplinaAtual))
+        printf("Erro ao achar disciplina valida\n");
+      else if (!cadastrarMatriculas(alunoAtual, disciplinaAtual->disciplina.codDisciplina))
+        printf("Erro ao cadastrar matricula\n");
+      break;
 
-      cadastrarDisciplinas(cursoAtual, periodo);
+    case 5:
+
+      if (!alunos || !cursos)
+        printf("Nenhum aluno ou curso cadastrado.\n");
+      else if (!getCursoValido(&codCurso, cursos, &cursoAtual))
+        printf("Erro ao achar curso valido\n");
+      else if (!getAlunoValido(&codAluno, alunos, &alunoAtual))
+        printf("Erro ao achar aluno valido\n");
+      else if (!cursoAtual->curso.nodeDisciplina)
+        printf("Curso sem disciplinas\n");
+      else if (!getDisciplinaValida(&codDisciplina, cursoAtual->curso.nodeDisciplina, &disciplinaAtual))
+        printf("Erro ao achar disciplina valida\n");
+      else if (!cadastrarNotas(
+                   alunos,
+                   codDisciplina,
+                   cursoAtual->curso.nodeDisciplina->disciplina.periodo))
+        printf("Erro ao cadastrar nota\n");
+      break;
+
+    case 6:
+      if (!cursos)
+        printf("Nenhum curso cadastrado!\n");
+      else
+        MostrarTodosOsCursosDoCampus(cursos);
+      break;
+
+    case 7:
+      if (!cursos || !alunos)
+        printf("Nenhum curso ou aluno cadastrado!\n");
+      else if (!getCursoValido(&codCurso, cursos, &cursoAtual))
+        printf("Erro ao achar curso valido\n");
+      else
+        mostrarTodosOsAlunosDeUmCurso(cursoAtual, alunos);
+      break;
+
+    case 8:
+      if (!cursos)
+        printf("Nenhum curso cadastrado!\n");
+      else if (!getCursoValido(&codCurso, cursos, &cursoAtual))
+        printf("Erro ao achar curso valido\n");
+      else
+        mostrarTodasAsDisciplinasDeUmCurso(cursoAtual);
+      break;
+
+    case 9:
+      if (!cursos)
+        printf("Nenhum curso cadastrado!\n");
+      else if (!getCursoValido(&codCurso, cursos, &cursoAtual))
+        printf("Erro ao achar curso valido\n");
+      else if (!getPeriodoValido(&periodo, cursoAtual->curso.quantidadeDePeriodo))
+        printf("Erro ao achar periodo valido\n");
+      else
+        mostrarDisciplinasDeUmPeriodoDeUmCurso(cursoAtual, periodo);
+      break;
+
+    case 10:
+      if (!alunos && !cursos)
+        printf("Nenhum curso ou aluno cadastrado!\n");
+      else if (!getAlunoValido(&codAluno, alunos, &alunoAtual))
+        printf("sem aluno valido\n");
+      else
+      {
+        NodeCurso *cursoAtual = buscarCurso(cursos, alunoAtual->aluno.codigoDoCurso);
+        if (!alunoAtual->aluno.nodeMatricula)
+          printf("Aluno sem matriculas\n");
+        else if (!cursoAtual->curso.nodeDisciplina)
+          printf("Curso sem disciplinas\n");
+        else
+          mostrarDisciplinasDeUmAluno(alunoAtual->aluno.nodeMatricula, cursoAtual->curso.nodeDisciplina);
+      }
+      break;
+
+    case 11:
+      if (!alunos || !cursos)
+        printf("Nenhum aluno ou curso cadastrado\n");
+      else if (!getAlunoValido(&codAluno, alunos, &alunoAtual))
+        printf("sem aluno valido\n");
+      else
+      {
+        cursoAtual = buscarCurso(cursos, alunoAtual->aluno.codigoDoCurso);
+        if (!cursoAtual)
+          printf("sem curso valido\n");
+        else if (!getPeriodoValido(&periodo, cursoAtual->curso.quantidadeDePeriodo))
+          printf("sem periodo valido\n");
+        else if (!alunoAtual->aluno.nodeNota)
+          printf("Aluno sem notas\n");
+        else
+          mostrarNotasDeUmAlunoPorPeriodo(alunoAtual->aluno.nodeNota, periodo);
+      }
+      break;
+
+    case 12:
+      printf("Mostrar Nota de uma Disciplina\n");
+      break;
+
+    case 13:
+      if (!cursos)
+        printf("Nenhum curso cadastrado!\n");
+      else if (!getCursoValido(&codCurso, cursos, &cursoAtual))
+        printf("Erro ao achar curso valido\n");
+      else if (!cursoAtual->curso.nodeDisciplina)
+        printf("Curso sem disciplinas\n");
+      else if (!getDisciplinaValida(&codDisciplina, cursoAtual->curso.nodeDisciplina, &disciplinaAtual))
+        printf("Erro ao achar disciplina valida\n");
+      else
+        cursoAtual->curso.nodeDisciplina = removerDisciplina(cursoAtual->curso.nodeDisciplina, codDisciplina);
+      printf("Falta retornar um valor que diz que a disciplina foi removida\n");
+      break;
+
+    case 14:
+      if (!alunos)
+        printf("Nenhum aluno cadastrado!\n");
+      else if (!getAlunoValido(&codAluno, alunos, &alunoAtual))
+        printf("Erro ao achar aluno valido\n");
+      else if (!alunoAtual->aluno.nodeMatricula)
+        printf("Aluno sem matriculas\n");
+      else if (!getMatriculaValida(&codMatricula, alunoAtual->aluno.nodeMatricula, &matriculaAtual))
+        printf("Erro ao achar matricula valida\n");
+      else
+        alunoAtual->aluno.nodeMatricula = removerMatricula(alunoAtual->aluno.nodeMatricula, codMatricula);
+      printf("Falta retornar um valor que diz que a disciplina foi removida\n");
+      break;
+
+    case 15:
+      printf("Mostrar Histórico de um Aluno\n");
       break;
 
     default:
       printf("Opção inválida!\n");
       break;
     }
+    printf("--------------------------------------------------------------\n");
   }
 }
 #endif

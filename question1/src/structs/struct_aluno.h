@@ -18,5 +18,4 @@ typedef struct stListAluno
 {
   Aluno aluno;
   struct stListAluno *prox;
-  struct stListAluno *ant;
 } ListAluno;

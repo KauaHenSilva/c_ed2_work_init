@@ -7,9 +7,8 @@
 
 void freeNodeDisciplinas(NodeDisciplina *raiz);
 void showAllDisciplina(NodeDisciplina *disciplina);
-void search_disciplina(NodeDisciplina *raiz, int code, NodeDisciplina **result);
+void buscarDisciplina(NodeDisciplina *raiz, int codigo, NodeDisciplina **result);
 void showDisciplina(NodeDisciplina *disciplina);
-NodeDisciplina *buscar_disciplina(NodeDisciplina *raiz, int codigo);
 
 // ---------------------------------------------------------------------------------------
 
@@ -18,7 +17,5 @@ NodeDisciplina *buscar_disciplina(NodeDisciplina *raiz, int codigo);
 // - O período da disciplina deve estar entre 1 e a quantidade máxima de períodos do curso.
 // - A carga horária deve ser múltiplo de 15, variando entre 30 e 90.
 int cadastrarDisciplinas(NodeCurso *curso, int periodo);
-
-NodeDisciplina *buscarDisciplina(NodeDisciplina *raiz, int codigo);
 
 NodeDisciplina *removerDisciplina(NodeDisciplina *raiz, int codDisciplina);

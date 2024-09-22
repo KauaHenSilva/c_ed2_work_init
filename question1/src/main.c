@@ -136,7 +136,7 @@ int main()
   printf("Informe o periodo: ");
   scanf("%d", &periodo);
 
-  mostrarNotasDeUmAlunoPorPeriodo(alunos, cursos, periodo);
+  mostrarNotasDeUmAlunoPorPeriodo(alunos->aluno.nodeNota, periodo);
 
   // imprimir todas as notas de um aluno em uma disciplina
   // NodeNota *buscarNota(NodeNota *raiz, int codDisciplina)
@@ -180,7 +180,7 @@ int main()
 
   printf("Digite o codigo da disciplina: ");
   scanf("%d", &codDisciplina);
-  disciplina = buscarDisciplina(cursos->curso.nodeDisciplina, codDisciplina);
+  buscarDisciplina(cursos->curso.nodeDisciplina, codDisciplina, &disciplina);
   int encontrou = VerificarAlunosMatriculados(alunos, codDisciplina);
   if (encontrou == 0)
   {

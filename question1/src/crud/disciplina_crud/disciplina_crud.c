@@ -212,28 +212,17 @@ int cadastrarDisciplinas(NodeCurso *curso, int periodo)
   return confirm;
 }
 
-NodeDisciplina *buscarDisciplina(NodeDisciplina *raiz, int codigo)
+void buscarDisciplina(NodeDisciplina *raiz, int codigo, NodeDisciplina **result)
 {
-  NodeDisciplina *aux = NULL;
-  if (raiz != NULL)
+  if (raiz)
   {
-    if (codigo == raiz->disciplina.codDisciplina)
-    {
-      aux = raiz;
-    }
-    else
-    {
-      if (codigo < raiz->disciplina.codDisciplina)
-      {
-        aux = buscarDisciplina(raiz->esq, codigo);
-      }
-      else
-      {
-        aux = buscarDisciplina(raiz->dir, codigo);
-      }
-    }
+    if (raiz->disciplina.codDisciplina == codigo)
+      *result = raiz;
+    else if (raiz->disciplina.codDisciplina < codigo)
+      buscarDisciplina(raiz->dir, codigo, result);
+    else if (raiz->disciplina.codDisciplina > codigo)
+      buscarDisciplina(raiz->esq, codigo, result);
   }
-  return aux;
 }
 
 NodeDisciplina *removerDisciplina(NodeDisciplina *raiz, int codDisciplina)

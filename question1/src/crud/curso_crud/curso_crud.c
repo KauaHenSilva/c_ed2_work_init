@@ -171,13 +171,13 @@ void isCurseOpen(NodeCurso *node, int id, int *bool)
   }
 }
 
-void search_course(NodeCurso *raiz, int code, NodeCurso *result)
+void search_course(NodeCurso *raiz, int code, NodeCurso **result)
 {
-  if (raiz->curso.codigo == code || !raiz)
-    result = raiz;
-  else if (raiz->curso.codigo < code)
-    search_course(raiz->dir, code, result);
+  if (!raiz || raiz->curso.codigo == code)
+    *result = raiz;
   else if (raiz->curso.codigo > code)
+    search_course(raiz->dir, code, result);
+  else if (raiz->curso.codigo < code)
     search_course(raiz->esq, code, result);
 }
 
@@ -241,29 +241,6 @@ int cadastrarCursos(NodeCurso **nodeCurso)
   return confirm;
 }
 
-NodeDisciplina *buscar_disciplina(NodeDisciplina *raiz, int codigo)
-{
-  NodeDisciplina *aux = NULL;
-  if (raiz != NULL)
-  {
-    if (codigo == raiz->disciplina.codDisciplina)
-    {
-      aux = raiz;
-    }
-    else
-    {
-      if (codigo < raiz->disciplina.codDisciplina)
-      {
-        aux = buscar_disciplina(raiz->esq, codigo);
-      }
-      else
-      {
-        aux = buscar_disciplina(raiz->dir, codigo);
-      }
-    }
-  }
-  return aux;
-}
 NodeDisciplina *removerDisciplinaDeUmCurso(NodeDisciplina *raiz, int codDisciplina)
 {
   if (raiz != NULL)
@@ -309,18 +286,26 @@ NodeDisciplina *removerDisciplinaDeUmCurso(NodeDisciplina *raiz, int codDiscipli
   }
   return raiz;
 }
-NodeCurso *buscarCurso(NodeCurso *curso, int codigo) {
-    NodeCurso *aux = NULL;
-    if (curso != NULL) {
-        if (codigo == curso->curso.codigo) {
-            aux = curso;
-        } else {
-            if (codigo < curso->curso.codigo) {
-                aux = buscarCurso(curso->esq, codigo);
-            } else {
-                aux = buscarCurso(curso->dir, codigo);
-            }
-        }
+NodeCurso *buscarCurso(NodeCurso *curso, int codigo)
+{
+  NodeCurso *aux = NULL;
+  if (curso != NULL)
+  {
+    if (codigo == curso->curso.codigo)
+    {
+      aux = curso;
     }
-    return aux;
+    else
+    {
+      if (codigo < curso->curso.codigo)
+      {
+        aux = buscarCurso(curso->esq, codigo);
+      }
+      else
+      {
+        aux = buscarCurso(curso->dir, codigo);
+      }
+    }
+  }
+  return aux;
 }
