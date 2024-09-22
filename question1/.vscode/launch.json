@@ -2,22 +2,30 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Executar",
+      "name": "(gdb) Launch",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/builddir/main",
+      "program": "${workspaceFolder}/main", // Ensure this matches the output file from your build task
       "args": [],
       "stopAtEntry": false,
-      "cwd": "${workspaceFolder}/builddir",
+      "cwd": "${workspaceFolder}", // Adjusted the working directory to match the program's location
       "environment": [],
       "externalConsole": false,
       "MIMode": "gdb",
+      "miDebuggerPath": "/usr/bin/gdb",
+      "preLaunchTask": "C: Build and Debug All .c Files",
       "setupCommands": [
         {
-          "description": "Ativar impressora automática de variáveis",
+          "description": "Enable pretty-printing for gdb",
           "text": "-enable-pretty-printing",
           "ignoreFailures": true
+        },
+        {
+          "description": "Set Disassembly Flavor to Intel",
+          "text": "-gdb-set disassembly-flavor intel",
+          "ignoreFailures": true
         }
+<<<<<<< HEAD
       ],
       "preLaunchTask": "Build e testes",
       "miDebuggerPath": "/usr/bin/gdb",
@@ -43,6 +51,8 @@
           "text": "-enable-pretty-printing",
           "ignoreFailures": true
         }
+=======
+>>>>>>> ec8e2725a9a24f7813185c6cde646d6071d4b19e
       ]
     }
   ]

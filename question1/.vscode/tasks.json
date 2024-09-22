@@ -1,52 +1,22 @@
 {
-  "version": "2.0.0",
   "tasks": [
-      {
-          "label": "Configure Meson",
-          "type": "shell",
-          "command": "meson setup builddir",
-          "group": "build",
-          "problemMatcher": [
-              "$gcc"
-          ],
-          "detail": "Configura o Meson build system"
+    {
+      "type": "shell",
+      "label": "C: Build and Debug All .c Files",
+      "command": "sh",
+      "args": [
+        "-c",
+        "cd ${workspaceFolder} && find . -name '*.c' | xargs gcc -g -I. -o main -Wall -Wextra -Werror -Wconversion -Wpointer-arith -Wfloat-equal -Wpedantic -Werror=deprecated-declarations -Wformat -Wnull-dereference"
+      ],
+      "options": {
+        "cwd": "${fileDirname}"
       },
-      {
-          "label": "Build com Meson",
-          "type": "shell",
-          "command": "ninja -C builddir",
-          "group": "build",
-          "dependsOn": "Configure Meson",
-          "problemMatcher": [
-              "$gcc"
-          ],
-          "detail": "Compila o projeto usando Ninja"
-      },
-      {
-          "label": "Run Tests",
-          "type": "shell",
-          "command": "meson test -C builddir",
-          "group": {
-              "kind": "test",
-              "isDefault": true
-          },
-          "dependsOn": "Build com Meson",
-          "problemMatcher": [
-              "$gcc"
-          ],
-          "detail": "Executa os testes do projeto"
-      },
-      // Build + testes
-      {
-          "label": "Build e testes",
-          "dependsOn": [
-              "Build com Meson",
-              "Run Tests"
-          ],
-          "group": {
-              "kind": "build",
-              "isDefault": true
-          }
-      }
-  ]
+      "problemMatcher": [
+        "$gcc"
+      ],
+      "group": "build",
+      "detail": "Task to compile all C files in debug mode and run the output."
+    }
+  ],
+  "version": "2.0.0"
 }

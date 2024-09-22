@@ -1,13 +1,3 @@
 {
-  "mesonbuild.configureOnOpen": true,
-  "C_Cpp.default.configurationProvider": "mesonbuild.mesonbuild",
-  "C_Cpp.default.compileCommands": "/home/user/meus_estudos_global/Desktop/C/4_periodo/trabalho1/question1/builddir/compile_commands.json",
-  "files.associations": {
-    ".env.*": "dotenv",
-    ".prettierrc": "json",
-    "*.css": "css",
-    "struct_curso.h": "c",
-    "struct_matricula.h": "c"
-  },
   "C_Cpp_Runner.msvcBatchPath": ""
 }
