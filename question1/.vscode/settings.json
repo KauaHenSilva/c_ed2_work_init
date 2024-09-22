@@ -8,5 +8,6 @@
     "*.css": "css",
     "struct_curso.h": "c",
     "struct_matricula.h": "c"
-  }
+  },
+  "C_Cpp_Runner.msvcBatchPath": ""
 }
