@@ -356,9 +356,8 @@ void initMenu(ListAluno *alunos, NodeCurso *cursos)
         printf("Curso sem disciplinas\n");
       else if (!getDisciplinaValida(&codDisciplina, cursoAtual->curso.nodeDisciplina, &disciplinaAtual))
         printf("Erro ao achar disciplina valida\n");
-      else
-        cursoAtual->curso.nodeDisciplina = removerDisciplina(cursoAtual->curso.nodeDisciplina, codDisciplina);
-      printf("Falta retornar um valor que diz que a disciplina foi removida\n");
+      else if (!removerDisciplina(&cursoAtual->curso.nodeDisciplina, codDisciplina))
+        printf("Falta retornar um valor que diz que a disciplina foi removida\n");
       break;
 
     case 14:
@@ -370,9 +369,8 @@ void initMenu(ListAluno *alunos, NodeCurso *cursos)
         printf("Aluno sem matriculas\n");
       else if (!getMatriculaValida(&codMatricula, alunoAtual->aluno.nodeMatricula, &matriculaAtual))
         printf("Erro ao achar matricula valida\n");
-      else
-        alunoAtual->aluno.nodeMatricula = removerMatricula(alunoAtual->aluno.nodeMatricula, codMatricula);
-      printf("Falta retornar um valor que diz que a disciplina foi removida\n");
+      else if (!removerMatricula(&alunoAtual->aluno.nodeMatricula, codMatricula))
+        printf("Falta retornar um valor que diz que a disciplina foi removida\n");
       break;
 
     case 15:

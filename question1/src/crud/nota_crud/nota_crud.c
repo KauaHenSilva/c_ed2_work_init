@@ -253,7 +253,7 @@ int cadastrarNotas(ListAluno *aluno, int codDisciplina, int semestreCursado)
       confirm = 0;
     }
 
-    if (!removerMatricula(aluno->aluno.nodeMatricula, codDisciplina))
+    if (!removerMatricula(&(aluno->aluno.nodeMatricula), codDisciplina))
     {
       if (new)
       {

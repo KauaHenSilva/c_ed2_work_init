@@ -225,48 +225,51 @@ void buscarDisciplina(NodeDisciplina *raiz, int codigo, NodeDisciplina **result)
   }
 }
 
-NodeDisciplina *removerDisciplina(NodeDisciplina *raiz, int codDisciplina)
+int removerDisciplina(NodeDisciplina **raiz, int codDisciplina)
 {
-  if (raiz != NULL)
+  int confirm = 1;
+
+  if ((*raiz) != NULL)
   {
-    if (raiz->disciplina.codDisciplina == codDisciplina)
+    if ((*raiz)->disciplina.codDisciplina == codDisciplina)
     {
-      if (raiz->esq == NULL && raiz->dir != NULL)
+      if ((*raiz)->esq == NULL && (*raiz)->dir != NULL)
       {
-        free(raiz);
-        raiz = NULL;
+        free((*raiz));
+        (*raiz) = NULL;
       }
-      else if (raiz->esq == NULL || raiz->dir == NULL)
+      else if ((*raiz)->esq == NULL || (*raiz)->dir == NULL)
       {
         NodeDisciplina *aux;
-        if (raiz->esq == NULL)
+        if ((*raiz)->esq == NULL)
         {
-          aux = raiz;
-          raiz = raiz->dir;
+          aux = (*raiz);
+          (*raiz) = (*raiz)->dir;
         }
         else
         {
-          aux = raiz;
-          raiz = raiz->esq;
+          aux = (*raiz);
+          (*raiz) = (*raiz)->esq;
         }
         free(aux);
       }
       else
       {
-        NodeDisciplina *aux = raiz->dir;
+        NodeDisciplina *aux = (*raiz)->dir;
         while (aux->esq != NULL)
           aux = aux->esq;
-        raiz->disciplina.codDisciplina = aux->disciplina.codDisciplina;
-        raiz->dir = removerDisciplina(raiz->dir, aux->disciplina.codDisciplina);
+        (*raiz)->disciplina.codDisciplina = aux->disciplina.codDisciplina;
+        confirm = removerDisciplina(&(*raiz)->dir, aux->disciplina.codDisciplina);
       }
     }
     else
     {
-      if (codDisciplina < raiz->disciplina.codDisciplina)
-        raiz->esq = removerDisciplina(raiz->esq, codDisciplina);
+      if (codDisciplina < (*raiz)->disciplina.codDisciplina)
+        confirm = removerDisciplina(&(*raiz)->esq, codDisciplina);
       else
-        raiz->dir = removerDisciplina(raiz->dir, codDisciplina);
+        confirm = removerDisciplina(&(*raiz)->dir, codDisciplina);
     }
   }
-  return raiz;
+
+  return confirm;
 }

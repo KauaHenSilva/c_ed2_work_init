@@ -18,6 +18,5 @@ void showDisciplina(NodeDisciplina *disciplina);
 // - A carga horária deve ser múltiplo de 15, variando entre 30 e 90.
 int cadastrarDisciplinas(NodeCurso *curso, int periodo);
 
-NodeDisciplina *removerDisciplina(NodeDisciplina *raiz, int codDisciplina);
+int removerDisciplina(NodeDisciplina **raiz, int codDisciplina);
 
-NodeDisciplina *removerDisciplinaCurso(NodeDisciplina *raiz, int codDisciplina);
