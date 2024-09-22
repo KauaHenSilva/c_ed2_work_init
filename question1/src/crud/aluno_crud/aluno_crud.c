@@ -26,7 +26,6 @@ static void alocAluno(ListAluno **new)
   (*new)->aluno.nome = NULL;
   (*new)->aluno.nodeMatricula = NULL;
   (*new)->aluno.nodeNota = NULL;
-  (*new)->ant = NULL;
   (*new)->prox = NULL;
 }
 
@@ -98,9 +97,20 @@ void showAluno(ListAluno *listAluno)
   printf("\tCursoId: %d\n", listAluno->aluno.codigoDoCurso);
   printf("\tMatricula: %d\n", listAluno->aluno.matricula);
   printf("\tNome: %s\n", listAluno->aluno.nome);
-  
+
   showAllMatriculas(listAluno->aluno.nodeMatricula);
   showAllNotas(listAluno->aluno.nodeNota);
+}
+
+void search_aluno(ListAluno *aluno, int code, ListAluno **result)
+{
+  if (aluno)
+  {
+    if (aluno->aluno.matricula == code && !*result)
+      *result = aluno;
+
+    search_aluno(aluno->prox, code, result);
+  }
 }
 
 /**
@@ -113,16 +123,17 @@ void showAluno(ListAluno *listAluno)
  * @param alunos Ponteiro duplo para a lista de alunos.
  * @param new Ponteiro para o novo aluno a ser inserido.
  */
-void inserctionAluno(ListAluno **listAlunos, Aluno new)
+int inserctionAluno(ListAluno **listAlunos, Aluno new)
 {
-  if (!*listAlunos)
+  int isAdd = 1;
+
+  if (!*listAlunos && isAdd)
   {
     *listAlunos = (ListAluno *)malloc(sizeof(ListAluno));
-    (*listAlunos)->ant = NULL;
     (*listAlunos)->prox = NULL;
     (*listAlunos)->aluno = new;
   }
-  else
+  else if (isAdd)
   {
     // Adidiconar no inicio
     if (strcmp(new.nome, (*listAlunos)->aluno.nome) < 0)
@@ -131,42 +142,32 @@ void inserctionAluno(ListAluno **listAlunos, Aluno new)
       *listAlunos = (ListAluno *)malloc(sizeof(ListAluno));
       (*listAlunos)->aluno = new;
       (*listAlunos)->prox = aux;
-      aux->ant = *listAlunos;
     }
     else
     {
-      // Adicionar no final
-      if (!(*listAlunos)->prox)
-      {
-        ListAluno *aux = *listAlunos;
-        while (aux->prox)
-          aux = aux->prox;
-
-        aux->prox = (ListAluno *)malloc(sizeof(ListAluno));
-        aux->prox->ant = aux;
-        aux->prox->aluno = new;
-      }
-
-      // Adicionar no meio
+      if (strcmp(new.nome, (*listAlunos)->aluno.nome) == 0)
+        isAdd = 0;
       else
       {
         ListAluno *aux = *listAlunos;
         while (aux->prox && strcmp(new.nome, aux->prox->aluno.nome) > 0)
           aux = aux->prox;
 
-        if (aux->prox)
+        if (aux->prox && strcmp(new.nome, aux->prox->aluno.nome) == 0)
+          isAdd = 0;
+        else
         {
-          ListAluno *temp = aux->prox;
-          aux->prox = (ListAluno *)malloc(sizeof(ListAluno));
-          aux->prox->ant = aux;
-          aux->prox->prox = temp;
-          aux->prox->aluno = new;
-          temp->ant = aux->prox;
+          ListAluno *newListAluno = (ListAluno *)malloc(sizeof(ListAluno));
+          newListAluno->aluno = new;
+          newListAluno->prox = aux->prox;
+          aux->prox = newListAluno;
         }
       }
     }
   }
+  return isAdd;
 }
+
 /**
  * @brief Exibe todos os alunos da lista.
  *
@@ -219,27 +220,35 @@ void freeAlunosList(ListAluno *alunos)
  */
 int cadastrarAlunos(ListAluno **alunos, int codigoCurso)
 {
+  int confirm = 1;
+
   ListAluno *new;
   alocAluno(&new);
 
   if (prencherAluno(&new->aluno, codigoCurso))
+  {
     freeAluno(new);
+    confirm = 0;
+  }
 
-  if (new)
-    inserctionAluno(alunos, new->aluno);
+  if (confirm && !inserctionAluno(alunos, new->aluno))
+    confirm = 0;
 
-  return new ? 1 : 0;
+  return confirm;
 }
 
-
-
-NodeNota *buscarNota(NodeNota *raiz, int codDisciplina){
+NodeNota *buscarNota(NodeNota *raiz, int codDisciplina)
+{
   NodeNota *aux = NULL;
-  if(raiz != NULL){
-    if (raiz->nota.codDisciplina == codDisciplina){
+  if (raiz != NULL)
+  {
+    if (raiz->nota.codDisciplina == codDisciplina)
+    {
       aux = raiz;
-    }else{
-      if(raiz->nota.codDisciplina < codDisciplina)
+    }
+    else
+    {
+      if (raiz->nota.codDisciplina < codDisciplina)
         aux = buscarNota(raiz->dir, codDisciplina);
       else
         aux = buscarNota(raiz->esq, codDisciplina);

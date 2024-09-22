@@ -16,10 +16,10 @@ void mostrarTodasAsDisciplinasDeUmCurso(NodeCurso *curso);
 void mostrarDisciplinasDeUmPeriodoDeUmCurso(NodeCurso *curso, int periodo);
 
 // - Listar todas as disciplinas nas quais um determinado aluno está matriculado.
-void mostrarDisciplinasDeUmAluno(ListAluno *aluno, NodeCurso *curso);
+void mostrarDisciplinasDeUmAluno(NodeMatricula *matriculasAluno, NodeDisciplina *disciplina);
 
 // - Listar todas as notas de disciplinas de um determinado período para um determinado aluno.
-void mostrarNotasDeUmAlunoPorPeriodo(ListAluno *aluno, NodeCurso *curso, int periodo);
+void mostrarNotasDeUmAlunoPorPeriodo(NodeNota *raiz, int periodo);
 
 // - Mostrar a nota de uma disciplina para um determinado aluno, incluindo o período e a carga horária da disciplina.
 void MostrarNotaDeUmaDisciplina();
