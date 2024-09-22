@@ -19,3 +19,5 @@ void showDisciplina(NodeDisciplina *disciplina);
 int cadastrarDisciplinas(NodeCurso *curso, int periodo);
 
 NodeDisciplina *removerDisciplina(NodeDisciplina *raiz, int codDisciplina);
+
+NodeDisciplina *removerDisciplinaCurso(NodeDisciplina *raiz, int codDisciplina);

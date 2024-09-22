@@ -133,7 +133,6 @@ NodeMatricula *esqRoot(NodeMatricula *node)
   return current;
 }
 
-// Tem que testar ainda. (Quebrou a parte que os cursos não tem o codigo correto.)
 NodeMatricula *removerMatricula(NodeMatricula *raiz, int codDisciplina)
 {
   // int confirm = 1;
@@ -177,11 +176,6 @@ NodeMatricula *removerMatricula(NodeMatricula *raiz, int codDisciplina)
       raiz->dir = removerMatricula(raiz->dir, codDisciplina);
     }
   }
-  else
-  {
-    // confirm = 0;
-  }
-
   return raiz;
 }
 

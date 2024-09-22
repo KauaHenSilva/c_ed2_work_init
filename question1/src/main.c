@@ -101,21 +101,29 @@ int main()
 
   getchar();
 
-  printf("Mostar todos cursos do campus: \n\n");
-  MostrarTodosOsCursosDoCampus(cursos);
+  // printf("Mostar todos cursos do campus: \n\n");
+  // MostrarTodosOsCursosDoCampus(cursos);
 
   getchar();
 
-  printf("Mostar todas disciplinas de um curso: \n\n");
-  printf("Curso: %d\n", cursos->curso.codigo);
-  mostrarTodasAsDisciplinasDeUmCurso(cursos);
+  // NodeCurso *curso = NULL;
+
+  // int codCurso;
+  // printf("Digite o codigo do curso: ");
+  // scanf("%d", &codCurso);
+
+  // curso = buscarCurso(cursos, codCurso);
+
+  // printf("Mostar todas disciplinas de um curso: \n\n");
+  // printf("Curso: %d\n", cursos->curso.codigo);
+  // mostrarTodasAsDisciplinasDeUmCurso(cursos);
 
   getchar();
 
-  printf("Mostar todas disciplinas de um periodo de um curso: \n\n");
-  printf("Curso: %d\n", cursos->curso.codigo);
-  printf("Periodo: %d\n", cursos->curso.nodeDisciplina->disciplina.periodo);
-  mostrarDisciplinasDeUmPeriodoDeUmCurso(cursos, cursos->curso.nodeDisciplina->disciplina.periodo);
+  // printf("Mostar todas disciplinas de um periodo de um curso: \n\n");
+  // printf("Curso: %d\n", cursos->curso.codigo);
+  // printf("Periodo: %d\n", cursos->curso.nodeDisciplina->disciplina.periodo);
+  // mostrarDisciplinasDeUmPeriodoDeUmCurso(cursos, cursos->curso.nodeDisciplina->disciplina.periodo);
 
   getchar();
 
@@ -123,10 +131,14 @@ int main()
   getchar();
 
   printf("Mostrar todas as notas de um aluno de um periodo:\n");
+  getchar();
 
-  printf(" alunos periodo:\n");
+  printf("---------------------------------------------\n");
+
+  printf("alunos periodo:\n");
   ListAluno *aluno;
   int MatAluno;
+  getchar();
 
   int periodo;
   printf("Informe a matricula do aluno: \n");
@@ -138,6 +150,12 @@ int main()
 
   mostrarNotasDeUmAlunoPorPeriodo(alunos->aluno.nodeNota, periodo);
 
+  printf("---------------------------------------------\n");
+  // imprimir todas as notas de um aluno em uma disciplina
+  // NodeNota *buscarNota(NodeNota *raiz, int codDisciplina)
+
+  // NodeCurso *curso;
+  // NodeDisciplina *disciplina;
   // imprimir todas as notas de um aluno em uma disciplina
   // NodeNota *buscarNota(NodeNota *raiz, int codDisciplina)
 
@@ -148,17 +166,17 @@ int main()
 
   int codDisciplina;
 
-  printf("Informe a matricula do aluno: \n");
-  scanf("%d", &MatAluno);
-  aluno = buscarAluno(alunos, MatAluno);
-  if (aluno != NULL)
-  {
-    printf("Informe o codigo da disciplina: \n");
-    scanf("%d", &codDisciplina);
+  // printf("Informe a matricula do aluno: \n");
+  // scanf("%d", &MatAluno);
+  // aluno = buscarAluno(alunos, MatAluno);
+  // if (aluno != NULL)
+  // {
+  //   printf("Informe o codigo da disciplina: \n");
+  //   scanf("%d", &codDisciplina);
 
-    alunos->aluno.nodeMatricula = removerMatricula(alunos->aluno.nodeMatricula, codDisciplina);
-    printf("Disciplina removida com sucesso.\n");
-  }
+  //   alunos->aluno.nodeMatricula = removerMatricula(alunos->aluno.nodeMatricula, codDisciplina);
+  //   printf("Disciplina removida com sucesso.\n");
+  // }
 
   int cadastro = cadastrarNotas(alunos, codDisciplina, 1);
   if (cadastro == 0)
@@ -170,13 +188,12 @@ int main()
 
   printf("Remover disciplinas de um curso:\n");
 
-  int codCurso;
+  // int codCurso;
 
   showAllCurso(cursos);
 
-  printf("Digite o codigo do curso: ");
-  scanf("%d", &codCurso);
-  curso = buscarCurso(cursos, codCurso);
+  // printf("Digite o codigo do curso: ");
+  // scanf("%d", &codCurso);
 
   printf("Digite o codigo da disciplina: ");
   scanf("%d", &codDisciplina);
@@ -195,5 +212,6 @@ int main()
 
   freeAlunosList(alunos);
   freeNodeCursos(cursos);
+
   return 0;
 }

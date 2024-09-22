@@ -238,6 +238,7 @@ int cadastrarNotas(ListAluno *aluno, int codDisciplina, int semestreCursado)
   if (prencherNota(new, codDisciplina, semestreCursado))
   {
     freeNodeNotas(new);
+    new = NULL;
     confirm = 0;
   }
 
