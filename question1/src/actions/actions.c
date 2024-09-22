@@ -132,11 +132,9 @@ void imprimir_historico_disciplinas(NodeNota *notas, NodeDisciplina *disciplinas
   }
 }
 
-void imprimirHistoricoAluno(ListAluno *aluno,int *codigoDoCurso, NodeCurso *curso, NodeCurso **atual){
-  NodeCurso *aux = getCursoValido(codigoDoCurso, curso, atual);
-  if(aux!= NULL){
-    printf("Curso: %s\n", curso->curso.nomeDoCurso);
-    imprimir_historico_disciplinas(aluno->aluno.nodeNota, curso->curso.nodeDisciplina);
-  }
+void imprimirHistoricoAluno(ListAluno *aluno, NodeCurso *curso){
+  printf("Curso: %s\n", curso->curso.nomeDoCurso);
+  imprimir_historico_disciplinas(aluno->aluno.nodeNota, curso->curso.nodeDisciplina);
+
   
 }

@@ -392,10 +392,9 @@ void initMenu(ListAluno *alunos, NodeCurso *cursos)
 
     case 15:
       printf("Mostrar Histórico de um Aluno\n");
-      if (getAlunoValido(&codAluno, alunos, &alunoAtual))
+      if (getAlunoValido(&codAluno, alunos, &alunoAtual) && getCursoValido(&codCurso, cursos, &cursoAtual))
       {
-        //int *codigoDoCurso, NodeCurso *curso, NodeCurso **atual
-        imprimirHistoricoAluno(alunoAtual, &codCurso, cursos, &cursoAtual);
+        imprimirHistoricoAluno(alunoAtual, cursoAtual);
       }
       
       
