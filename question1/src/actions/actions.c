@@ -106,8 +106,8 @@ void mostrarNotaDeUmaDisciplina(NodeNota *raiz, NodeDisciplina *disciplina)
   {
     if (raiz->nota.codDisciplina == disciplina->disciplina.codDisciplina)
       showNota(raiz);
-    func(raiz->esq, disciplina);
-    func(raiz->dir, disciplina);
+    mostrarNotaDeUmaDisciplina(raiz->esq, disciplina);
+    mostrarNotaDeUmaDisciplina(raiz->dir, disciplina);
   }
 }
 
