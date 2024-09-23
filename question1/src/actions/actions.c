@@ -100,12 +100,15 @@ void mostrarNotasDeUmAlunoPorPeriodo(NodeNota *raiz, int periodo)
   }
 }
 
-void MostrarNotaDeUmaDisciplina(ListAluno *aluno, NodeNota *notaAtual, NodeDisciplina *disciplina){
-  printf("Aluno: %s\n", aluno->aluno.nome);
-  printf("Disciplina: %s\n", disciplina->disciplina.nomeDaDisciplina);
-  printf("Nota: %d\n", notaAtual->nota.notaFinal);
-  printf("Periodo: %d\n", disciplina->disciplina.periodo);
-  printf("Carga Horaria: %d\n", disciplina->disciplina.cargaHoraria);
+void mostrarNotaDeUmaDisciplina(NodeNota *raiz, NodeDisciplina *disciplina)
+{
+  if (raiz)
+  {
+    if (raiz->nota.codDisciplina == disciplina->disciplina.codDisciplina)
+      showNota(raiz);
+    func(raiz->esq, disciplina);
+    func(raiz->dir, disciplina);
+  }
 }
 
 void imprimir_historico_disciplinas(NodeNota *notas, NodeDisciplina *disciplinas)
@@ -116,12 +119,8 @@ void imprimir_historico_disciplinas(NodeNota *notas, NodeDisciplina *disciplinas
     NodeNota *nota = buscarNotas(notas, disciplinas->disciplina.codDisciplina);
     if (nota != NULL)
     {
-      printf("Disciplina: %s\n", disciplinas->disciplina.nomeDaDisciplina);
-      printf("Nota: %d\n", nota->nota.notaFinal);
-      printf("Semestre cursado: %d\n", nota->nota.semestreCursado);
-      printf("Carga horaria: %d\n", disciplinas->disciplina.cargaHoraria);
-      printf("Periodo: %d\n", disciplinas->disciplina.periodo);
-      printf("\n");
+      showNota(nota);
+      showDisciplina(disciplinas);
     }
 
     // Imprimir as disciplinas do lado esquerdo
@@ -132,9 +131,8 @@ void imprimir_historico_disciplinas(NodeNota *notas, NodeDisciplina *disciplinas
   }
 }
 
-void imprimirHistoricoAluno(ListAluno *aluno, NodeCurso *curso){
+void imprimirHistoricoAluno(ListAluno *aluno, NodeCurso *curso)
+{
   printf("Curso: %s\n", curso->curso.nomeDoCurso);
   imprimir_historico_disciplinas(aluno->aluno.nodeNota, curso->curso.nodeDisciplina);
-
-  
 }

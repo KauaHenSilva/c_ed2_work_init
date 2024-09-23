@@ -2,20 +2,27 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "C/C++ Runner: Debug Session",
+      "name": "(gdb) Launch",
       "type": "cppdbg",
       "request": "launch",
+      "program": "${workspaceFolder}/main", // Ensure this matches the output file from your build task
       "args": [],
       "stopAtEntry": false,
+      "cwd": "${workspaceFolder}", // Adjusted the working directory to match the program's location
+      "environment": [],
       "externalConsole": false,
-      "cwd": "/home/rayssaalves/c_ed1_work_init/question1/src",
-      "program": "/home/rayssaalves/c_ed1_work_init/question1/src/build/Debug/outDebug",
       "MIMode": "gdb",
-      "miDebuggerPath": "gdb",
+      "miDebuggerPath": "/usr/bin/gdb",
+      "preLaunchTask": "C: Build and Debug All .c Files",
       "setupCommands": [
         {
           "description": "Enable pretty-printing for gdb",
           "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        },
+        {
+          "description": "Set Disassembly Flavor to Intel",
+          "text": "-gdb-set disassembly-flavor intel",
           "ignoreFailures": true
         }
       ]
