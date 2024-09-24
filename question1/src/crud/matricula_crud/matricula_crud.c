@@ -190,18 +190,13 @@ NodeMatricula *buscarMatriculas(NodeMatricula *raiz, int codDisciplina)
   if (raiz != NULL)
   {
     if (codDisciplina == raiz->codDisciplina)
-    {
       aux = raiz;
-    }
     else if (codDisciplina < raiz->codDisciplina)
-    {
       aux = buscarMatriculas(raiz->esq, codDisciplina);
-    }
     else
-    {
       aux = buscarMatriculas(raiz->dir, codDisciplina);
-    }
   }
+
   return aux; // Retorna o ponteiro encontrado ou NULL
 }
 
@@ -211,23 +206,23 @@ ListAluno *buscarAluno(ListAluno *alunos, int matricula)
 {
   ListAluno *aluno = alunos;
   while (aluno != NULL && aluno->aluno.matricula == matricula)
-  {
     aluno = aluno->prox;
-  }
+
   return aluno;
 }
 
 int VerificarAlunosMatriculados(ListAluno *aluno, int disciplina)
 {
   int encontrou = 0;
+
   while (aluno != NULL)
   {
     if (aluno->aluno.nodeMatricula != NULL && aluno->aluno.nodeMatricula->codDisciplina == disciplina)
-    {
       encontrou += 1;
-    }
+
     aluno = aluno->prox;
   }
+
   return encontrou;
 }
 

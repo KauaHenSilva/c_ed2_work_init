@@ -80,7 +80,7 @@ static int prencherAluno(Aluno *aluno, int codigoCurso)
   if (!confirm)
     printf("Não foi possivel execultar o prencher aluno!");
 
-  return !confirm;
+  return confirm;
 }
 
 /**
@@ -108,8 +108,8 @@ void search_aluno(ListAluno *aluno, int code, ListAluno **result)
   {
     if (aluno->aluno.matricula == code && !*result)
       *result = aluno;
-
-    search_aluno(aluno->prox, code, result);
+    else
+      search_aluno(aluno->prox, code, result);
   }
 }
 
@@ -125,15 +125,17 @@ void search_aluno(ListAluno *aluno, int code, ListAluno **result)
  */
 int inserctionAluno(ListAluno **listAlunos, Aluno new)
 {
+  // Verifique essa logica eu nunca fiz isso antes.
+
   int isAdd = 1;
 
-  if (!*listAlunos && isAdd)
+  if (!*listAlunos)
   {
     *listAlunos = (ListAluno *)malloc(sizeof(ListAluno));
     (*listAlunos)->prox = NULL;
     (*listAlunos)->aluno = new;
   }
-  else if (isAdd)
+  else
   {
     // Adidiconar no inicio
     if (strcmp(new.nome, (*listAlunos)->aluno.nome) < 0)
@@ -225,7 +227,7 @@ int cadastrarAlunos(ListAluno **alunos, int codigoCurso)
   ListAluno *new;
   alocAluno(&new);
 
-  if (prencherAluno(&new->aluno, codigoCurso))
+  if (!prencherAluno(&new->aluno, codigoCurso))
   {
     freeAluno(new);
     confirm = 0;
@@ -236,4 +238,3 @@ int cadastrarAlunos(ListAluno **alunos, int codigoCurso)
 
   return confirm;
 }
-

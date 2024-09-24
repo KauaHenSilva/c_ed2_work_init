@@ -106,7 +106,7 @@ static int prencherCurso(NodeCurso *node)
   if (!confirm)
     printf("Não foi possivel execultar o prencher aluno!");
 
-  return !confirm;
+  return confirm;
 }
 
 /**
@@ -225,7 +225,7 @@ int cadastrarCursos(NodeCurso **nodeCurso)
 {
   int confirm = 1;
   NodeCurso *new = alocCurso();
-  if (prencherCurso(new))
+  if (!prencherCurso(new))
   {
     freeNodeCurso(new);
     confirm = 0;
@@ -286,25 +286,20 @@ NodeDisciplina *removerDisciplinaDeUmCurso(NodeDisciplina *raiz, int codDiscipli
   }
   return raiz;
 }
+
 NodeCurso *buscarCurso(NodeCurso *curso, int codigo)
 {
   NodeCurso *aux = NULL;
   if (curso != NULL)
   {
     if (codigo == curso->curso.codigo)
-    {
       aux = curso;
-    }
     else
     {
       if (codigo < curso->curso.codigo)
-      {
         aux = buscarCurso(curso->esq, codigo);
-      }
       else
-      {
         aux = buscarCurso(curso->dir, codigo);
-      }
     }
   }
   return aux;

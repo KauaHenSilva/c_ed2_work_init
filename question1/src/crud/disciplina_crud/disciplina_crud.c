@@ -96,7 +96,7 @@ static int prencherDisciplina(NodeDisciplina *node, int periodo)
   if (!confirm)
     printf("Não foi possivel execultar o prencher disciplina!");
 
-  return !confirm;
+  return confirm;
 }
 
 /*
@@ -194,7 +194,7 @@ int cadastrarDisciplinas(NodeCurso *curso, int periodo)
   NodeDisciplina *new;
   alocDisciplina(&new);
 
-  if (prencherDisciplina(new, periodo))
+  if (!prencherDisciplina(new, periodo))
   {
     freeNodeDisciplina(new);
     confirm = 0;
@@ -274,4 +274,3 @@ int removerDisciplina(NodeDisciplina **raiz, int codDisciplina)
 
   return confirm;
 }
-

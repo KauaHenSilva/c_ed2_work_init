@@ -57,36 +57,6 @@ void freeNodeNotas(NodeNota *raiz)
   }
 }
 
-#if DEBUG_MODE
-/**
- * @brief Preenche os dados de uma nota com base na entrada do usuário.
- *
- * Solicita ao usuário o código da disciplina para preencher a nota.
- * Se a entrada for inválida, a função retorna um erro.
- *
- * @param raizNota Ponteiro para a raiz de nota a ser preenchido.
- * @param raizMatricula Ponteiro para a raiz de matricula a ser escolhida.
- * @return Retorna 1 se o preenchimento foi bem-sucedido, 0 caso contrário.
- */
-static int prencherNota(NodeNota *raizNota, int codDisciplina, int semestreCursado)
-{
-  printf("Para sair só digite 'sair'.\n");
-
-  int confirm = 1;
-  char *enunciado;
-
-  raizNota->nota.codDisciplina = codDisciplina;
-  raizNota->nota.semestreCursado = semestreCursado;
-
-  enunciado = "Digite a nota final do aluno: ";
-  confirm = getInt(&raizNota->nota.notaFinal, enunciado);
-
-  if (!confirm)
-    printf("Não foi possivel execultar o prencher a nota: ");
-
-  return !confirm;
-}
-#else
 /**
  * @brief Preenche os dados de uma nota com base na entrada do usuário.
  *
@@ -113,9 +83,8 @@ static int prencherNota(NodeNota *raizNota, int codDisciplina, int semestreCursa
   if (!confirm)
     printf("Não foi possivel execultar o prencher a nota: ");
 
-  return !confirm;
+  return confirm;
 }
-#endif
 
 /**
  * @brief Exibe os dados de uma nota.
@@ -160,56 +129,6 @@ int inserctionNota(NodeNota **raiz, NodeNota *new)
   return confirm;
 }
 
-// NodeMatricula *remover(NodeMatricula *raiz, int codDisciplina)
-// {
-//   if (raiz == NULL)
-//   {
-//     return NULL;
-//   }
-
-//   // Caso base: encontrar o nó a ser removido
-//   if (raiz->codDisciplina == codDisciplina)
-//   {
-//     // Caso 1: Nó folha
-//     if (raiz->esq == NULL && raiz->dir == NULL)
-//     {
-//       free(raiz);
-//       return NULL;
-//     }
-//     // Caso 2: Nó com um filho
-//     else if (raiz->esq == NULL || raiz->dir == NULL)
-//     {
-//       NodeMatricula *temp = (raiz->esq != NULL) ? raiz->esq : raiz->dir;
-//       free(raiz);
-//       return temp;
-//     }
-//     // Caso 3: Nó com dois filhos
-//     else
-//     {
-//       NodeMatricula *aux = raiz->esq;
-//       while (aux->dir != NULL)
-//       {
-//         aux = aux->dir;
-//       }
-//       raiz->codDisciplina = aux->codDisciplina;
-//       raiz->esq = remover(raiz->esq, aux->codDisciplina);
-//       return raiz;
-//     }
-//   }
-//   // Se o código da disciplina a ser removido é menor que o código do nó atual, continue na subárvore esquerda
-//   else if (codDisciplina < raiz->codDisciplina)
-//   {
-//     raiz->esq = remover(raiz->esq, codDisciplina);
-//   }
-//   // Se o código da disciplina a ser removido é maior que o código do nó atual, continue na subárvore direita
-//   else
-//   {
-//     raiz->dir = remover(raiz->dir, codDisciplina);
-//   }
-
-//   return raiz;
-// }
-
 /**
  * @brief Exibe todas as notas de uma árvore binária.
  *
@@ -231,24 +150,20 @@ void showAllNotas(NodeNota *raiz)
 NodeNota *buscarNotas(NodeNota *nota, int codDisciplina)
 {
   NodeNota *aux = NULL;
+  
   if (nota)
   {
     if (codDisciplina == nota->nota.codDisciplina)
-    {
       aux = nota;
-    }
     else
     {
       if (codDisciplina < nota->nota.codDisciplina)
-      {
         aux = buscarNotas(nota->esq, codDisciplina);
-      }
       else
-      {
         aux = buscarNotas(nota->dir, codDisciplina);
-      }
     }
   }
+
   return aux;
 }
 
@@ -259,7 +174,7 @@ int cadastrarNotas(ListAluno *aluno, int codDisciplina, int semestreCursado)
   NodeNota *new;
   alocNota(&new);
 
-  if (prencherNota(new, codDisciplina, semestreCursado))
+  if (!prencherNota(new, codDisciplina, semestreCursado))
   {
     freeNodeNotas(new);
     new = NULL;
