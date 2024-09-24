@@ -11,47 +11,47 @@
 
 #include "menu/menu.h"
 
-void mainCadrastrarMatricula(ListAluno *aluno, NodeDisciplina *disciplina)
-{
-  if (disciplina)
-  {
-    cadastrarMatriculas(aluno, disciplina->disciplina.codDisciplina);
-    mainCadrastrarMatricula(aluno, disciplina->esq);
-    mainCadrastrarMatricula(aluno, disciplina->dir);
-  }
-}
+// void mainCadrastrarMatricula(ListAluno *aluno, NodeDisciplina *disciplina)
+// {
+//   if (disciplina)
+//   {
+//     cadastrarMatriculas(aluno, disciplina->disciplina.codDisciplina);
+//     mainCadrastrarMatricula(aluno, disciplina->esq);
+//     mainCadrastrarMatricula(aluno, disciplina->dir);
+//   }
+// }
 
-void mainCadrastrarAllMatriculaCurse(ListAluno *aluno, NodeCurso *curso)
-{
-  if (curso)
-  {
-    if (curso->curso.codigo == aluno->aluno.codigoDoCurso)
-      mainCadrastrarMatricula(aluno, curso->curso.nodeDisciplina);
-    mainCadrastrarAllMatriculaCurse(aluno, curso->esq);
-    mainCadrastrarAllMatriculaCurse(aluno, curso->dir);
-  }
-}
+// void mainCadrastrarAllMatriculaCurse(ListAluno *aluno, NodeCurso *curso)
+// {
+//   if (curso)
+//   {
+//     if (curso->curso.codigo == aluno->aluno.codigoDoCurso)
+//       mainCadrastrarMatricula(aluno, curso->curso.nodeDisciplina);
+//     mainCadrastrarAllMatriculaCurse(aluno, curso->esq);
+//     mainCadrastrarAllMatriculaCurse(aluno, curso->dir);
+//   }
+// }
 
-void mainCadrastrarNota(ListAluno *aluno, NodeDisciplina *disciplina)
-{
-  if (disciplina)
-  {
-    cadastrarNotas(aluno, disciplina->disciplina.codDisciplina, rand() % disciplina->disciplina.periodo + 1);
-    mainCadrastrarNota(aluno, disciplina->esq);
-    mainCadrastrarNota(aluno, disciplina->dir);
-  }
-}
+// void mainCadrastrarNota(ListAluno *aluno, NodeDisciplina *disciplina)
+// {
+//   if (disciplina)
+//   {
+//     cadastrarNotas(aluno, disciplina->disciplina.codDisciplina, rand() % disciplina->disciplina.periodo + 1);
+//     mainCadrastrarNota(aluno, disciplina->esq);
+//     mainCadrastrarNota(aluno, disciplina->dir);
+//   }
+// }
 
-void mainCadrastrarAllNotaCurse(ListAluno *aluno, NodeCurso *curso)
-{
-  if (curso)
-  {
-    if (curso->curso.codigo == aluno->aluno.codigoDoCurso)
-      mainCadrastrarNota(aluno, curso->curso.nodeDisciplina);
-    mainCadrastrarAllNotaCurse(aluno, curso->esq);
-    mainCadrastrarAllNotaCurse(aluno, curso->dir);
-  }
-}
+// void mainCadrastrarAllNotaCurse(ListAluno *aluno, NodeCurso *curso)
+// {
+//   if (curso)
+//   {
+//     if (curso->curso.codigo == aluno->aluno.codigoDoCurso)
+//       mainCadrastrarNota(aluno, curso->curso.nodeDisciplina);
+//     mainCadrastrarAllNotaCurse(aluno, curso->esq);
+//     mainCadrastrarAllNotaCurse(aluno, curso->dir);
+//   }
+// }
 
 int main()
 {
