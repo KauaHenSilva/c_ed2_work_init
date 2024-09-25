@@ -204,50 +204,46 @@ int cadastrarCursos(NodeCurso **nodeCurso)
   return confirm;
 }
 
-NodeDisciplina *removerDisciplinaDeUmCurso(NodeDisciplina *raiz, int codDisciplina)
+
+
+
+int removerDisciplinaDeUmCurso(NodeDisciplina **raiz, int codDisciplina)
 {
-  if (raiz != NULL)
+  NodeDisciplina *endFilho = NULL;
+  int removeu = 0;
+  if (*raiz != NULL)
   {
-    if (raiz->disciplina.codDisciplina == codDisciplina)
+    if ((*raiz)->disciplina.codDisciplina == codDisciplina)
     {
-      if (raiz->esq == NULL && raiz->dir != NULL)
+      if (ehFolha(*raiz))
       {
         free(raiz);
         raiz = NULL;
       }
-      else if (raiz->esq == NULL || raiz->dir == NULL)
+      else if ((endFilho = soUmFilho(*raiz)) != NULL)
       {
         NodeDisciplina *aux;
-        if (raiz->esq == NULL)
-        {
-          aux = raiz;
-          raiz = raiz->dir;
-        }
-        else
-        {
-          aux = raiz;
-          raiz = raiz->esq;
-        }
+        aux = *raiz;
+        *raiz = endFilho;
         free(aux);
       }
       else
       {
-        NodeDisciplina *aux = raiz->dir;
-        while (aux->esq != NULL)
-          aux = aux->esq;
-        raiz->disciplina.codDisciplina = aux->disciplina.codDisciplina;
-        raiz->dir = removerDisciplinaDeUmCurso(raiz->dir, aux->disciplina.codDisciplina);
+        NodeDisciplina* menorFilhoDir = menorFilho((*raiz)->dir);  // Encontra o menor filho da subárvore direita
+        (*raiz)->disciplina.codDisciplina = menorFilhoDir->disciplina.codDisciplina;
+        (*raiz)->dir = removerDisciplinaDeUmCurso(&(*raiz)->dir, menorFilhoDir->disciplina.codDisciplina);
       }
+      removeu = 1;
     }
     else
     {
-      if (codDisciplina < raiz->disciplina.codDisciplina)
-        raiz->esq = removerDisciplinaDeUmCurso(raiz->esq, codDisciplina);
+      if (codDisciplina < (*raiz)->disciplina.codDisciplina)
+        (*raiz)->esq = removerDisciplinaDeUmCurso(&(*raiz)->esq, codDisciplina);
       else
-        raiz->dir = removerDisciplinaDeUmCurso(raiz->dir, codDisciplina);
+        (*raiz)->dir = removerDisciplinaDeUmCurso(&(*raiz)->dir, codDisciplina);
     }
   }
-  return raiz;
+  return removeu;
 }
 
 int searchCourse(NodeCurso *curso, int codigo, NodeCurso **result)

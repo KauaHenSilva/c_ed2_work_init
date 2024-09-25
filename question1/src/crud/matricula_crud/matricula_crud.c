@@ -139,40 +139,75 @@ NodeMatricula *esqRoot(NodeMatricula *node)
   return current;
 }
 
+/**
+ * @brief Verifica se é um nó folha.
+ *
+ * esta função verifica se o nó é folha, ou seja, se tando a esquerda
+ * quanto a direita são nulos.
+ *
+ * @param raiz Ponteiro para o nó raiz da árvore de disciplinas.
+ */
+int ehFolha(NodeMatricula *raiz){
+  return (raiz->esq == NULL && raiz->dir == NULL);
+}
+
+/**
+ * @brief Verifica se é o nó possui um filho..
+ *
+ * esta função verifica qual filho o nó tem, se é o da direita ou da esquerda.
+ *
+ * @param raiz Ponteiro para o nó raiz da árvore de disciplinas.
+ */
+NodeMatricula *soUmFilho(NodeMatricula *raiz){
+  NodeMatricula *aux = NULL;
+  if(raiz->esq == NULL && raiz->dir!= NULL)
+    aux = raiz->dir;
+  else if(raiz->esq!= NULL && raiz->dir == NULL)
+    aux = raiz->esq;
+  return aux;
+}
+
+
+NodeMatricula *menorFilho(NodeMatricula *raiz){
+  NodeMatricula* atual = raiz;
+    while (atual && atual->esq != NULL) {
+        atual = atual->esq; 
+    }
+  return atual;
+}
+
+/**
+ * @brief Remove um nó da arvore.
+ *
+ * esta função remove um nó da arvore, nos 3 diferentes casos,
+ * quando é um nó folha, um nó com apenas um filho, ou um nó com 2 filhos.
+ *
+ * @param raiz Ponteiro duplo para o nó raiz da árvore de disciplinas.
+ * @param codDisciplina codigo da disciplina que deseja remover a matricula
+ */
+
 int removerMatricula(NodeMatricula **raiz, int codDisciplina)
 {
   int confirm = 1;
-
+  NodeMatricula *endFilho = NULL;
   if ((*raiz) != NULL)
   {
     if ((*raiz)->codDisciplina == codDisciplina)
     {
-      if ((*raiz)->esq != NULL && (*raiz)->dir != NULL)
+      if (ehFolha(*raiz))
       {
         free((*raiz));
         (*raiz) = NULL;
       }
-      else if ((*raiz)->esq == NULL || (*raiz)->dir == NULL)
+      else if ((endFilho = soUmFilho(*raiz)) != NULL)
       {
-        if ((*raiz)->esq == NULL)
-        {
-          NodeMatricula *aux = (*raiz);
-          (*raiz) = (*raiz)->dir;
-          free(aux);
-        }
-        else if ((*raiz)->dir == NULL)
-        {
-          NodeMatricula *aux = (*raiz);
-          (*raiz) = (*raiz)->esq;
-          free(aux);
-        }
+        NodeMatricula *aux = (*raiz);
+        (*raiz) = endFilho;
+        free(aux);
       }
       else
       {
-        NodeMatricula *aux = (*raiz)->dir;
-        while (aux->esq != NULL)
-          aux = aux->esq;
-
+        NodeMatricula *aux = menorFilho((*raiz)->dir);
         (*raiz)->codDisciplina = aux->codDisciplina;
         confirm = removerMatricula(&(*raiz)->dir, aux->codDisciplina);
       }
@@ -206,13 +241,57 @@ NodeMatricula *buscarMatriculas(NodeMatricula *raiz, int codDisciplina)
   return aux; // Retorna o ponteiro encontrado ou NULL
 }
 
+<<<<<<< HEAD
+=======
+/**
+ * @brief Busca um aluno na lista de alunos pelo número de matrícula.
+ *
+ * Esta função percorre a lista encadeada de alunos em busca de um aluno
+ * cujo número de matrícula corresponde ao valor fornecido como parâmetro.
+ * Se o aluno for encontrado, retorna um ponteiro para o nó do aluno; caso
+ * contrário, retorna NULL.
+ *
+ * @param alunos Ponteiro para a lista encadeada de alunos.
+ * @param matricula Número da matrícula do aluno a ser buscado.
+ * @return Retorna um ponteiro para o nó do aluno encontrado ou NULL se não encontrado.
+ */
+
+>>>>>>> teste
 ListAluno *buscarAluno(ListAluno *alunos, int matricula)
 {
   ListAluno *aluno = alunos;
   while (aluno != NULL && aluno->aluno.matricula == matricula)
     aluno = aluno->prox;
 
+<<<<<<< HEAD
   return aluno;
+=======
+/**
+ * @brief Verifica o número de alunos matriculados em uma disciplina específica.
+ *
+ * Esta função percorre uma lista de alunos e conta quantos alunos
+ * estão matriculados na disciplina cujo código é fornecido como parâmetro.
+ * O contador é incrementado sempre que um aluno possui uma matrícula
+ * associada à disciplina especificada.
+ *
+ * @param aluno Ponteiro para a lista encadeada de alunos.
+ * @param disciplina Código da disciplina a ser verificada.
+ * @return Retorna o número de alunos matriculados na disciplina.
+ */
+
+int VerificarAlunosMatriculados(ListAluno *aluno, int disciplina)
+{
+  int encontrou = 0;
+  while (aluno != NULL)
+  {
+    if (aluno->aluno.nodeMatricula != NULL && aluno->aluno.nodeMatricula->codDisciplina == disciplina)
+    {
+      encontrou += 1;
+    }
+    aluno = aluno->prox;
+  }
+  return encontrou;
+>>>>>>> teste
 }
 
 /**

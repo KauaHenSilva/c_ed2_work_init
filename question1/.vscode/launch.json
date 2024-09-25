@@ -34,8 +34,13 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": false,
+<<<<<<< HEAD
       "cwd": "/home/rayssaalves/c_ed2_work_init/question1/src/crud/curso_crud",
       "program": "/home/rayssaalves/c_ed2_work_init/question1/src/crud/curso_crud/build/Debug/outDebug",
+=======
+      "cwd": "/home/rayssaalves/c_ed2_work_init/question1/src/menu",
+      "program": "/home/rayssaalves/c_ed2_work_init/question1/src/menu/build/Debug/outDebug",
+>>>>>>> teste
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
