@@ -7,8 +7,8 @@
 
 void freeNodeDisciplinas(NodeDisciplina *raiz);
 void showAllDisciplina(NodeDisciplina *disciplina);
-void buscarDisciplina(NodeDisciplina *raiz, int codigo, NodeDisciplina **result);
 void showDisciplina(NodeDisciplina *disciplina);
+int buscarDisciplina(NodeDisciplina *raiz, int codigo, NodeDisciplina **result);
 
 // ---------------------------------------------------------------------------------------
 

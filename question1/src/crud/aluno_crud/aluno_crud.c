@@ -57,30 +57,11 @@ static void freeAluno(ListAluno *listAluno)
  *
  * @return Retorna 0 se os dados foram preenchidos com sucesso, ou 1 se houve algum erro.
  */
-static int prencherAluno(Aluno *aluno, int codigoCurso)
+static void prencherAluno(Aluno *aluno, int codigoCurso)
 {
-  printf("Para sair só digite 'sair'.\n");
-
-  int confirm = 1;
-  char *enunciado;
-
   aluno->codigoDoCurso = codigoCurso;
-
-  enunciado = "Digite a matricula do aluno: ";
-  confirm = getInt(&aluno->matricula, enunciado);
-
-  if (confirm)
-  {
-    enunciado = "Digite o nome do aluno: ";
-    confirm = getString(&aluno->nome, enunciado);
-  }
-
-  // Falta alguns.
-
-  if (!confirm)
-    printf("Não foi possivel execultar o prencher aluno!");
-
-  return !confirm;
+  getInt(&aluno->matricula, "Digite a matricula do aluno: ");
+  getString(&aluno->nome, "Digite o nome do aluno: ");
 }
 
 /**
@@ -102,15 +83,21 @@ void showAluno(ListAluno *listAluno)
   showAllNotas(listAluno->aluno.nodeNota);
 }
 
-void search_aluno(ListAluno *aluno, int code, ListAluno **result)
+int searchAluno(ListAluno *aluno, int code, ListAluno **result)
 {
+  int confirm = 1;
+
   if (aluno)
   {
     if (aluno->aluno.matricula == code && !*result)
       *result = aluno;
-
-    search_aluno(aluno->prox, code, result);
+    else
+      confirm = searchAluno(aluno->prox, code, result);
   }
+  else
+    confirm = 0;
+
+  return confirm;
 }
 
 /**
@@ -127,13 +114,13 @@ int inserctionAluno(ListAluno **listAlunos, Aluno new)
 {
   int isAdd = 1;
 
-  if (!*listAlunos && isAdd)
+  if (!*listAlunos)
   {
     *listAlunos = (ListAluno *)malloc(sizeof(ListAluno));
     (*listAlunos)->prox = NULL;
     (*listAlunos)->aluno = new;
   }
-  else if (isAdd)
+  else
   {
     // Adidiconar no inicio
     if (strcmp(new.nome, (*listAlunos)->aluno.nome) < 0)
@@ -224,35 +211,13 @@ int cadastrarAlunos(ListAluno **alunos, int codigoCurso)
 
   ListAluno *new;
   alocAluno(&new);
+  prencherAluno(&new->aluno, codigoCurso);
 
-  if (prencherAluno(&new->aluno, codigoCurso))
+  if (!inserctionAluno(alunos, new->aluno))
   {
     freeAluno(new);
     confirm = 0;
   }
 
-  if (confirm && !inserctionAluno(alunos, new->aluno))
-    confirm = 0;
-
   return confirm;
-}
-
-NodeNota *buscarNota(NodeNota *raiz, int codDisciplina)
-{
-  NodeNota *aux = NULL;
-  if (raiz != NULL)
-  {
-    if (raiz->nota.codDisciplina == codDisciplina)
-    {
-      aux = raiz;
-    }
-    else
-    {
-      if (raiz->nota.codDisciplina < codDisciplina)
-        aux = buscarNota(raiz->dir, codDisciplina);
-      else
-        aux = buscarNota(raiz->esq, codDisciplina);
-    }
-  }
-  return aux;
 }

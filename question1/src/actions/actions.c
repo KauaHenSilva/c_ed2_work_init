@@ -1,4 +1,5 @@
 #include "actions.h"
+#include <stdio.h>
 
 #include "../crud/aluno_crud/aluno_crud.h"
 #include "../crud/curso_crud/curso_crud.h"
@@ -64,30 +65,6 @@ void mostrarDisciplinasDeUmAluno(NodeMatricula *matriculasAluno, NodeDisciplina 
   }
 }
 
-// static void showAllNotasByPeriod(NodeNota *nota, NodeDisciplina *disciplina, int periodo)
-// {
-//   if (disciplina)
-//   {
-//     if (disciplina->disciplina.periodo == periodo)
-//       showNota(nota);
-
-//     showAllNotasByPeriod(nota, disciplina->esq, periodo);
-//     showAllNotasByPeriod(nota, disciplina->dir, periodo);
-//   }
-// }
-
-// void mostrarNotasDeUmAlunoPorPeriodo(ListAluno *aluno, NodeCurso *curso, int periodo)
-// {
-//   if (curso)
-//   {
-//     if (aluno->aluno.codigoDoCurso == curso->curso.codigo)
-//       showAllNotasByPeriod(aluno->aluno.nodeNota, curso->curso.nodeDisciplina, periodo);
-
-//     mostrarNotasDeUmAlunoPorPeriodo(aluno, curso->esq, periodo);
-//     mostrarNotasDeUmAlunoPorPeriodo(aluno, curso->dir, periodo);
-//   }
-// }
-
 void mostrarNotasDeUmAlunoPorPeriodo(NodeNota *raiz, int periodo)
 {
   if (raiz)
@@ -96,5 +73,36 @@ void mostrarNotasDeUmAlunoPorPeriodo(NodeNota *raiz, int periodo)
       showNota(raiz);
     mostrarNotasDeUmAlunoPorPeriodo(raiz->esq, periodo);
     mostrarNotasDeUmAlunoPorPeriodo(raiz->dir, periodo);
+  }
+}
+
+void mostrarNotaDeUmaDisciplina(NodeNota *raiz, NodeDisciplina *disciplina)
+{
+  if (raiz)
+  {
+    if (raiz->nota.codDisciplina == disciplina->disciplina.codDisciplina)
+      showNota(raiz);
+    mostrarNotaDeUmaDisciplina(raiz->esq, disciplina);
+    mostrarNotaDeUmaDisciplina(raiz->dir, disciplina);
+  }
+}
+
+void imprimirHistoricoAluno(ListAluno *aluno, NodeCurso *cursos)
+{
+  NodeCurso *curso;
+
+  if (searchCourse(cursos, aluno->aluno.codigoDoCurso, &curso))
+    printf("- Nome do curso: %s\n", curso->curso.nomeDoCurso);
+  else
+    printf("- Curso não encontrado!\n");
+
+  printf("- disciplinas:\n");
+  showAllDisciplina(curso->curso.nodeDisciplina);
+
+  printf("- Notas por periodo:\n");
+  for (int i = 1; i <= curso->curso.quantidadeDePeriodo; i++)
+  {
+    printf("- Notas do aluno %d no periodo %d: \n", aluno->aluno.matricula, i);
+    mostrarNotasDeUmAlunoPorPeriodo(aluno->aluno.nodeNota, i);
   }
 }

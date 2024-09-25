@@ -7,7 +7,9 @@
 void freeNodeCursos(NodeCurso *node);
 void showAllCurso(NodeCurso *curso);
 void isCurseOpen(NodeCurso *curso, int id, int *bool);
-void search_course(NodeCurso *raiz, int code, NodeCurso **result);
+int searchCourse(NodeCurso *raiz, int code, NodeCurso **result);
+int inserctionCurso(NodeCurso **raiz, NodeCurso *node);
+
 
 // ---------------------------------------------------------------------------------------
 
@@ -15,6 +17,5 @@ void search_course(NodeCurso *raiz, int code, NodeCurso **result);
 // - Não é necessário cadastrar disciplinas no momento do cadastro do curso.
 int cadastrarCursos(NodeCurso **nodeCurso);
 
-NodeCurso *buscarCurso(NodeCurso *curso, int codigo);
 
 // - Permitir a remoção de uma disciplina de um curso, desde que nenhum aluno esteja matriculado nela.

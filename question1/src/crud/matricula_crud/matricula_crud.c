@@ -112,8 +112,10 @@ int inserctionMatricula(NodeMatricula **raiz, NodeMatricula *new)
   return confirm;
 }
 
-void search_matricula(NodeMatricula *raiz, int code, NodeMatricula **result)
+int search_matricula(NodeMatricula *raiz, int code, NodeMatricula **result)
 {
+  int confirm = 1;
+
   if (raiz)
   {
     if (raiz->codDisciplina == code)
@@ -123,6 +125,10 @@ void search_matricula(NodeMatricula *raiz, int code, NodeMatricula **result)
     else if (raiz->codDisciplina > code)
       search_matricula(raiz->esq, code, result);
   }
+  else
+    confirm = 0;
+
+  return confirm;
 }
 
 NodeMatricula *esqRoot(NodeMatricula *node)
@@ -190,45 +196,23 @@ NodeMatricula *buscarMatriculas(NodeMatricula *raiz, int codDisciplina)
   if (raiz != NULL)
   {
     if (codDisciplina == raiz->codDisciplina)
-    {
       aux = raiz;
-    }
     else if (codDisciplina < raiz->codDisciplina)
-    {
       aux = buscarMatriculas(raiz->esq, codDisciplina);
-    }
     else
-    {
       aux = buscarMatriculas(raiz->dir, codDisciplina);
-    }
   }
+
   return aux; // Retorna o ponteiro encontrado ou NULL
 }
-
-// Função para remover uma disciplina de um aluno
 
 ListAluno *buscarAluno(ListAluno *alunos, int matricula)
 {
   ListAluno *aluno = alunos;
   while (aluno != NULL && aluno->aluno.matricula == matricula)
-  {
     aluno = aluno->prox;
-  }
-  return aluno;
-}
 
-int VerificarAlunosMatriculados(ListAluno *aluno, int disciplina)
-{
-  int encontrou = 0;
-  while (aluno != NULL)
-  {
-    if (aluno->aluno.nodeMatricula != NULL && aluno->aluno.nodeMatricula->codDisciplina == disciplina)
-    {
-      encontrou += 1;
-    }
-    aluno = aluno->prox;
-  }
-  return encontrou;
+  return aluno;
 }
 
 /**
@@ -249,14 +233,10 @@ int cadastrarMatriculas(ListAluno *aluno, int idDisciplina)
 
   new->codDisciplina = idDisciplina;
 
-  if (new)
+  if (!inserctionMatricula(&(aluno->aluno.nodeMatricula), new))
   {
-    ListAluno *auxAluno = aluno;
-    if (!inserctionMatricula(&(auxAluno->aluno.nodeMatricula), new))
-    {
-      freeNodeMatricula(new);
-      confirm = 0;
-    }
+    confirm = 0;
+    freeNodeMatricula(new);
   }
 
   return confirm;
