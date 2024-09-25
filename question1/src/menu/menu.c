@@ -108,10 +108,10 @@ void initMenu(ListAluno *alunos, NodeCurso *cursos)
         printf("Erro ao achar curso valido\n");
       else if (!cursoAtual->curso.nodeDisciplina)
         printf("Curso sem disciplinas\n");
-      else if (!getAlunoValido(&codAluno, alunos, &alunoAtual))
-        printf("Erro ao achar aluno valido\n");
       else if (!getDisciplinaValida(&codDisciplina, cursoAtual->curso.nodeDisciplina, &disciplinaAtual))
         printf("Erro ao achar disciplina valida\n");
+      else if (!getAlunoValido(&codAluno, alunos, &alunoAtual))
+        printf("Erro ao achar aluno valido\n");
       else if (!cadastrarNotas(
                    alunos,
                    codDisciplina,
@@ -162,7 +162,7 @@ void initMenu(ListAluno *alunos, NodeCurso *cursos)
         printf("sem aluno valido\n");
       else if (!alunoAtual->aluno.nodeMatricula)
         printf("Aluno sem matriculas\n");
-      else if (!(cursoAtual = buscarCurso(cursos, alunoAtual->aluno.codigoDoCurso)))
+      else if (!(searchCourse(cursos, alunoAtual->aluno.codigoDoCurso, &cursoAtual)))
         printf("sem curso valido\n");
       else if (!cursoAtual->curso.nodeDisciplina)
         printf("Curso sem disciplinas\n");
@@ -171,13 +171,14 @@ void initMenu(ListAluno *alunos, NodeCurso *cursos)
       break;
 
     case 11:
+
       if (!alunos || !cursos)
         printf("Nenhum aluno ou curso cadastrado\n");
       else if (!getAlunoValido(&codAluno, alunos, &alunoAtual))
         printf("sem aluno valido\n");
       else if (!alunoAtual->aluno.nodeNota)
         printf("Aluno sem notas\n");
-      else if (!(cursoAtual = buscarCurso(cursos, alunoAtual->aluno.codigoDoCurso)))
+      else if (!searchCourse(cursos, alunoAtual->aluno.codigoDoCurso, &cursoAtual))
         printf("sem curso valido\n");
       else if (!getPeriodoValido(&periodo, cursoAtual->curso.quantidadeDePeriodo))
         printf("sem periodo valido\n");
@@ -205,6 +206,8 @@ void initMenu(ListAluno *alunos, NodeCurso *cursos)
       break;
 
     case 13:
+      // Permitir a remoção de uma disciplina de um curso, desde que nenhum aluno esteja matriculado nela.
+
       if (!cursos)
         printf("Nenhum curso cadastrado!\n");
       else if (!getCursoValido(&codCurso, cursos, &cursoAtual))
@@ -213,6 +216,8 @@ void initMenu(ListAluno *alunos, NodeCurso *cursos)
         printf("Curso sem disciplinas\n");
       else if (!getDisciplinaValida(&codDisciplina, cursoAtual->curso.nodeDisciplina, &disciplinaAtual))
         printf("Erro ao achar disciplina valida\n");
+      else if (boolAlunoInDisciplina(alunos, codDisciplina))
+        printf("Não pode remover disciplina com aluno matriculado!\n");
       else if (!removerDisciplina(&cursoAtual->curso.nodeDisciplina, codDisciplina))
         printf("Falta retornar um valor que diz que a disciplina foi removida\n");
       break;

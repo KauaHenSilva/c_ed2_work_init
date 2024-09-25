@@ -67,5 +67,6 @@
     "aluno_crud.h": "c",
     "struct_curso.h": "c",
     "tempos_busca_nota.h": "c"
-  }
+  },
+  "C_Cpp.errorSquiggles": "disabled"
 }

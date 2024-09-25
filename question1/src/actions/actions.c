@@ -65,30 +65,6 @@ void mostrarDisciplinasDeUmAluno(NodeMatricula *matriculasAluno, NodeDisciplina 
   }
 }
 
-// static void showAllNotasByPeriod(NodeNota *nota, NodeDisciplina *disciplina, int periodo)
-// {
-//   if (disciplina)
-//   {
-//     if (disciplina->disciplina.periodo == periodo)
-//       showNota(nota);
-
-//     showAllNotasByPeriod(nota, disciplina->esq, periodo);
-//     showAllNotasByPeriod(nota, disciplina->dir, periodo);
-//   }
-// }
-
-// void mostrarNotasDeUmAlunoPorPeriodo(ListAluno *aluno, NodeCurso *curso, int periodo)
-// {
-//   if (curso)
-//   {
-//     if (aluno->aluno.codigoDoCurso == curso->curso.codigo)
-//       showAllNotasByPeriod(aluno->aluno.nodeNota, curso->curso.nodeDisciplina, periodo);
-
-//     mostrarNotasDeUmAlunoPorPeriodo(aluno, curso->esq, periodo);
-//     mostrarNotasDeUmAlunoPorPeriodo(aluno, curso->dir, periodo);
-//   }
-// }
-
 void mostrarNotasDeUmAlunoPorPeriodo(NodeNota *raiz, int periodo)
 {
   if (raiz)
@@ -111,39 +87,17 @@ void mostrarNotaDeUmaDisciplina(NodeNota *raiz, NodeDisciplina *disciplina)
   }
 }
 
-void disciplinasPorNotaOuMatricula(NodeDisciplina *disciplinas, NodeNota *notas, NodeMatricula *matriculas)
-{
-  if (disciplinas)
-  {
-    NodeNota *nota = NULL;
-    NodeMatricula *matricula = NULL;
-
-    if ((nota = buscarNotas(notas, disciplinas->disciplina.codDisciplina)) ||
-        (matricula = buscarMatriculas(matriculas, disciplinas->disciplina.codDisciplina)))
-    {
-      if (nota)
-      {
-        printf("Essa disciplina com o id %d já foi paga!\n", disciplinas->disciplina.codDisciplina);
-        showDisciplina(disciplinas);
-      }
-      else
-        showDisciplina(disciplinas);
-    }
-
-    disciplinasPorNotaOuMatricula(disciplinas->esq, notas, matriculas);
-    disciplinasPorNotaOuMatricula(disciplinas->dir, notas, matriculas);
-  }
-}
-
 void imprimirHistoricoAluno(ListAluno *aluno, NodeCurso *cursos)
 {
-  NodeCurso *curso = buscarCurso(cursos, aluno->aluno.codigoDoCurso);
-  printf("- Nome do curso: %s\n", curso->curso.nomeDoCurso);
+  NodeCurso *curso;
+
+  if (searchCourse(cursos, aluno->aluno.codigoDoCurso, &curso))
+    printf("- Nome do curso: %s\n", curso->curso.nomeDoCurso);
+  else
+    printf("- Curso não encontrado!\n");
 
   printf("- disciplinas:\n");
-  disciplinasPorNotaOuMatricula(
-      curso->curso.nodeDisciplina,
-      aluno->aluno.nodeNota, aluno->aluno.nodeMatricula);
+  showAllDisciplina(curso->curso.nodeDisciplina);
 
   printf("- Notas por periodo:\n");
   for (int i = 1; i <= curso->curso.quantidadeDePeriodo; i++)

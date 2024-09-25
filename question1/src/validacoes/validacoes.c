@@ -32,7 +32,7 @@ int getCursoValido(int *codigoDoCurso, NodeCurso *cursos, NodeCurso **atual)
   while (!*atual && isValide)
   {
     getInt(codigoDoCurso, "Digite o código do curso: ");
-    search_course(cursos, *codigoDoCurso, atual);
+    searchCourse(cursos, *codigoDoCurso, atual);
 
     if (!*atual)
       printf("Curso não encontrado!\n");
@@ -51,7 +51,7 @@ int getAlunoValido(int *matricula, ListAluno *alunos, ListAluno **atual)
   while (!*atual && isValide)
   {
     getInt(matricula, "Digite a matrícula do aluno: ");
-    search_aluno(alunos, *matricula, atual);
+    searchAluno(alunos, *matricula, atual);
 
     if (!*atual)
       printf("Aluno não encontrado!\n");
@@ -96,4 +96,17 @@ int getMatriculaValida(int *codigoDoCurso, NodeMatricula *nodeMatricula, NodeMat
   }
 
   return isValide;
+}
+
+int boolAlunoInDisciplina(ListAluno *aluno, int disciplina)
+{
+  int bool = 0;
+  if (aluno)
+  {
+    if (aluno->aluno.nodeMatricula && search_matricula(aluno->aluno.nodeMatricula, disciplina, NULL))
+      bool = 1;
+    else
+      bool = boolAlunoInDisciplina(aluno->prox, disciplina);
+  }
+  return bool;
 }

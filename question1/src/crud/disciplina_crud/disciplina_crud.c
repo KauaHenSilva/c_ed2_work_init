@@ -69,34 +69,12 @@ void freeNodeDisciplinas(NodeDisciplina *raiz)
  * @return Retorna 1 se os dados foram preenchidos com sucesso, ou 0 se houve algum erro.
  *
  */
-static int prencherDisciplina(NodeDisciplina *node, int periodo)
+static void prencherDisciplina(NodeDisciplina *node, int periodo)
 {
-  printf("Para sair só digite 'sair'.\n");
-
-  int confirm = 1;
-  char *enunciado;
-
   node->disciplina.periodo = periodo;
-
-  enunciado = "Digite o codigo da disciplina: ";
-  confirm = getInt(&node->disciplina.codDisciplina, enunciado);
-
-  if (confirm)
-  {
-    enunciado = "Digite o nome da disciplina: ";
-    confirm = getString(&node->disciplina.nomeDaDisciplina, enunciado);
-  }
-
-  if (confirm)
-  {
-    enunciado = "Digite a carga horaria da disciplina: ";
-    confirm = getIntMult5(&node->disciplina.cargaHoraria, enunciado);
-  }
-
-  if (!confirm)
-    printf("Não foi possivel execultar o prencher disciplina!");
-
-  return confirm;
+  getInt(&node->disciplina.codDisciplina, "Digite o codigo da disciplina: ");
+  getString(&node->disciplina.nomeDaDisciplina, "Digite o nome da disciplina: ");
+  getIntMult5(&node->disciplina.cargaHoraria, "Digite a carga horaria da disciplina: ");
 }
 
 /*
@@ -134,19 +112,6 @@ void showAllDisciplina(NodeDisciplina *disciplina)
     showDisciplina(disciplina);
   }
 }
-
-// void search_disciplina(NodeDisciplina *raiz, int code, NodeDisciplina **result)
-// {
-//   if (raiz)
-//   {
-//     if (raiz->disciplina.codDisciplina == code)
-//       *result = raiz;
-//     else if (raiz->disciplina.codDisciplina < code)
-//       search_disciplina(raiz->dir, code, result);
-//     else if (raiz->disciplina.codDisciplina > code)
-//       search_disciplina(raiz->esq, code, result);
-//   }
-// }
 
 /**
  * @brief Insere um novo nó na árvore binária de disciplinas.
@@ -193,37 +158,34 @@ int cadastrarDisciplinas(NodeCurso *curso, int periodo)
 
   NodeDisciplina *new;
   alocDisciplina(&new);
+  prencherDisciplina(new, periodo);
 
-  if (!prencherDisciplina(new, periodo))
+  if (!inserction(&(curso->curso.nodeDisciplina), new))
   {
     freeNodeDisciplina(new);
     confirm = 0;
   }
 
-  if (new)
-  {
-    NodeCurso *aux = curso;
-    if (!inserction(&(aux->curso.nodeDisciplina), new))
-    {
-      freeNodeDisciplina(new);
-      confirm = 0;
-    }
-  }
-
   return confirm;
 }
 
-void buscarDisciplina(NodeDisciplina *raiz, int codigo, NodeDisciplina **result)
+int buscarDisciplina(NodeDisciplina *raiz, int codigo, NodeDisciplina **result)
 {
+  int confirm = 1;
+
   if (raiz)
   {
     if (raiz->disciplina.codDisciplina == codigo)
       *result = raiz;
     else if (raiz->disciplina.codDisciplina < codigo)
-      buscarDisciplina(raiz->dir, codigo, result);
+      confirm = buscarDisciplina(raiz->dir, codigo, result);
     else if (raiz->disciplina.codDisciplina > codigo)
-      buscarDisciplina(raiz->esq, codigo, result);
+      confirm = buscarDisciplina(raiz->esq, codigo, result);
   }
+  else
+    confirm = 0;
+
+  return confirm;
 }
 
 int removerDisciplina(NodeDisciplina **raiz, int codDisciplina)

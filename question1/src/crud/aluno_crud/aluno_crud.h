@@ -5,29 +5,10 @@
 
 // Auxs
 
-/**
- * @brief Libera recursivamente uma lista encadeada de alunos.
- *
- * Esta função recebe um ponteiro para o início de uma lista encadeada de alunos
- * e libera recursivamente cada nó da lista. Ela garante que toda a memória
- * alocada para a lista seja devidamente desalocada.
- *
- * @param alunos Ponteiro para o início da lista encadeada de alunos.
- */
 void freeAlunosList(ListAluno *alunos);
-
-/**
- * @brief Exibe todos os alunos na lista.
- *
- * Esta função percorre recursivamente a lista de alunos e exibe cada aluno.
- *
- * @param alunos Ponteiro para a lista de alunos.
- */
 void showAllAlunos(ListAluno *alunos);
-
 void showAluno(ListAluno *aluno);
-
-void search_aluno(ListAluno *aluno, int code, ListAluno **result);
+int searchAluno(ListAluno *aluno, int code, ListAluno **result);
 
 // ---------------------------------------------------------------------------------------
 
@@ -46,5 +27,3 @@ void search_aluno(ListAluno *aluno, int code, ListAluno **result);
  * @return Retorna 1 se o aluno foi cadastrado com sucesso, caso contrário, retorna 0.
  */
 int cadastrarAlunos(ListAluno **alunos, int codigoCurso);
-
-NodeNota *buscarNota(NodeNota *raiz, int codDisciplina);

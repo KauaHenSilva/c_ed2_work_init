@@ -18,16 +18,15 @@
  *
  * @return Um ponteiro para o novo curso alocado.
  */
-static NodeCurso *alocCurso()
+static void alocarCurso(NodeCurso **new)
 {
-  NodeCurso *new = (NodeCurso *)malloc(sizeof(NodeCurso));
-  new->curso.codigo = -1;
-  new->curso.quantidadeDePeriodo = -1;
-  new->curso.nodeDisciplina = NULL;
-  new->curso.nomeDoCurso = NULL;
-  new->dir = NULL;
-  new->esq = NULL;
-  return new;
+  *new = (NodeCurso *)malloc(sizeof(NodeCurso));
+  (*new)->curso.codigo = -1;
+  (*new)->curso.quantidadeDePeriodo = -1;
+  (*new)->curso.nodeDisciplina = NULL;
+  (*new)->curso.nomeDoCurso = NULL;
+  (*new)->dir = NULL;
+  (*new)->esq = NULL;
 }
 
 /**
@@ -79,34 +78,11 @@ void freeNodeCursos(NodeCurso *node)
  * @param node Ponteiro para o curso a ser preenchido.
  * @return Retorna 1 se o preenchimento foi bem-sucedido, 0 caso contrário.
  */
-static int prencherCurso(NodeCurso *node)
+static void prencherCurso(NodeCurso *node)
 {
-  printf("Para sair só digite 'sair'.\n");
-
-  int confirm = 1;
-  char *enunciado;
-
-  enunciado = "Digite o codigo do curso: ";
-  confirm = getInt(&node->curso.codigo, enunciado);
-
-  if (confirm)
-  {
-    enunciado = "Digite a quantidade de periodo do curso: ";
-    confirm = getInt(&node->curso.quantidadeDePeriodo, enunciado);
-  }
-
-  if (confirm)
-  {
-    enunciado = "Digite o nome do curso: ";
-    confirm = getString(&node->curso.nomeDoCurso, enunciado);
-  }
-
-  // Falta outros.
-
-  if (!confirm)
-    printf("Não foi possivel execultar o prencher aluno!");
-
-  return confirm;
+  getInt(&node->curso.codigo, "Digite o codigo do curso: ");
+  getInt(&node->curso.quantidadeDePeriodo, "Digite a quantidade de periodo do curso: ");
+  getString(&node->curso.nomeDoCurso, "Digite o nome do curso: ");
 }
 
 /**
@@ -171,16 +147,6 @@ void isCurseOpen(NodeCurso *node, int id, int *bool)
   }
 }
 
-void search_course(NodeCurso *raiz, int code, NodeCurso **result)
-{
-  if (!raiz || raiz->curso.codigo == code)
-    *result = raiz;
-  else if (raiz->curso.codigo > code)
-    search_course(raiz->dir, code, result);
-  else if (raiz->curso.codigo < code)
-    search_course(raiz->esq, code, result);
-}
-
 /**
  * @brief Insere um novo nó de curso na árvore binária.
  *
@@ -224,19 +190,16 @@ int inserctionCurso(NodeCurso **raiz, NodeCurso *node)
 int cadastrarCursos(NodeCurso **nodeCurso)
 {
   int confirm = 1;
-  NodeCurso *new = alocCurso();
-  if (!prencherCurso(new))
+  NodeCurso *new;
+
+  alocarCurso(&new);
+  prencherCurso(new);
+
+  if (!inserctionCurso(nodeCurso, new))
   {
     freeNodeCurso(new);
     confirm = 0;
   }
-
-  if (confirm)
-    if (!inserctionCurso(nodeCurso, new))
-    {
-      freeNodeCurso(new);
-      confirm = 0;
-    }
 
   return confirm;
 }
@@ -287,20 +250,24 @@ NodeDisciplina *removerDisciplinaDeUmCurso(NodeDisciplina *raiz, int codDiscipli
   return raiz;
 }
 
-NodeCurso *buscarCurso(NodeCurso *curso, int codigo)
+int searchCourse(NodeCurso *curso, int codigo, NodeCurso **result)
 {
-  NodeCurso *aux = NULL;
-  if (curso != NULL)
+  int confirm = 1;
+
+  if (curso)
   {
     if (codigo == curso->curso.codigo)
-      aux = curso;
+      *result = curso;
     else
     {
       if (codigo < curso->curso.codigo)
-        aux = buscarCurso(curso->esq, codigo);
+        confirm = searchCourse(curso->esq, codigo, result);
       else
-        aux = buscarCurso(curso->dir, codigo);
+        confirm = searchCourse(curso->dir, codigo, result);
     }
   }
-  return aux;
+  else
+    confirm = 0;
+
+  return confirm;
 }

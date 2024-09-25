@@ -17,12 +17,12 @@ static void defCurso(NodeCurso *curso, int idx, int value)
   curso[idx].esq = NULL;
 }
 
-static void resetValuesCurso(NodeCurso *curso, int qtdCursos)
+static void resetarValoresDaArvoreCurso(NodeCurso *curso, int qtdCursos)
 {
   if (curso)
   {
-    resetValuesCurso(curso->esq, qtdCursos);
-    resetValuesCurso(curso->dir, qtdCursos);
+    resetarValoresDaArvoreCurso(curso->esq, qtdCursos);
+    resetarValoresDaArvoreCurso(curso->dir, qtdCursos);
     curso->esq = NULL;
     curso->dir = NULL;
   }
@@ -51,62 +51,71 @@ static void defCursoType(NodeCurso *cursos, TipoDeOrdenacao type)
     defCurso(cursos, i, vet[i]);
 }
 
-static Relatorio tempInsercionCurse(NodeCurso *listaCursosInserir, char *titulo)
+static void tempoDeInsercoesCurso(NodeCurso *arvoreTemporaria, NodeCurso *listaCursosInserir, clock_t *tempo)
 {
-  NodeCurso *arvoreTemporaria;
-  double tempos[QTDTESTES];
-
   clock_t inicio, fim;
+
+  for (int x = 0; x < QTDCURSOTESTADOS; x++)
+  {
+    inicio = clock();
+    inserctionCurso(&arvoreTemporaria, &(listaCursosInserir[x]));
+    fim = clock();
+
+    *tempo += (fim - inicio);
+  }
+
+  printf("o tempo de inserção: %lf\n", (((double)(*tempo)) / CLOCKS_PER_SEC));
+}
+
+static void mediaTempoEmSegundos(clock_t *tempos, double *mediaTempos)
+{
+  clock_t somaTempo = 0;
+  for (int i = 0; i < QTDTESTES; i++)
+    somaTempo += tempos[i];
+
+  *mediaTempos = ((double)somaTempo / (CLOCKS_PER_SEC)) / (QTDTESTES);
+}
+
+static void exbirResultado(double media, char *titulo)
+{
+
+  printf("\nTeste: %s", titulo);
+  printf("Resultado: %f\n\n", media);
+}
+
+static void tempoInsercionCurses(NodeCurso *listaCursosInserir, char *titulo)
+{
+  NodeCurso *arvoreTemporaria = NULL;
+  clock_t tempos[QTDTESTES] = {0};
 
   for (int i = 0; i < QTDTESTES; i++)
   {
     arvoreTemporaria = NULL;
-    clock_t tempo = 0;
-
-    for (int x = 0; x < QTDCURSOTESTADOS; x++)
-    {
-      inicio = clock();
-      inserctionCurso(&arvoreTemporaria, &(listaCursosInserir[x]));
-      fim = clock();
-
-      tempo += (fim - inicio);
-    }
-
-    tempos[i] = ((double)tempo) / CLOCKS_PER_SEC;
-
-    printf("Tempo de execução: %f - ", tempos[i]);
-    printf("Nome do teste: %s", titulo);
-    resetValuesCurso(listaCursosInserir, QTDCURSOTESTADOS);
+    tempoDeInsercoesCurso(arvoreTemporaria, listaCursosInserir, &tempos[i]);
+    resetarValoresDaArvoreCurso(arvoreTemporaria, QTDCURSOTESTADOS);
   }
 
-  double mediaTempos = 0;
-  for (int i = 0; i < QTDTESTES; i++)
-    mediaTempos += tempos[i];
+  double mediaTempos;
+  mediaTempoEmSegundos(tempos, &mediaTempos);
 
-  Relatorio relatorio;
-  relatorio.titulo = titulo;
-  relatorio.tempo = mediaTempos / QTDTESTES;
-  relatorio.quantidadeDeElementos = QTDCURSOTESTADOS;
-  return relatorio;
+  exbirResultado(mediaTempos, titulo);
 }
 
-Relatorio *testTempoCurso()
+void testTempoCurso()
 {
-  Relatorio *relatorio = (Relatorio *)malloc(3 * sizeof(Relatorio));
+  char *titulo;
 
   NodeCurso cursos[QTDCURSOTESTADOS];
 
   defCursoType(cursos, CRESCENTE);
-  char *titulo = "tempo de inserção de curso crescente\n";
-  relatorio[0] = tempInsercionCurse(cursos, titulo);
+  titulo = "tempo de inserção de curso crescente\n";
+  tempoInsercionCurses(cursos, titulo);
 
   defCursoType(cursos, DECRESCENTE);
   titulo = "tempo de inserção de curso decrescente\n";
-  relatorio[1] = tempInsercionCurse(cursos, titulo);
+  tempoInsercionCurses(cursos, titulo);
 
   defCursoType(cursos, ALEATORIO);
   titulo = "tempo de inserção de curso aleatório\n";
-  relatorio[2] = tempInsercionCurse(cursos, titulo);
-
-  return relatorio;
+  tempoInsercionCurses(cursos, titulo);
 }

@@ -32,11 +32,3 @@ void vetIntDecrescente(int *vetor, int qtd)
   for (int i = 0; i < qtd; i++)
     vetor[i] = qtd - i;
 }
-
-void showRelatorio(Relatorio *relatorio)
-{
-  printf("\n");
-  printf("Titulo: %s", relatorio->titulo);
-  printf("Tempo: %f\n", relatorio->tempo);
-  printf("Quantidade de elementos: %d\n", relatorio->quantidadeDeElementos);
-}

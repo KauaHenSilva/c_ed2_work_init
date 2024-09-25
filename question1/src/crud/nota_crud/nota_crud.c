@@ -67,23 +67,11 @@ void freeNodeNotas(NodeNota *raiz)
  * @param raizDisciplina Ponteiro para a raiz de nota a ser preenchido.
  * @return Retorna 1 se o preenchimento foi bem-sucedido, 0 caso contrário.
  */
-static int prencherNota(NodeNota *raizNota, int codDisciplina, int semestreCursado)
+static void prencherNota(NodeNota *raizNota, int codDisciplina, int semestreCursado)
 {
-  printf("Para sair só digite 'sair'.\n");
-
-  int confirm;
-  char *enunciado;
-
   raizNota->nota.codDisciplina = codDisciplina;
   raizNota->nota.semestreCursado = semestreCursado;
-
-  enunciado = "Digite a nota final do aluno: ";
-  confirm = getInt(&raizNota->nota.notaFinal, enunciado);
-
-  if (!confirm)
-    printf("Não foi possivel execultar o prencher a nota: ");
-
-  return confirm;
+  getInt(&raizNota->nota.notaFinal, "Digite a nota final do aluno: ");
 }
 
 /**
@@ -147,24 +135,26 @@ void showAllNotas(NodeNota *raiz)
   }
 }
 
-NodeNota *buscarNotas(NodeNota *nota, int codDisciplina)
+int buscarNotas(NodeNota *nota, int codDisciplina, NodeNota **valor)
 {
-  NodeNota *aux = NULL;
-  
+  int encontrou = 1;
+
   if (nota)
   {
     if (codDisciplina == nota->nota.codDisciplina)
-      aux = nota;
+      *valor = nota;
     else
     {
       if (codDisciplina < nota->nota.codDisciplina)
-        aux = buscarNotas(nota->esq, codDisciplina);
+        encontrou = buscarNotas(nota->esq, codDisciplina, valor);
       else
-        aux = buscarNotas(nota->dir, codDisciplina);
+        encontrou = buscarNotas(nota->dir, codDisciplina, valor);
     }
   }
+  else
+    encontrou = 0;
 
-  return aux;
+  return encontrou;
 }
 
 int cadastrarNotas(ListAluno *aluno, int codDisciplina, int semestreCursado)
@@ -173,34 +163,13 @@ int cadastrarNotas(ListAluno *aluno, int codDisciplina, int semestreCursado)
 
   NodeNota *new;
   alocNota(&new);
+  prencherNota(new, codDisciplina, semestreCursado);
 
-  if (!prencherNota(new, codDisciplina, semestreCursado))
+  if (!inserctionNota(&(aluno->aluno.nodeNota), new) ||
+      !removerMatricula(&(aluno->aluno.nodeMatricula), codDisciplina))
   {
-    freeNodeNotas(new);
-    new = NULL;
+    freeNodeNota(new);
     confirm = 0;
-  }
-
-  if (new)
-  {
-    ListAluno *auxAluno = aluno;
-
-    if (!inserctionNota(&auxAluno->aluno.nodeNota, new) && confirm)
-    {
-      freeNodeNota(new);
-      new = NULL;
-      confirm = 0;
-    }
-
-    if (!removerMatricula(&(aluno->aluno.nodeMatricula), codDisciplina))
-    {
-      if (new)
-      {
-        freeNodeNota(new);
-        new = NULL;
-      }
-      confirm = 0;
-    }
   }
 
   return confirm;

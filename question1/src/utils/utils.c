@@ -5,41 +5,55 @@
 
 #include "utils.h"
 
+void clearBuffer()
+{
+  while (getchar() != '\n')
+    ;
+}
+
 int getString(char **string, const char *msg)
 {
   char buffer[1024];
-  while (1)
+  do
   {
     printf("%s", msg);
     if (fgets(buffer, sizeof(buffer), stdin) != NULL)
     {
-      if (strcmp(buffer, "sair") != 0)
-      {
-        *string = (char *)malloc(strlen(buffer) + 1);
-        if (*string != NULL)
-          strcpy(*string, buffer);
-      }
-
-      return string ? 1 : 0;
+      *string = (char *)malloc(strlen(buffer) + 1);
+      if (*string != NULL)
+        strcpy(*string, buffer);
     }
-  }
+
+    if (!*string)
+      printf("Digite um valor válido!\n");
+
+  } while (*string == NULL);
+
+  return 1;
 }
 
 int getInt(int *inteiro, const char *msg)
 {
   int isOk = 1;
 
-  printf("%s", msg);
-  if (scanf("%d", inteiro) == 0)
-    isOk = 0;
+  do
+  {
+    printf("%s", msg);
+    if (scanf("%d", inteiro) == 0)
+      isOk = 0;
 
-  while (getchar() != '\n')
-    ;
+    if (*inteiro <= 0)
+      isOk = 0;
+
+    if (!isOk)
+      printf("Digite um valor válido!\n");
+
+    clearBuffer();
+  } while (!isOk);
 
   return isOk;
 }
 
-// Raissa faça a implementação para quando o usuario digitar sair ele saia e retorne 0
 int getIntMult5(int *inteiro, const char *msg)
 {
   int isOk;
@@ -49,9 +63,7 @@ int getIntMult5(int *inteiro, const char *msg)
   {
     printf("%s", msg);
     scanf("%d", inteiro);
-
-    while (getchar() != '\n')
-      ;
+    clearBuffer();
 
     isOk = 0;
     for (int i = 0; i < 13 && !isOk; i++)

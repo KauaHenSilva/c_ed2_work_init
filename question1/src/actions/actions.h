@@ -25,6 +25,4 @@ void mostrarNotasDeUmAlunoPorPeriodo(NodeNota *raiz, int periodo);
 void mostrarNotaDeUmaDisciplina(NodeNota *raiz, NodeDisciplina *disciplina);
 
 // - Mostrar o histórico de um determinado aluno, incluindo o nome do curso, as disciplinas e suas respectivas notas organizadas pelo período.
-void imprimir_historico_disciplinas(NodeNota *notas, NodeDisciplina *disciplinas);
-
 void imprimirHistoricoAluno(ListAluno *aluno, NodeCurso *curso);
