@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": "/home/rayssaalves/c_ed1_work_init/question1/src",
-      "program": "/home/rayssaalves/c_ed1_work_init/question1/src/build/Debug/outDebug",
+      "cwd": "/home/rayssaalves/c_ed2_work_init/question1/src/menu",
+      "program": "/home/rayssaalves/c_ed2_work_init/question1/src/menu/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

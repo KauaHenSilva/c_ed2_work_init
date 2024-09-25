@@ -226,39 +226,78 @@ void buscarDisciplina(NodeDisciplina *raiz, int codigo, NodeDisciplina **result)
   }
 }
 
+/**
+ * @brief Verifica se é um nó folha.
+ *
+ * esta função verifica se o nó é folha, ou seja, se tando a esquerda
+ * quanto a direita são nulos.
+ *
+ * @param raiz Ponteiro para o nó raiz da árvore de disciplinas.
+ */
+
+int ehFolhaDisciplina(NodeDisciplina *raiz){
+  return (raiz->esq == NULL && raiz->dir == NULL);
+}
+
+/**
+ * @brief Verifica se é o nó possui um filho..
+ *
+ * esta função verifica qual filho o nó tem, se é o da direita ou da esquerda.
+ *
+ * @param raiz Ponteiro para o nó raiz da árvore de disciplinas.
+ */
+
+NodeDisciplina *soUmFilhoDisciplina(NodeDisciplina *raiz){
+  NodeDisciplina *aux = NULL;
+  if(raiz->esq == NULL && raiz->dir!= NULL)
+    aux = raiz->dir;
+  else if(raiz->esq!= NULL && raiz->dir == NULL)
+    aux = raiz->esq;
+  return aux;
+}
+
+NodeDisciplina *menorFilhoDisciplina(NodeDisciplina *raiz){
+  NodeDisciplina* atual = raiz;
+    while (atual && atual->esq != NULL) {
+        atual = atual->esq; 
+    }
+  return atual;
+}
+
+/**
+ * @brief Remove um nó da arvore.
+ *
+ * esta função remove um nó da arvore, nos 3 diferentes casos,
+ * quando é um nó folha, um nó com apenas um filho, ou um nó com 2 filhos.
+ *
+ * @param raiz Ponteiro duplo para o nó raiz da árvore de disciplinas.
+ * @param codDisciplina codigo da disciplina que deseja remover a matricula
+ */
+
 int removerDisciplina(NodeDisciplina **raiz, int codDisciplina)
 {
   int confirm = 1;
+
+  NodeDisciplina *endFilho = NULL;
 
   if ((*raiz) != NULL)
   {
     if ((*raiz)->disciplina.codDisciplina == codDisciplina)
     {
-      if ((*raiz)->esq == NULL && (*raiz)->dir != NULL)
+      if (ehFolhaDisciplina(*raiz))
       {
         free((*raiz));
         (*raiz) = NULL;
       }
-      else if ((*raiz)->esq == NULL || (*raiz)->dir == NULL)
+      else if ((endFilho = soUmFilhoDisciplina(*raiz)) != NULL)
       {
-        NodeDisciplina *aux;
-        if ((*raiz)->esq == NULL)
-        {
-          aux = (*raiz);
-          (*raiz) = (*raiz)->dir;
-        }
-        else
-        {
-          aux = (*raiz);
-          (*raiz) = (*raiz)->esq;
-        }
+        NodeDisciplina *aux = (*raiz);
+        (*raiz) = endFilho;
         free(aux);
       }
       else
       {
-        NodeDisciplina *aux = (*raiz)->dir;
-        while (aux->esq != NULL)
-          aux = aux->esq;
+        NodeDisciplina *aux = menorFilhoDisciplina((*raiz)->dir);
         (*raiz)->disciplina.codDisciplina = aux->disciplina.codDisciplina;
         confirm = removerDisciplina(&(*raiz)->dir, aux->disciplina.codDisciplina);
       }
