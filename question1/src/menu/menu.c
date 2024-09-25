@@ -57,6 +57,9 @@ void initMenu(ListAluno *alunos, NodeCurso *cursos)
 
     switch (opcao)
     {
+    case 0:
+      break;
+
     case 1:
       if (!cadastrarCursos(&cursos))
         printf("Erro ao cadastrar curso\n");

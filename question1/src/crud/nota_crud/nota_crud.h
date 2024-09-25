@@ -7,7 +7,7 @@
 
 void showAllNotas(NodeNota *raiz);
 void showNota(NodeNota *node);
-
+int inserctionNota(NodeNota **raiz, NodeNota *new);
 NodeNota *buscarNotas(NodeNota *nota, int codDisciplina);
 int buscar_nota(NodeNota *raiz, int codigo, NodeNota *valor);
 

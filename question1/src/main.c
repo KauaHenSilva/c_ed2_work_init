@@ -8,8 +8,8 @@
 #include "crud/nota_crud/nota_crud.h"
 
 #include "actions/actions.h"
-
 #include "menu/menu.h"
+#include "tempos/tempos.h"
 
 int main()
 {
@@ -17,6 +17,8 @@ int main()
   NodeCurso *cursos = NULL;
 
   initMenu(alunos, cursos);
+
+  testAll();
 
   freeAlunosList(alunos);
   freeNodeCursos(cursos);

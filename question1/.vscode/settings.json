@@ -55,5 +55,17 @@
   "C_Cpp_Runner.useLeakSanitizer": false,
   "C_Cpp_Runner.showCompilationTime": false,
   "C_Cpp_Runner.useLinkTimeOptimization": false,
-  "C_Cpp_Runner.msvcSecureNoWarnings": false
+  "C_Cpp_Runner.msvcSecureNoWarnings": false,
+  "files.associations": {
+    ".env.*": "dotenv",
+    ".prettierrc": "json",
+    "*.css": "css",
+    "nota_crud.h": "c",
+    "tempos_insercao_curso.h": "c",
+    "stdlib.h": "c",
+    "stdio.h": "c",
+    "aluno_crud.h": "c",
+    "struct_curso.h": "c",
+    "tempos_busca_nota.h": "c"
+  }
 }
