@@ -2,6 +2,6 @@
 
 #include "aux.h"
 
-#define QTDCURSOTESTADOS 10
+#define QTDCURSOTESTADOS 1000
 
 void testTempoCurso();

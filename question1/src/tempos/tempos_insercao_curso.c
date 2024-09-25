@@ -78,9 +78,8 @@ static void mediaTempoEmSegundos(clock_t *tempos, double *mediaTempos)
 
 static void exbirResultado(double media, char *titulo)
 {
-
-  printf("\nTeste: %s", titulo);
-  printf("Resultado: %f\n\n", media);
+  printf("Teste: %s", titulo);
+  printf("Resultado: %f\n", media);
 }
 
 static void tempoInsercionCurses(NodeCurso *listaCursosInserir, char *titulo)
@@ -101,6 +100,14 @@ static void tempoInsercionCurses(NodeCurso *listaCursosInserir, char *titulo)
   exbirResultado(mediaTempos, titulo);
 }
 
+static void exibirValoresInseridos(NodeCurso *cursos)
+{
+  printf("ValoresInseridos: ");
+  for (int i = 0; i < QTDCURSOTESTADOS; i++)
+    printf("[%02d]", cursos[i].curso.codigo);
+  printf("\n\n");
+}
+
 void testTempoCurso()
 {
   char *titulo;
@@ -110,12 +117,15 @@ void testTempoCurso()
   defCursoType(cursos, CRESCENTE);
   titulo = "tempo de inserção de curso crescente\n";
   tempoInsercionCurses(cursos, titulo);
+  exibirValoresInseridos(cursos);
 
   defCursoType(cursos, DECRESCENTE);
   titulo = "tempo de inserção de curso decrescente\n";
   tempoInsercionCurses(cursos, titulo);
+  exibirValoresInseridos(cursos);
 
   defCursoType(cursos, ALEATORIO);
   titulo = "tempo de inserção de curso aleatório\n";
   tempoInsercionCurses(cursos, titulo);
+  exibirValoresInseridos(cursos);
 }

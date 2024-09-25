@@ -75,7 +75,7 @@ static void tempBuscaNota(ListAluno aluno, NodeNota *nodeNota, char *titulo)
   double mediaTempo;
   mediaTempoEmSegundos(tempos, &mediaTempo);
 
-  printf("Resultado da busca de notas: %s\n", titulo);
+  printf("%s\n", titulo);
   printf("Media de tempo de execução: %f\n", mediaTempo);
 }
 
@@ -88,6 +88,15 @@ static void limparNodes(NodeNota *notas)
     notas->esq = NULL;
     notas->dir = NULL;
   }
+}
+
+static void exibirValoresBuscado(NodeNota *notas)
+{
+
+  printf("Valores Buscado: ");
+  for (int i = 0; i < QTDNOTASTESTADOS; i++)
+    printf("[%02d]", notas[i].nota.codDisciplina);
+  printf("\n\n");
 }
 
 void testTempoBuscaNotaDisciplina()
@@ -104,6 +113,7 @@ void testTempoBuscaNotaDisciplina()
     inserctionNota(&aluno.aluno.nodeNota, &notas[i]);
 
   tempBuscaNota(aluno, notasProcurar, "Busca de notas: Inserido de forma cresente");
+  exibirValoresBuscado(notasProcurar);
 
   limparNodes(aluno.aluno.nodeNota);
   aluno.aluno.nodeNota = NULL;
@@ -112,10 +122,14 @@ void testTempoBuscaNotaDisciplina()
     inserctionNota(&aluno.aluno.nodeNota, &notas[i]);
 
   tempBuscaNota(aluno, notasProcurar, "Busca de notas: Inserido de forma decrescente");
+  exibirValoresBuscado(notasProcurar);
+
   limparNodes(aluno.aluno.nodeNota);
+  aluno.aluno.nodeNota = NULL;
   defNotaType(notasProcurar, ALEATORIO);
   for (int i = 0; i < QTDNOTASTESTADOS; i++)
     inserctionNota(&aluno.aluno.nodeNota, &notas[i]);
 
   tempBuscaNota(aluno, notasProcurar, "Busca de notas: Inserido de forma aleatória");
+  exibirValoresBuscado(notasProcurar);
 }
