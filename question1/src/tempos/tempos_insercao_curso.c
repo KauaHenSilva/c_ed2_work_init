@@ -17,12 +17,12 @@ static void defCurso(NodeCurso *curso, int idx, int value)
   curso[idx].esq = NULL;
 }
 
-static void resetarValoresDaArvoreCurso(NodeCurso *curso, int qtdCursos)
+static void resetarValoresDaArvoreCurso(NodeCurso *curso)
 {
   if (curso)
   {
-    resetarValoresDaArvoreCurso(curso->esq, qtdCursos);
-    resetarValoresDaArvoreCurso(curso->dir, qtdCursos);
+    resetarValoresDaArvoreCurso(curso->esq);
+    resetarValoresDaArvoreCurso(curso->dir);
     curso->esq = NULL;
     curso->dir = NULL;
   }
@@ -58,13 +58,14 @@ static void tempoDeInsercoesCurso(NodeCurso *arvoreTemporaria, NodeCurso *listaC
   for (int x = 0; x < QTDCURSOTESTADOS; x++)
   {
     inicio = clock();
-    inserctionCurso(&arvoreTemporaria, &(listaCursosInserir[x]));
+    if (!inserctionCurso(&arvoreTemporaria, &(listaCursosInserir[x])))
+      printf("Repetindo");
     fim = clock();
 
     *tempo += (fim - inicio);
   }
 
-  printf("o tempo de inserção: %lf\n", (((double)(*tempo)) / CLOCKS_PER_SEC));
+  // printf("o tempo de inserção: %lf\n", (((double)(*tempo)) / CLOCKS_PER_SEC));
 }
 
 static void mediaTempoEmSegundos(clock_t *tempos, double *mediaTempos)
@@ -82,6 +83,15 @@ static void exbirResultado(double media, char *titulo)
   printf("Resultado: %f\n", media);
 }
 
+static void restarListaValoresListaCurso(NodeCurso *listaCurso)
+{
+  for (int x =0 ; x < QTDCURSOTESTADOS ; x++)
+  {
+    listaCurso[x].dir = NULL;
+    listaCurso[x].esq = NULL;
+  }
+}
+
 static void tempoInsercionCurses(NodeCurso *listaCursosInserir, char *titulo)
 {
   NodeCurso *arvoreTemporaria = NULL;
@@ -91,7 +101,8 @@ static void tempoInsercionCurses(NodeCurso *listaCursosInserir, char *titulo)
   {
     arvoreTemporaria = NULL;
     tempoDeInsercoesCurso(arvoreTemporaria, listaCursosInserir, &tempos[i]);
-    resetarValoresDaArvoreCurso(arvoreTemporaria, QTDCURSOTESTADOS);
+    resetarValoresDaArvoreCurso(arvoreTemporaria);
+    restarListaValoresListaCurso(listaCursosInserir);
   }
 
   double mediaTempos;
