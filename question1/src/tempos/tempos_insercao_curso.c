@@ -17,12 +17,12 @@ static void defCurso(NodeCurso *curso, int idx, int value)
   curso[idx].esq = NULL;
 }
 
-static void resetarValoresDaArvoreCurso(NodeCurso *curso, int qtdCursos)
+static void resetarValoresDaArvoreCurso(NodeCurso *curso)
 {
   if (curso)
   {
-    resetarValoresDaArvoreCurso(curso->esq, qtdCursos);
-    resetarValoresDaArvoreCurso(curso->dir, qtdCursos);
+    resetarValoresDaArvoreCurso(curso->esq);
+    resetarValoresDaArvoreCurso(curso->dir);
     curso->esq = NULL;
     curso->dir = NULL;
   }
@@ -57,14 +57,18 @@ static void tempoDeInsercoesCurso(NodeCurso *arvoreTemporaria, NodeCurso *listaC
 
   for (int x = 0; x < QTDCURSOTESTADOS; x++)
   {
+    int inseriu;
     inicio = clock();
-    inserctionCurso(&arvoreTemporaria, &(listaCursosInserir[x]));
+    inseriu = inserctionCurso(&arvoreTemporaria, &(listaCursosInserir[x]));
     fim = clock();
+
+    if (!inseriu)
+      perror("Não conseguiu inserir o valor");
 
     *tempo += (fim - inicio);
   }
 
-  printf("o tempo de inserção: %lf\n", (((double)(*tempo)) / CLOCKS_PER_SEC));
+  // printf("o tempo de inserção: %lf\n", (((double)(*tempo)) / CLOCKS_PER_SEC));
 }
 
 static void mediaTempoEmSegundos(clock_t *tempos, double *mediaTempos)
@@ -76,10 +80,29 @@ static void mediaTempoEmSegundos(clock_t *tempos, double *mediaTempos)
   *mediaTempos = ((double)somaTempo / (CLOCKS_PER_SEC)) / (QTDTESTES);
 }
 
-static void exbirResultado(double media, char *titulo)
+// static void exibirValoresInseridos(NodeCurso *cursos)
+// {
+//   printf("ValoresInseridos: ");
+//   for (int i = 0; i < QTDCURSOTESTADOS; i++)
+//     printf("[%02d]", cursos[i].curso.codigo);
+//   printf("\n\n");
+// }
+
+static void exbirResultado(double media, char *titulo, NodeCurso *cursos)
 {
+  (void)cursos;
   printf("Teste: %s", titulo);
-  printf("Resultado: %f\n", media);
+  printf("Resultado: %f\n\n", media);
+  // exibirValoresInseridos(cursos);
+}
+
+static void restarListaValoresListaCurso(NodeCurso *listaCurso)
+{
+  for (int x = 0; x < QTDCURSOTESTADOS; x++)
+  {
+    listaCurso[x].dir = NULL;
+    listaCurso[x].esq = NULL;
+  }
 }
 
 static void tempoInsercionCurses(NodeCurso *listaCursosInserir, char *titulo)
@@ -91,21 +114,14 @@ static void tempoInsercionCurses(NodeCurso *listaCursosInserir, char *titulo)
   {
     arvoreTemporaria = NULL;
     tempoDeInsercoesCurso(arvoreTemporaria, listaCursosInserir, &tempos[i]);
-    resetarValoresDaArvoreCurso(arvoreTemporaria, QTDCURSOTESTADOS);
+    resetarValoresDaArvoreCurso(arvoreTemporaria);
+    restarListaValoresListaCurso(listaCursosInserir);
   }
 
   double mediaTempos;
   mediaTempoEmSegundos(tempos, &mediaTempos);
 
-  exbirResultado(mediaTempos, titulo);
-}
-
-static void exibirValoresInseridos(NodeCurso *cursos)
-{
-  printf("ValoresInseridos: ");
-  for (int i = 0; i < QTDCURSOTESTADOS; i++)
-    printf("[%02d]", cursos[i].curso.codigo);
-  printf("\n\n");
+  exbirResultado(mediaTempos, titulo, listaCursosInserir);
 }
 
 void testTempoCurso()
@@ -117,15 +133,12 @@ void testTempoCurso()
   defCursoType(cursos, CRESCENTE);
   titulo = "tempo de inserção de curso crescente\n";
   tempoInsercionCurses(cursos, titulo);
-  exibirValoresInseridos(cursos);
 
   defCursoType(cursos, DECRESCENTE);
   titulo = "tempo de inserção de curso decrescente\n";
   tempoInsercionCurses(cursos, titulo);
-  exibirValoresInseridos(cursos);
 
   defCursoType(cursos, ALEATORIO);
   titulo = "tempo de inserção de curso aleatório\n";
   tempoInsercionCurses(cursos, titulo);
-  exibirValoresInseridos(cursos);
 }

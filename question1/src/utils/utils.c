@@ -34,10 +34,12 @@ int getString(char **string, const char *msg)
 
 int getInt(int *inteiro, const char *msg)
 {
-  int isOk = 1;
+  int isOk;
 
   do
   {
+    isOk = 1;
+
     printf("%s", msg);
     if (scanf("%d", inteiro) == 0)
       isOk = 0;
@@ -76,4 +78,37 @@ int getIntMult5(int *inteiro, const char *msg)
   } while (!isOk);
 
   return isOk;
+}
+
+NomeCmp myStrCmp(char *texto1, char *texto2)
+{
+  char *temp1, *temp2;
+
+  temp1 = (char *)malloc(sizeof(char) * sizeof(texto1));
+  temp2 = (char *)malloc(sizeof(char) * sizeof(texto2));
+
+  strcpy(temp1, texto1);
+  strcpy(temp2, texto2);
+
+  for (int x = 0; x < (int)sizeof(temp1); x++)
+    if (temp1[x] >= 'A' && temp1[x] <= 'Z')
+      temp1[x] += 32;
+
+  for (int x = 0; x < (int)sizeof(temp2); x++)
+    if (temp2[x] >= 'A' && temp2[x] <= 'Z')
+      temp2[x] += 32;
+
+  NomeCmp resp = strcmp(temp1, temp2);
+
+  if (resp > 0)
+    resp = PRIMEIRO_ARGUMENTO_MAIOR;
+  else if (resp < 0)
+    resp = PRIMEIRO_ARGUMENTO_MENOR;
+  else
+    resp = PRIMEIRO_ARGUMENTO_IGUAL;
+
+  free(temp1);
+  free(temp2);
+
+  return resp;
 }

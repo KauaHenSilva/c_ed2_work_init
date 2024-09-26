@@ -204,48 +204,6 @@ int cadastrarCursos(NodeCurso **nodeCurso)
   return confirm;
 }
 
-
-
-
-// int removerDisciplinaDeUmCurso(NodeDisciplina **raiz, int codDisciplina)
-// {
-//   NodeDisciplina *endFilho = NULL;
-//   int removeu = 0;
-//   if (*raiz != NULL)
-//   {
-//     if ((*raiz)->disciplina.codDisciplina == codDisciplina)
-//     {
-//       if (ehFolha(*raiz))
-//       {
-//         free(raiz);
-//         raiz = NULL;
-//       }
-//       else if ((endFilho = soUmFilho(*raiz)) != NULL)
-//       {
-//         NodeDisciplina *aux;
-//         aux = *raiz;
-//         *raiz = endFilho;
-//         free(aux);
-//       }
-//       else
-//       {
-//         NodeDisciplina* menorFilhoDir = menorFilho((*raiz)->dir);  // Encontra o menor filho da subárvore direita
-//         (*raiz)->disciplina.codDisciplina = menorFilhoDir->disciplina.codDisciplina;
-//         (*raiz)->dir = removerDisciplinaDeUmCurso(&(*raiz)->dir, menorFilhoDir->disciplina.codDisciplina);
-//       }
-//       removeu = 1;
-//     }
-//     else
-//     {
-//       if (codDisciplina < (*raiz)->disciplina.codDisciplina)
-//         (*raiz)->esq = removerDisciplinaDeUmCurso(&(*raiz)->esq, codDisciplina);
-//       else
-//         (*raiz)->dir = removerDisciplinaDeUmCurso(&(*raiz)->dir, codDisciplina);
-//     }
-//   }
-//   return removeu;
-// }
-
 int searchCourse(NodeCurso *curso, int codigo, NodeCurso **result)
 {
   int confirm = 1;

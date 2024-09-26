@@ -147,7 +147,8 @@ NodeMatricula *esqRoot(NodeMatricula *node)
  *
  * @param raiz Ponteiro para o nó raiz da árvore de disciplinas.
  */
-int ehFolha(NodeMatricula *raiz){
+int ehFolha(NodeMatricula *raiz)
+{
   return (raiz->esq == NULL && raiz->dir == NULL);
 }
 
@@ -158,21 +159,23 @@ int ehFolha(NodeMatricula *raiz){
  *
  * @param raiz Ponteiro para o nó raiz da árvore de disciplinas.
  */
-NodeMatricula *soUmFilho(NodeMatricula *raiz){
+NodeMatricula *soUmFilho(NodeMatricula *raiz)
+{
   NodeMatricula *aux = NULL;
-  if(raiz->esq == NULL && raiz->dir!= NULL)
+  if (raiz->esq == NULL && raiz->dir != NULL)
     aux = raiz->dir;
-  else if(raiz->esq!= NULL && raiz->dir == NULL)
+  else if (raiz->esq != NULL && raiz->dir == NULL)
     aux = raiz->esq;
   return aux;
 }
 
-
-NodeMatricula *menorFilho(NodeMatricula *raiz){
-  NodeMatricula* atual = raiz;
-    while (atual && atual->esq != NULL) {
-        atual = atual->esq; 
-    }
+NodeMatricula *menorFilho(NodeMatricula *raiz)
+{
+  NodeMatricula *atual = raiz;
+  while (atual && atual->esq != NULL)
+  {
+    atual = atual->esq;
+  }
   return atual;
 }
 
@@ -241,8 +244,6 @@ NodeMatricula *buscarMatriculas(NodeMatricula *raiz, int codDisciplina)
   return aux; // Retorna o ponteiro encontrado ou NULL
 }
 
-<<<<<<< HEAD
-=======
 /**
  * @brief Busca um aluno na lista de alunos pelo número de matrícula.
  *
@@ -255,17 +256,15 @@ NodeMatricula *buscarMatriculas(NodeMatricula *raiz, int codDisciplina)
  * @param matricula Número da matrícula do aluno a ser buscado.
  * @return Retorna um ponteiro para o nó do aluno encontrado ou NULL se não encontrado.
  */
-
->>>>>>> teste
 ListAluno *buscarAluno(ListAluno *alunos, int matricula)
 {
   ListAluno *aluno = alunos;
   while (aluno != NULL && aluno->aluno.matricula == matricula)
     aluno = aluno->prox;
 
-<<<<<<< HEAD
   return aluno;
-=======
+}
+
 /**
  * @brief Verifica o número de alunos matriculados em uma disciplina específica.
  *
@@ -291,7 +290,6 @@ int VerificarAlunosMatriculados(ListAluno *aluno, int disciplina)
     aluno = aluno->prox;
   }
   return encontrou;
->>>>>>> teste
 }
 
 /**

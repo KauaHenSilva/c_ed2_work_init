@@ -196,7 +196,6 @@ int buscarDisciplina(NodeDisciplina *raiz, int codigo, NodeDisciplina **result)
  *
  * @param raiz Ponteiro para o nó raiz da árvore de disciplinas.
  */
-
 int ehFolhaDisciplina(NodeDisciplina *raiz){
   return (raiz->esq == NULL && raiz->dir == NULL);
 }
@@ -208,7 +207,6 @@ int ehFolhaDisciplina(NodeDisciplina *raiz){
  *
  * @param raiz Ponteiro para o nó raiz da árvore de disciplinas.
  */
-
 NodeDisciplina *soUmFilhoDisciplina(NodeDisciplina *raiz){
   NodeDisciplina *aux = NULL;
   if(raiz->esq == NULL && raiz->dir!= NULL)

@@ -17,14 +17,10 @@ int search_matricula(NodeMatricula *raiz, int code, NodeMatricula **result);
 int cadastrarMatriculas(ListAluno *aluno, int idDisciplina);
 
 // - Permitir a remoção de uma disciplina da árvore de matrícula de um determinado aluno.
-<<<<<<< HEAD
-=======
 
 NodeMatricula *buscarMatriculas(NodeMatricula *raiz, int codDisciplina);
+
 int ehFolha(NodeMatricula *raiz);
 NodeMatricula *soUmFilho(NodeMatricula *raiz);
 NodeMatricula *menorFilho(NodeMatricula *raiz);
->>>>>>> teste
 int removerMatricula(NodeMatricula **raiz, int codDisciplina);
-
-
