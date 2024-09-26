@@ -110,20 +110,20 @@ static void limparNodes(NodeNota *notas)
   }
 }
 
-static void setNotasInAluno(ListAluno aluno, NodeNota *notasProcurar)
+static void setNotaAluno(ListAluno *aluno, NodeNota *notas)
 {
-  for (int i = 0; i < QTDNOTASTESTADOS; i++)
-    inserctionNota(&aluno.aluno.nodeNota, &notasProcurar[i]);
+  for (int x = 0; x < QTDNOTASTESTADOS; x++)
+    inserctionNota(&aluno->aluno.nodeNota, &(notas[x]));
 }
 
-static void setNotasAlunoAndListaAProcurar(ListAluno aluno, NodeNota *notasProcurar, TipoDeOrdenacao type)
+static void setNotasAlunoAndListaAProcurar(ListAluno *aluno, NodeNota *notasProcurar, TipoDeOrdenacao type)
 {
-  limparNodes(aluno.aluno.nodeNota);
-  aluno.aluno.nodeNota = NULL;
+  limparNodes(aluno->aluno.nodeNota);
+  aluno->aluno.nodeNota = NULL;
 
   defNotaType(notasProcurar, type);
 
-  setValuesInAluno(aluno, notasProcurar);
+  setNotaAluno(aluno, notasProcurar);
 }
 
 void testTempoBuscaNotaDisciplina()
@@ -131,12 +131,12 @@ void testTempoBuscaNotaDisciplina()
   NodeNota notasProcurar[QTDNOTASTESTADOS];
   ListAluno aluno;
 
-  setNotasAlunoAndListaProcurar(aluno, notasProcurar, CRESCENTE);
+  setNotasAlunoAndListaAProcurar(&aluno, notasProcurar, CRESCENTE);
   tempBuscaNota(aluno, notasProcurar, "Busca de notas inserido de forma cresente");
 
-  setNotasAlunoAndListaProcurar(aluno, notasProcurar, DECRESCENTE);
+  setNotasAlunoAndListaAProcurar(&aluno, notasProcurar, DECRESCENTE);
   tempBuscaNota(aluno, notasProcurar, "Busca de notas inserido de forma decrescente");
 
-  setNotasAlunoAndListaProcurar(aluno, notasProcurar, ALEATORIO);
+  setNotasAlunoAndListaAProcurar(&aluno, notasProcurar, ALEATORIO);
   tempBuscaNota(aluno, notasProcurar, "Busca de notas inserido de forma aleatória");
 }
