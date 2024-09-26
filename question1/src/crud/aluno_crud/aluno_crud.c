@@ -100,6 +100,21 @@ int searchAluno(ListAluno *aluno, int code, ListAluno **result)
   return confirm;
 }
 
+static int alunoMatriculado(ListAluno *aluno, int code)
+{
+  int confirm = 1;
+
+  if (aluno)
+  {
+    if (aluno->aluno.matricula == code)
+      confirm = 0;
+    else
+      confirm = alunoMatriculado(aluno->prox, code);
+  }
+
+  return confirm;
+}
+
 /**
  * @brief Insere um novo aluno na lista de alunos de forma ordenada.
  *
@@ -110,48 +125,53 @@ int searchAluno(ListAluno *aluno, int code, ListAluno **result)
  * @param alunos Ponteiro duplo para a lista de alunos.
  * @param new Ponteiro para o novo aluno a ser inserido.
  */
-int inserctionAluno(ListAluno **listAlunos, Aluno new)
+int inserctionAluno(ListAluno **AlunoRaiz, Aluno newValue)
 {
-  int isAdd = 1;
+  int isAdd = alunoMatriculado(*AlunoRaiz, newValue.matricula);
 
-  if (!*listAlunos)
+  ListAluno *newList;
+  newList = (ListAluno *)malloc(sizeof(ListAluno));
+  newList->aluno = newValue;
+  newList->prox = NULL;
+
+  if (isAdd)
   {
-    *listAlunos = (ListAluno *)malloc(sizeof(ListAluno));
-    (*listAlunos)->prox = NULL;
-    (*listAlunos)->aluno = new;
-  }
-  else
-  {
-    // Adidiconar no inicio
-    if (strcmp(new.nome, (*listAlunos)->aluno.nome) < 0)
-    {
-      ListAluno *aux = *listAlunos;
-      *listAlunos = (ListAluno *)malloc(sizeof(ListAluno));
-      (*listAlunos)->aluno = new;
-      (*listAlunos)->prox = aux;
-    }
+    if (!*AlunoRaiz)
+      *AlunoRaiz = newList;
     else
     {
-      if (strcmp(new.nome, (*listAlunos)->aluno.nome) == 0)
-        isAdd = 0;
-      else
+      if (!(*AlunoRaiz)->prox)
       {
-        ListAluno *aux = *listAlunos;
-        while (aux->prox && strcmp(new.nome, aux->prox->aluno.nome) > 0)
-          aux = aux->prox;
-
-        if (aux->prox && strcmp(new.nome, aux->prox->aluno.nome) == 0)
-          isAdd = 0;
+        if (myStrCmp((*AlunoRaiz)->aluno.nome, newValue.nome) == PRIMEIRO_ARGUMENTO_MENOR)
+          (*AlunoRaiz)->prox = newList;
         else
         {
-          ListAluno *newListAluno = (ListAluno *)malloc(sizeof(ListAluno));
-          newListAluno->aluno = new;
-          newListAluno->prox = aux->prox;
-          aux->prox = newListAluno;
+          newList->prox = *AlunoRaiz;
+          *AlunoRaiz = newList;
+        }
+      }
+      else
+      {
+        ListAluno *aux = *AlunoRaiz;
+
+        while (aux->prox &&
+               myStrCmp(aux->prox->aluno.nome, newValue.nome) == PRIMEIRO_ARGUMENTO_MENOR)
+          aux = aux->prox;
+
+        if (myStrCmp(aux->aluno.nome, newValue.nome) == PRIMEIRO_ARGUMENTO_MENOR)
+        {
+          newList->prox = aux->prox;
+          aux->prox = newList;
+        }
+        else
+        {
+          newList->prox = aux;
+          *AlunoRaiz = newList;
         }
       }
     }
   }
+
   return isAdd;
 }
 
