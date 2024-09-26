@@ -57,10 +57,13 @@ static void tempoDeInsercoesCurso(NodeCurso *arvoreTemporaria, NodeCurso *listaC
 
   for (int x = 0; x < QTDCURSOTESTADOS; x++)
   {
+    int inseriu;
     inicio = clock();
-    if (!inserctionCurso(&arvoreTemporaria, &(listaCursosInserir[x])))
-      printf("Repetindo");
+    inseriu = inserctionCurso(&arvoreTemporaria, &(listaCursosInserir[x]));
     fim = clock();
+
+    if (!inseriu)
+      perror("Não conseguiu inserir o valor");
 
     *tempo += (fim - inicio);
   }
@@ -77,15 +80,25 @@ static void mediaTempoEmSegundos(clock_t *tempos, double *mediaTempos)
   *mediaTempos = ((double)somaTempo / (CLOCKS_PER_SEC)) / (QTDTESTES);
 }
 
-static void exbirResultado(double media, char *titulo)
+// static void exibirValoresInseridos(NodeCurso *cursos)
+// {
+//   printf("ValoresInseridos: ");
+//   for (int i = 0; i < QTDCURSOTESTADOS; i++)
+//     printf("[%02d]", cursos[i].curso.codigo);
+//   printf("\n\n");
+// }
+
+static void exbirResultado(double media, char *titulo, NodeCurso *cursos)
 {
+  (void)cursos;
   printf("Teste: %s", titulo);
-  printf("Resultado: %f\n", media);
+  printf("Resultado: %f\n\n", media);
+  // exibirValoresInseridos(cursos);
 }
 
 static void restarListaValoresListaCurso(NodeCurso *listaCurso)
 {
-  for (int x =0 ; x < QTDCURSOTESTADOS ; x++)
+  for (int x = 0; x < QTDCURSOTESTADOS; x++)
   {
     listaCurso[x].dir = NULL;
     listaCurso[x].esq = NULL;
@@ -108,15 +121,7 @@ static void tempoInsercionCurses(NodeCurso *listaCursosInserir, char *titulo)
   double mediaTempos;
   mediaTempoEmSegundos(tempos, &mediaTempos);
 
-  exbirResultado(mediaTempos, titulo);
-}
-
-static void exibirValoresInseridos(NodeCurso *cursos)
-{
-  printf("ValoresInseridos: ");
-  for (int i = 0; i < QTDCURSOTESTADOS; i++)
-    printf("[%02d]", cursos[i].curso.codigo);
-  printf("\n\n");
+  exbirResultado(mediaTempos, titulo, listaCursosInserir);
 }
 
 void testTempoCurso()
@@ -128,15 +133,12 @@ void testTempoCurso()
   defCursoType(cursos, CRESCENTE);
   titulo = "tempo de inserção de curso crescente\n";
   tempoInsercionCurses(cursos, titulo);
-  exibirValoresInseridos(cursos);
 
   defCursoType(cursos, DECRESCENTE);
   titulo = "tempo de inserção de curso decrescente\n";
   tempoInsercionCurses(cursos, titulo);
-  exibirValoresInseridos(cursos);
 
   defCursoType(cursos, ALEATORIO);
   titulo = "tempo de inserção de curso aleatório\n";
   tempoInsercionCurses(cursos, titulo);
-  exibirValoresInseridos(cursos);
 }

@@ -2,6 +2,6 @@
 
 #include "aux.h"
 
-#define QTDNOTASTESTADOS 10
+#define QTDNOTASTESTADOS 100
 
 void testTempoBuscaNotaDisciplina();
