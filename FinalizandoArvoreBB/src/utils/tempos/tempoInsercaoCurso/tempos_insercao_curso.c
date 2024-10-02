@@ -1,4 +1,5 @@
 #include "../../../core/curso/curso.h"
+#include "../../../arvoreBB/arvore_bb.h"
 
 #include "tempos_insercao_curso.h"
 #include "../auxTempo/aux.h"

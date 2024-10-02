@@ -4,6 +4,8 @@
 #include "../../../core/aluno/aluno.h"
 #include "../../../core/nota/nota.h"
 #include "../../../core/nota/nota.h"
+#include "../../../arvoreBB/arvore_bb.h"
+
 
 #include <time.h>
 #include <stdio.h>

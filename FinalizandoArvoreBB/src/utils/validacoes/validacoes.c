@@ -4,6 +4,8 @@
 #include "../../core/aluno/aluno.h"
 #include "../../core/disciplina/disciplina.h"
 #include "../../core/matricula/matricula.h"
+#include "../../arvoreBB/arvore_bb.h"
+
 
 #include "../get/get.h"
 

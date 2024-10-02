@@ -2,7 +2,10 @@
 
 #include "../../structs/info/struct_curso.h"
 #include "../../structs/info/struct_disciplina.h"
-#include "../../arvoreBB/arvore_bb.h"
+#include "../../structs/arvore_avl.h"
+
+#define INSERCTION_DISCIPLINA compareCodigoDisciplinaMenor, compareCodigoDisciplinaMaior
+#define REMOVE_SEARCH_DISCIPLINA compareCodigoDisciplinaIgual, compareCodigoDisciplinaMenor
 
 // Auxs
 
@@ -20,4 +23,3 @@ int cadastrarDisciplinas(Arvore *curso);
 // int ehFolhaDisciplina(NodeDisciplina *raiz);
 // NodeDisciplina *soUmFilhoDisciplina(NodeDisciplina *raiz);
 // NodeDisciplina *menorFilhoDisciplina(NodeDisciplina *raiz);
-// int removerDisciplina(NodeDisciplina **raiz, int codDisciplina);

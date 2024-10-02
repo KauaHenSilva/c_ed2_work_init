@@ -257,9 +257,15 @@ int cadastrarAlunos(ListAluno **alunos, Arvore *arvoreCursos)
   int confirm = 1;
 
   int codCurso = 0;
-  Arvore *arvoreCursoAtual = NULL;
+  Arvore *arvoreCursoAtual;
+  arvoreCursoAtual = NULL;
 
-  if (!getCursoValido(&codCurso, arvoreCursos, &arvoreCursoAtual))
+  if (!arvoreCursos)
+  {
+    printf("Nenhum curso cadastrado!\n");
+    confirm = 0;
+  }
+  else if (!getCursoValido(&codCurso, arvoreCursos, &arvoreCursoAtual))
   {
     printf("Curso invalido\n");
     confirm = 0;

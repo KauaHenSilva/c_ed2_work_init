@@ -1,7 +1,6 @@
 #pragma once
 
-#include "../../structs/info/struct_curso.h"
-#include "../../arvoreBB/arvore_bb.h"
+#include "../../structs/arvore_avl.h"
 
 // Auxs
 

@@ -4,6 +4,7 @@
 #include "../curso/curso.h"
 #include "../disciplina/disciplina.h"
 #include "../nota/nota.h"
+#include "../../arvoreBB/arvore_bb.h"
 
 #include "../../utils/get/get.h"
 #include "../../utils/validacoes/validacoes.h"
@@ -75,7 +76,12 @@ int cadastrarDisciplinas(Arvore *arvoreCursos)
 
   Arvore *arvoreCursoAtual = NULL;
 
-  if (!getCursoValido(&codCurso, arvoreCursos, &arvoreCursoAtual))
+  if (!arvoreCursos)
+  {
+    printf("Nenhum curso cadastrado\n");
+    confirm = 0;
+  }
+  else if (!getCursoValido(&codCurso, arvoreCursos, &arvoreCursoAtual))
   {
     printf("Curso invalido\n");
     confirm = 0;

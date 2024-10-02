@@ -77,7 +77,9 @@
     "string": "c",
     "string_view": "c",
     "struct_matricula.h": "c",
-    "arvore_avl.h": "c"
+    "arvore_avl.h": "c",
+    "arvore_bb.h": "c",
+    "struct_disciplina.h": "c"
   },
   "C_Cpp.errorSquiggles": "disabled"
 }

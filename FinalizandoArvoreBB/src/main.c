@@ -7,6 +7,7 @@
 #include "core/matricula/matricula.h"
 #include "core/nota/nota.h"
 #include "core/buscas/buscas.h"
+#include "arvoreBB/arvore_bb.h"
 
 #include "utils/menu/menu.h"
 #include "utils/tempos/mainTempo/tempos.h"

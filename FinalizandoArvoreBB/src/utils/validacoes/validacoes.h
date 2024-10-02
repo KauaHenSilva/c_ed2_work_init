@@ -20,4 +20,4 @@ int boolAlunoInDisciplina(ListAluno *aluno, int disciplina);
 int getDisciplinaValida(
     int *codigoDoCurso, Arvore *raizDisciplina, Arvore **raizDisciplinaAtual);
 int getMatriculaValida(
-    int *codigoDoCurso, Arvore *raizMatricula, Arvore **raizMatriculaAtual);
+    int *codigoMatricula, Arvore *raizMatricula, Arvore **raizMatriculaAtual);
