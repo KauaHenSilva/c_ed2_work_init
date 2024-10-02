@@ -1,0 +1,22 @@
+{
+  "tasks": [
+    {
+      "type": "shell",
+      "label": "C: Build and Debug All .c Files",
+      "command": "sh",
+      "args": [
+        "-c",
+        "cd ${workspaceFolder} && find . -name '*.c' | xargs gcc -g -I. -o main -Wall -Wextra -Werror -Wconversion -Wpointer-arith -Wfloat-equal -Wpedantic -Werror=deprecated-declarations -Wformat -Wnull-dereference"
+      ],
+      "options": {
+        "cwd": "${fileDirname}"
+      },
+      "problemMatcher": [
+        "$gcc"
+      ],
+      "group": "build",
+      "detail": "Task to compile all C files in debug mode and run the output."
+    }
+  ],
+  "version": "2.0.0"
+}
