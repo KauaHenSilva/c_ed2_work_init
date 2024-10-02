@@ -70,47 +70,22 @@ void initMenu(ListAluno *alunos, Arvore *arvoreCursos)
       break;
 
     case 2:
-      if (!arvoreCursos)
-        printf("Nenhum curso cadastrado!\n");
-      else if (!cadastrarDisciplinas(arvoreCursos))
+      if (!cadastrarDisciplinas(arvoreCursos))
         printf("Não foi possível cadastrar a disciplina\n");
       break;
 
     case 3:
-      if (!arvoreCursos)
-        printf("Nenhum curso cadastrado!\n");
-      else if (!cadastrarAlunos(&alunos, arvoreCursos))
+     if(!cadastrarAlunos(&alunos, arvoreCursos))
         printf("Não foi possível cadastrar o aluno\n");
       break;
 
     case 4:
-      if (!alunos || !arvoreCursos)
-        printf("Nenhum aluno ou curso cadastrado!\n");
-      else if (!getCursoValido(&codCurso, arvoreCursos, &arvoreCursoAtual))
-        printf("Curso invalido\n");
-      else if (!(arvoreDisciplinas = arvoreCursoAtual->info.curso.arvoreDisciplinas))
-        printf("Curso sem disciplinas\n");
-      else if (!getAlunoValido(&codAluno, alunos, &alunoAtual))
-        printf("Aluno invalido\n");
-      else if (!getDisciplinaValida(&codDisciplina, arvoreDisciplinas, &arvoreDisciplinaAtual))
-        printf("Disciplina invalida\n");
-      else if (!cadastrarMatriculas(alunoAtual, arvoreDisciplinaAtual->info.disciplina.codigo))
+      if (!cadastrarMatriculas(alunos, arvoreCursos))
         printf("Não foi possível cadastrar a matricula\n");
       break;
 
     case 5:
-
-      if (!alunos || !arvoreCursos)
-        printf("Nenhum aluno ou curso cadastrado.\n");
-      else if (!getCursoValido(&codCurso, arvoreCursos, &arvoreCursoAtual))
-        printf("Sem curso valido\n");
-      else if (!(arvoreDisciplinas = arvoreCursoAtual->info.curso.arvoreDisciplinas))
-        printf("Curso sem disciplinas\n");
-      else if (!getDisciplinaValida(&codDisciplina, arvoreDisciplinas, &arvoreDisciplinaAtual))
-        printf("Disciplina invalida\n");
-      else if (!getAlunoValido(&codAluno, alunos, &alunoAtual))
-        printf("Aluno invalido\n");
-      else if (!cadastrarNotas(alunos, codDisciplina, arvoreDisciplinaAtual->info.disciplina.periodo))
+      if (!cadastrarNotas(alunos))
         printf("Não foi possível cadastrar a nota\n");
       break;
 

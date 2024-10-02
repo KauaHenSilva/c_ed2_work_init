@@ -23,4 +23,3 @@ int cadastrarDisciplinas(Arvore *curso);
 // int ehFolhaDisciplina(NodeDisciplina *raiz);
 // NodeDisciplina *soUmFilhoDisciplina(NodeDisciplina *raiz);
 // NodeDisciplina *menorFilhoDisciplina(NodeDisciplina *raiz);
-// int removerDisciplina(NodeDisciplina **raiz, int codDisciplina);

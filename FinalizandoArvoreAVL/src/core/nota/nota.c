@@ -6,6 +6,7 @@
 #include "../disciplina/disciplina.h"
 
 #include "../../utils/get/get.h"
+#include "../../utils/validacoes/validacoes.h"
 
 /**
  * @brief Preenche os dados de uma nota com base na entrada do usuário.
@@ -17,10 +18,10 @@
  * @param raizDisciplina Ponteiro para a raiz de nota a ser preenchido.
  * @return Retorna 1 se o preenchimento foi bem-sucedido, 0 caso contrário.
  */
-static void prencherNota(Nota *nota, int codDisciplina, int semestreCursado)
+static void prencherNota(Nota *nota, int codDisciplina)
 {
   nota->codDisciplina = codDisciplina;
-  nota->semestreCursado = semestreCursado;
+  getInt(&nota->semestreCursado, "Digite o semestre cursado: ");
   getInt(&nota->notaFinal, "Digite a nota final do aluno: ");
 }
 
@@ -47,25 +48,52 @@ void showNota(Info info)
  * @param semestreCursado Semestre em que a disciplina foi cursada.
  * @return int Retorna 0 em caso de sucesso, ou um código de erro em caso de falha.
  */
-int cadastrarNotas(ListAluno *aluno, int codDisciplina, int semestreCursado)
+int cadastrarNotas(ListAluno *alunos)
 {
   int confirm = 1;
 
-  Info infoDisciplina;
-  infoDisciplina.disciplina.codigo = codDisciplina;
+  int codAluno;
+  int codMatricula;
 
-  if (!removerNodeArvore(&aluno->aluno.arvoreMatricula, infoDisciplina))
+  Arvore *arvoreMatriculaAtual = NULL;
+
+  ListAluno *alunoAtual = NULL;
+
+  if (!alunos)
+  {
+    printf("Nenhum aluno ou curso cadastrado.\n");
     confirm = 0;
+  }
+  else if (!getAlunoValido(&codAluno, alunos, &alunoAtual))
+  {
+    printf("Aluno invalido\n");
+    confirm = 0;
+  }
+  else if (!getMatriculaValida(&codMatricula, alunos->aluno.arvoreMatricula, &arvoreMatriculaAtual))
+  {
+    printf("Disciplina invalida\n");
+    confirm = 0;
+  }
   else
   {
-    Arvore *newTree;
-    alocTree(&newTree);
-    prencherNota(&newTree->info.nota, codDisciplina, semestreCursado);
-
-    if (!insertTree(&aluno->aluno.arvoreNota, newTree))
+    Info infoMatricula;
+    infoMatricula.matricula.codigo = codMatricula;
+    if (!removerNodeArvore(&alunoAtual->aluno.arvoreMatricula, infoMatricula))
     {
-      freeTree(newTree, NULL);
+      printf("Matricula não encontrada na arvore de matriculas\n");
       confirm = 0;
+    }
+    else
+    {
+      Arvore *newTree;
+      alocTree(&newTree);
+      prencherNota(&newTree->info.nota, codMatricula);
+
+      if (!insertTree(&alunoAtual->aluno.arvoreNota, newTree))
+      {
+        freeTree(newTree, NULL);
+        confirm = 0;
+      }
     }
   }
 
