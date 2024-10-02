@@ -1,6 +1,6 @@
 #pragma once
 
-typedef struct Disciplina
+typedef struct stDisciplina
 {
   int codigo;
   char *nomeDaDisciplina;

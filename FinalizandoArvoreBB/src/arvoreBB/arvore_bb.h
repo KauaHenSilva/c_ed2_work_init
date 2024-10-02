@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../structs/arvore_avl.h"
+#include "../structs/arvore_bb.h"
 
 int insertTree(Arvore **raiz, Arvore *new);
 int removerNodeArvore(Arvore **raiz, Info remove);

@@ -2,10 +2,7 @@
 
 #include "../../structs/info/struct_curso.h"
 #include "../../structs/info/struct_disciplina.h"
-#include "../../structs/arvore_avl.h"
-
-#define INSERCTION_DISCIPLINA compareCodigoDisciplinaMenor, compareCodigoDisciplinaMaior
-#define REMOVE_SEARCH_DISCIPLINA compareCodigoDisciplinaIgual, compareCodigoDisciplinaMenor
+#include "../../structs/arvore_bb.h"
 
 // Auxs
 
@@ -20,6 +17,3 @@ void freeNodeDisciplina(Info info);
 // - A carga horária deve ser múltiplo de 15, variando entre 30 e 90.
 int cadastrarDisciplinas(Arvore *curso);
 
-// int ehFolhaDisciplina(NodeDisciplina *raiz);
-// NodeDisciplina *soUmFilhoDisciplina(NodeDisciplina *raiz);
-// NodeDisciplina *menorFilhoDisciplina(NodeDisciplina *raiz);
