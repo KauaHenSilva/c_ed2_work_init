@@ -1,6 +1,6 @@
 #pragma once
 
-typedef struct Nota
+typedef struct stNota
 {
   int codDisciplina;
   int semestreCursado;

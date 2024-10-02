@@ -1,6 +1,6 @@
 #pragma once
 
-#include "arvore_avl.h"
+#include "arvore_bb.h"
 
 typedef struct stAluno
 {

@@ -14,7 +14,6 @@ typedef union unInfo
 typedef struct stArvore
 {
   Info info;
-  int altura;
   struct stArvore *esq;
   struct stArvore *dir;
 } Arvore;
