@@ -1,5 +1,5 @@
 #pragma once
 
-#define QTDCURSOTESTADOS 300
+#define QTDCURSOTESTADOS 1000
 
 void testTempoCurso();

@@ -1,5 +1,5 @@
 #pragma once
 
-#define QTDNOTASTESTADOS 300
+#define QTDNOTASTESTADOS 1000
 
 void testTempoBuscaNotaDisciplina();
