@@ -69,7 +69,7 @@ static void tempoDeInsercoesCurso(Arvore *arvoreTemporaria, Arvore *CursosInseri
     *tempo += (fim - inicio);
   }
 
-  printf("o tempo de inserção: %lf\n", (((double)(*tempo)) / CLOCKS_PER_SEC));
+  // printf("o tempo de inserção: %lf\n", (((double)(*tempo)) / CLOCKS_PER_SEC));
 }
 
 static void mediaTempoEmSegundos(clock_t *tempos, double *mediaTempos)

@@ -61,8 +61,6 @@ void freeTree(Arvore *raiz, void (*freeInfo)(Info))
   }
 }
 
-() => {}
-
 /**
  * @brief Aloca memória para a árvore binária.
  *
