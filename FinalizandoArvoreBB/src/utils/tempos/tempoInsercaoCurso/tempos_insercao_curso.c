@@ -11,7 +11,7 @@
 static void defCurso(Arvore *arvoreCurso_list, int idx, int value)
 {
   arvoreCurso_list[idx].info.curso.codigo = value;
-  arvoreCurso_list[idx].info.curso.quantidadeDePeriodo = rand() % (1000 * 1000);
+  arvoreCurso_list[idx].info.curso.quantidadeDePeriodo = value;
   arvoreCurso_list[idx].info.curso.arvoreDisciplinas = NULL;
   arvoreCurso_list[idx].info.curso.nomeDoCurso = NULL;
   arvoreCurso_list[idx].dir = NULL;
@@ -69,7 +69,7 @@ static void tempoDeInsercoesCurso(Arvore *arvoreTemporaria, Arvore *CursosInseri
     *tempo += (fim - inicio);
   }
 
-  // printf("o tempo de inserção: %lf\n", (((double)(*tempo)) / CLOCKS_PER_SEC));
+  printf("o tempo de inserção: %lf\n", (((double)(*tempo)) / CLOCKS_PER_SEC));
 }
 
 static void mediaTempoEmSegundos(clock_t *tempos, double *mediaTempos)
@@ -115,6 +115,7 @@ static void tempoInsercionCurses(Arvore *arvoreCursosInserir_list, char *titulo)
   {
     arvoreTemporariaCurso = NULL;
     tempoDeInsercoesCurso(arvoreTemporariaCurso, arvoreCursosInserir_list, &tempos[i]);
+    // é nessesario?
     resetarValoresDaArvoreCurso(arvoreTemporariaCurso);
     restarListaValoresListaCurso(arvoreCursosInserir_list);
   }

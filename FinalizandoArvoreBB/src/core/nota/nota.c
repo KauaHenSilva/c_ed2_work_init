@@ -72,7 +72,7 @@ int cadastrarNotas(ListAluno *alunos)
   }
   else if (!getMatriculaValida(&codMatricula, alunos->aluno.arvoreMatricula, &arvoreMatriculaAtual))
   {
-    printf("Disciplina invalida\n");
+    printf("Matricula invalida\n");
     confirm = 0;
   }
   else

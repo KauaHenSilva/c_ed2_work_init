@@ -9,60 +9,25 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-static void defNotaTime(Arvore *arvoreNotas_list, int idx, int value)
-{
-  arvoreNotas_list[idx].info.nota.codDisciplina = value;
-  arvoreNotas_list[idx].info.nota.semestreCursado = value;
-  arvoreNotas_list[idx].info.nota.notaFinal = value;
-  arvoreNotas_list[idx].dir = NULL;
-  arvoreNotas_list[idx].esq = NULL;
-}
-
-static void defNotaType(Arvore *arvoreNotas, TipoDeOrdenacao type)
-{
-  int vet[QTDNOTASTESTADOS];
-
-  switch (type)
-  {
-  case CRESCENTE:
-    vetIntCrescente(vet, QTDNOTASTESTADOS);
-    break;
-  case DECRESCENTE:
-    vetIntDecrescente(vet, QTDNOTASTESTADOS);
-    break;
-  case ALEATORIO:
-    vetIntAleatorioSemRepeticao(vet, QTDNOTASTESTADOS);
-    break;
-  }
-
-  for (int i = 0; i < QTDNOTASTESTADOS; i++)
-    defNotaTime(arvoreNotas, i, vet[i]);
-}
-
-static void mediaTempoEmSegundosDivididoPelaQuantidadeDeTeste(clock_t *tempos, double *mediaTempos)
-{
-  clock_t somaTempo = 0;
-  for (int i = 0; i < QTDTESTES; i++)
-    somaTempo += tempos[i];
-
-  *mediaTempos = ((double)somaTempo / (CLOCKS_PER_SEC)) / (QTDTESTES);
-}
-
-static void tempoDeBuscaNota(Arvore *arvoreNotas, Arvore *notasProcurar_list, clock_t *tempo)
+static void tempoDeBuscaNotaDisciplina(
+    Arvore *arvoreNota, Arvore *notasProcurar_list, Arvore *arvoreDisciplina, Arvore *disciplinaProcurar_list, clock_t *tempo)
 {
   Arvore *temp;
   clock_t inicio, fim;
 
   for (int x = 0; x < QTDNOTASTESTADOS; x++)
   {
-    int achou;
+    int achouNota, achouDisciplina;
 
     inicio = clock();
-    achou = searchNodeTree(arvoreNotas, notasProcurar_list[x].info, &temp);
+    achouNota = searchNodeTree(arvoreNota, notasProcurar_list[x].info, &temp);
+    achouDisciplina = searchNodeTree(arvoreDisciplina, disciplinaProcurar_list[x].info, &temp);
     fim = clock();
 
-    if (!achou)
-      perror("Não achou!");
+    if (!achouNota)
+      perror("Não achou Nota!");
+    if (!achouDisciplina)
+      perror("Não achou Disciplina!");
 
     *tempo += (fim - inicio);
   }
@@ -86,12 +51,22 @@ static void exbirResultado(double media, char *titulo, Arvore *arvoreNotas_list)
   // exibirValoresBuscado(arvoreNotas_list);
 }
 
-static void tempBuscaNota(ListAluno aluno, Arvore *notasProcurar_list, char *titulo)
+static void mediaTempoEmSegundosDivididoPelaQuantidadeDeTeste(clock_t *tempos, double *mediaTempos)
+{
+  clock_t somaTempo = 0;
+  for (int i = 0; i < QTDTESTES; i++)
+    somaTempo += tempos[i];
+
+  *mediaTempos = ((double)somaTempo / (CLOCKS_PER_SEC)) / (QTDTESTES);
+}
+
+static void tempBuscaNotaAndDisciplina(
+    Arvore *arvoreNota, Arvore *notasProcurar_list, Arvore *arvoreDisciplina, Arvore *disciplinaProcurar_list, char *titulo)
 {
   clock_t tempos[QTDTESTES] = {0};
 
   for (int i = 0; i < QTDTESTES; i++)
-    tempoDeBuscaNota(aluno.aluno.arvoreNota, notasProcurar_list, &(tempos[i]));
+    tempoDeBuscaNotaDisciplina(arvoreNota, notasProcurar_list, arvoreDisciplina, disciplinaProcurar_list, &(tempos[i]));
 
   double mediaTempo;
   mediaTempoEmSegundosDivididoPelaQuantidadeDeTeste(tempos, &mediaTempo);
@@ -99,44 +74,100 @@ static void tempBuscaNota(ListAluno aluno, Arvore *notasProcurar_list, char *tit
   exbirResultado(mediaTempo, titulo, notasProcurar_list);
 }
 
-static void limparNodes(Arvore *arvoreNotas)
+static void limparNodes(Arvore *arvore)
 {
-  if (arvoreNotas)
+  if (arvore)
   {
-    limparNodes(arvoreNotas->esq);
-    limparNodes(arvoreNotas->dir);
-    arvoreNotas->esq = NULL;
-    arvoreNotas->dir = NULL;
+    limparNodes(arvore->esq);
+    limparNodes(arvore->dir);
+    arvore->esq = NULL;
+    arvore->dir = NULL;
   }
 }
 
-static void setNotaAluno(ListAluno *aluno, Arvore *arvoreNotas_list)
+static void setNotasInListaAProcurar(Arvore **arvoreNota, Arvore *notasProcurar_list)
 {
+  limparNodes(*arvoreNota);
+  *arvoreNota = NULL;
+
   for (int x = 0; x < QTDNOTASTESTADOS; x++)
-    insertTree(&aluno->aluno.arvoreNota, &(arvoreNotas_list[x]));
+    insertTree(arvoreNota, &(notasProcurar_list[x]));
 }
 
-static void setNotasAlunoAndListaAProcurar(ListAluno *aluno, Arvore *notasProcurar_list, TipoDeOrdenacao type)
+static void setDisciplinaInListaAProcurar(Arvore **arvoreDisciplina, Arvore *disciplinaProcurar_list)
 {
-  limparNodes(aluno->aluno.arvoreNota);
-  aluno->aluno.arvoreNota = NULL;
+  limparNodes(*arvoreDisciplina);
+  *arvoreDisciplina = NULL;
 
-  defNotaType(notasProcurar_list, type);
-  setNotaAluno(aluno, notasProcurar_list);
+  for (int x = 0; x < QTDNOTASTESTADOS; x++)
+    insertTree(arvoreDisciplina, &(disciplinaProcurar_list[x]));
+}
+
+static void defNotaListType(Arvore *arvoreNotas_list, int idx, int value)
+{
+  arvoreNotas_list[idx].info.nota.codDisciplina = value;
+  arvoreNotas_list[idx].info.nota.semestreCursado = value;
+  arvoreNotas_list[idx].info.nota.notaFinal = value;
+  arvoreNotas_list[idx].dir = NULL;
+  arvoreNotas_list[idx].esq = NULL;
+}
+
+static void defDisciplinaListType(Arvore *arvoreDisciplina_list, int idx, int value)
+{
+  arvoreDisciplina_list[idx].info.disciplina.codigo = value;
+  arvoreDisciplina_list[idx].info.disciplina.cargaHoraria = value;
+  arvoreDisciplina_list[idx].info.disciplina.periodo = value;
+  arvoreDisciplina_list[idx].dir = NULL;
+  arvoreDisciplina_list[idx].esq = NULL;
+}
+
+static void defNotaAndDisciplinaType(Arvore *arvoreNotas, Arvore *arvoreDisciplina, TipoDeOrdenacao type)
+{
+  int vet[QTDNOTASTESTADOS];
+
+  switch (type)
+  {
+  case CRESCENTE:
+    vetIntCrescente(vet, QTDNOTASTESTADOS);
+    break;
+  case DECRESCENTE:
+    vetIntDecrescente(vet, QTDNOTASTESTADOS);
+    break;
+  case ALEATORIO:
+    vetIntAleatorioSemRepeticao(vet, QTDNOTASTESTADOS);
+    break;
+  }
+
+  for (int i = 0; i < QTDNOTASTESTADOS; i++)
+  {
+    defNotaListType(arvoreNotas, i, vet[i]);
+    defDisciplinaListType(arvoreDisciplina, i, vet[i]);
+  }
 }
 
 void testTempoBuscaNotaDisciplina()
 {
   Arvore notasProcurar_list[QTDNOTASTESTADOS];
-  ListAluno aluno;
-  aluno.aluno.arvoreNota = NULL;
+  Arvore disciplinaProcurar_list[QTDNOTASTESTADOS];
 
-  setNotasAlunoAndListaAProcurar(&aluno, notasProcurar_list, CRESCENTE);
-  tempBuscaNota(aluno, notasProcurar_list, "Busca de notas inserido de forma cresente");
+  Arvore *disciplina;
+  Arvore *nota;
 
-  setNotasAlunoAndListaAProcurar(&aluno, notasProcurar_list, DECRESCENTE);
-  tempBuscaNota(aluno, notasProcurar_list, "Busca de notas inserido de forma decrescente");
+  disciplina = NULL;
+  nota = NULL;
 
-  setNotasAlunoAndListaAProcurar(&aluno, notasProcurar_list, ALEATORIO);
-  tempBuscaNota(aluno, notasProcurar_list, "Busca de notas inserido de forma aleatória");
+  defNotaAndDisciplinaType(notasProcurar_list, disciplinaProcurar_list, CRESCENTE);
+  setNotasInListaAProcurar(&nota, notasProcurar_list);
+  setDisciplinaInListaAProcurar(&disciplina, disciplinaProcurar_list);
+  tempBuscaNotaAndDisciplina(nota, notasProcurar_list, disciplina, disciplinaProcurar_list, "Busca de notas inserido de forma cresente");
+
+  defNotaAndDisciplinaType(notasProcurar_list, disciplinaProcurar_list, DECRESCENTE);
+  setNotasInListaAProcurar(&nota, notasProcurar_list);
+  setDisciplinaInListaAProcurar(&disciplina, disciplinaProcurar_list);
+  tempBuscaNotaAndDisciplina(nota, notasProcurar_list, disciplina, disciplinaProcurar_list, "Busca de notas inserido de forma decrescente");
+
+  defNotaAndDisciplinaType(notasProcurar_list, disciplinaProcurar_list, ALEATORIO);
+  setNotasInListaAProcurar(&nota, notasProcurar_list);
+  setDisciplinaInListaAProcurar(&disciplina, disciplinaProcurar_list);
+  tempBuscaNotaAndDisciplina(nota, notasProcurar_list, disciplina, disciplinaProcurar_list, "Busca de notas inserido de forma decrescente");
 }

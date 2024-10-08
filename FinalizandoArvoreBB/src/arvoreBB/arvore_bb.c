@@ -22,9 +22,7 @@ int insertTree(Arvore **raiz, Arvore *new)
   int confirm = 1;
 
   if (!*raiz)
-  {
     *raiz = new;
-  }
   else
   {
     if (new->info.codigo < (*raiz)->info.codigo)
@@ -62,6 +60,8 @@ void freeTree(Arvore *raiz, void (*freeInfo)(Info))
     free(raiz);
   }
 }
+
+() => {}
 
 /**
  * @brief Aloca memória para a árvore binária.
