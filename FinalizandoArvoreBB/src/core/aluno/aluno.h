@@ -9,6 +9,7 @@ void freeAlunosList(ListAluno *alunos);
 void showAllAlunos(ListAluno *alunos);
 void showAluno(ListAluno *aluno);
 int searchAluno(ListAluno *aluno, int code, ListAluno **result);
+int inserctionAluno(ListAluno **AlunoRaiz, Aluno newValue);
 
 // ---------------------------------------------------------------------------------------
 

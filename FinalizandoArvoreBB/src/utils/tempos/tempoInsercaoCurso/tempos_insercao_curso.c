@@ -1,8 +1,8 @@
 #include "../../../core/curso/curso.h"
-#include "../../../arvoreBB/arvore_bb.h"
 
 #include "tempos_insercao_curso.h"
 #include "../auxTempo/aux.h"
+#include "../../../arvoreBB/arvore_bb.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,7 +11,7 @@
 static void defCurso(Arvore *arvoreCurso_list, int idx, int value)
 {
   arvoreCurso_list[idx].info.curso.codigo = value;
-  arvoreCurso_list[idx].info.curso.quantidadeDePeriodo = value;
+  arvoreCurso_list[idx].info.curso.quantidadeDePeriodo = rand() % (1000 * 1000);
   arvoreCurso_list[idx].info.curso.arvoreDisciplinas = NULL;
   arvoreCurso_list[idx].info.curso.nomeDoCurso = NULL;
   arvoreCurso_list[idx].dir = NULL;
@@ -115,7 +115,6 @@ static void tempoInsercionCurses(Arvore *arvoreCursosInserir_list, char *titulo)
   {
     arvoreTemporariaCurso = NULL;
     tempoDeInsercoesCurso(arvoreTemporariaCurso, arvoreCursosInserir_list, &tempos[i]);
-    // é nessesario?
     resetarValoresDaArvoreCurso(arvoreTemporariaCurso);
     restarListaValoresListaCurso(arvoreCursosInserir_list);
   }
