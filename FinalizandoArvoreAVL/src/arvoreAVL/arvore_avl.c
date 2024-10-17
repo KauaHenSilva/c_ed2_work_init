@@ -313,16 +313,13 @@ int removerNodeArvore(Arvore **raiz, Info remove)
         confirm = removerNodeArvore(&(*raiz)->esq, remove);
       else
         confirm = removerNodeArvore(&(*raiz)->dir, remove);
+
+      (*raiz)->altura = altura(*raiz);
+      balanceamento(raiz);
     }
   }
   else
     confirm = 0;
-
-  if (confirm)
-  {
-    (*raiz)->altura = altura(*raiz);
-    balanceamento(raiz);
-  }
 
   return confirm;
 }

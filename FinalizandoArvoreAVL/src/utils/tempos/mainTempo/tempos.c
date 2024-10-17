@@ -11,10 +11,12 @@
 #include "../auxTempo/aux.h"
 
 #include "../tempoBuscaNota/tempos_busca_nota.h"
-#include "../tempoInsercaoCurso/tempos_insercao_curso.h"
+#include "../tempoInsercaode100Curso/tempos_insercao_de_1000_curso.h"
+#include "../tempoInsercaode1curso/tempos_insercao_de_1_curso.h"
 
 void testAllTempo()
 {
-  testTempoCurso();
+  testTempoInsercao1Curso();
+  testTempoInsercao1000Curso();
   testTempoBuscaNotaDisciplina();
 }

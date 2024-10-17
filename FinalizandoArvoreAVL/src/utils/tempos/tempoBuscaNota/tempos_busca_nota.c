@@ -49,12 +49,6 @@ static void tempoDeBuscaNotaDisciplina(EstruturaParaTeste estruturaParaTeste, cl
 //   printf("\n\n");
 // }
 
-static void exbirResultado(double media, char *titulo)
-{
-  printf("Teste: %s\n", titulo);
-  printf("Resultado: %f\n\n", media);
-}
-
 static void mediaTempoEmSegundosDivididoPelaQuantidadeDeTeste(clock_t *tempos, double *mediaTempos)
 {
   clock_t somaTempo = 0;

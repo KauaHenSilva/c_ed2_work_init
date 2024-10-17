@@ -2,4 +2,4 @@
 
 #define QTDCURSOTESTADOS 1000
 
-void testTempoCurso();
+void testTempoInsercao1000Curso();
