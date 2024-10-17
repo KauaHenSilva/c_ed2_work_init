@@ -43,6 +43,9 @@ static void tempoInsercionCurses(Arvore *arvoreCursosInserir_list, char *titulo)
   for (int i = 0; i < QTD_TESTES; i++)
     tempoDeInsercoesCurso(arvoreTemporariaCurso, &(arvoreCursosInserir_list[QTD_CURSO_TESTADOS - 1]), tempos + i);
 
+  resetarListaValoresArvore(arvoreCursosInserir_list, QTD_CURSO_TESTADOS);
+  arvoreTemporariaCurso = NULL;
+
   double mediaTempos;
   mediaTempoEmSegundos(tempos, &mediaTempos);
 
