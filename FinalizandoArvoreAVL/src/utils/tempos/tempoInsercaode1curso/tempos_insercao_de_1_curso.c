@@ -13,8 +13,7 @@ static void tempoDeInsercoesCurso(Arvore *arvoreTemporaria, Arvore *inserir, clo
   int inseriu, removido = 0;
 
   Arvore *inserir_temporario = malloc(sizeof(Arvore));
-  inserir_temporario->info.codigo = inserir->info.codigo;
-  inserir_temporario->altura = -1;
+  inserir_temporario->info = inserir->info;
 
   inicio = clock();
   inseriu = insertTree(&arvoreTemporaria, inserir_temporario);
@@ -35,14 +34,14 @@ static void tempoDeInsercoesCurso(Arvore *arvoreTemporaria, Arvore *inserir, clo
 static void tempoInsercionCurses(Arvore *arvoreCursosInserir_list, char *titulo)
 {
   Arvore *arvoreTemporariaCurso = NULL;
-  clock_t tempos[QTDTESTES] = {0};
+  clock_t tempos[QTD_TESTES] = {0};
 
-  for (int i = 0; i < QTDCURSOTESTADOS - 1; i++)
+  for (int i = 0; i < QTD_CURSO_TESTADOS - 1; i++)
     if (!insertTree(&arvoreTemporariaCurso, &(arvoreCursosInserir_list[i])))
       perror("Não conseguiu inserir o valor");
 
-  for (int i = 0; i < QTDTESTES; i++)
-    tempoDeInsercoesCurso(arvoreTemporariaCurso, &(arvoreCursosInserir_list[QTDCURSOTESTADOS - 1]), tempos + i);
+  for (int i = 0; i < QTD_TESTES; i++)
+    tempoDeInsercoesCurso(arvoreTemporariaCurso, &(arvoreCursosInserir_list[QTD_CURSO_TESTADOS - 1]), tempos + i);
 
   double mediaTempos;
   mediaTempoEmSegundos(tempos, &mediaTempos);
@@ -53,17 +52,17 @@ static void tempoInsercionCurses(Arvore *arvoreCursosInserir_list, char *titulo)
 void testTempoInsercao1Curso()
 {
   char *titulo;
-  Arvore arvoreCursos_list[QTDCURSOTESTADOS];
+  Arvore arvoreCursos_list[QTD_CURSO_TESTADOS];
 
-  defCursoType(arvoreCursos_list, CRESCENTE);
+  defArvoreListType(arvoreCursos_list, CRESCENTE, QTD_CURSO_TESTADOS);
   titulo = "tempo de inserção de um curso crescente";
   tempoInsercionCurses(arvoreCursos_list, titulo);
 
-  defCursoType(arvoreCursos_list, DECRESCENTE);
+  defArvoreListType(arvoreCursos_list, DECRESCENTE, QTD_CURSO_TESTADOS);
   titulo = "tempo de inserção de um curso decrescente";
   tempoInsercionCurses(arvoreCursos_list, titulo);
 
-  defCursoType(arvoreCursos_list, ALEATORIO);
+  defArvoreListType(arvoreCursos_list, ALEATORIO, QTD_CURSO_TESTADOS);
   titulo = "tempo de inserção de um curso aleatório";
   tempoInsercionCurses(arvoreCursos_list, titulo);
 }

@@ -36,10 +36,10 @@ void vetIntDecrescente(int *vetor, int qtd)
 void mediaTempoEmSegundos(clock_t *tempos, double *mediaTempos)
 {
   clock_t somaTempo = 0;
-  for (int i = 0; i < QTDTESTES; i++)
+  for (int i = 0; i < QTD_TESTES; i++)
     somaTempo += tempos[i];
 
-  *mediaTempos = ((double)somaTempo / (CLOCKS_PER_SEC)) / (QTDTESTES);
+  *mediaTempos = ((double)somaTempo / (CLOCKS_PER_SEC)) / (QTD_TESTES);
 }
 
 // void exibirValoresInseridos(Arvore *arvoreCurso_list)
@@ -66,46 +66,45 @@ void defCurso(Arvore *arvoreCurso_list, int idx, int value)
   arvoreCurso_list[idx].esq = NULL;
 }
 
-void resetarValoresDaArvoreCurso(Arvore *raizCurso)
+void limparNodes(Arvore *arvore)
 {
-  if (raizCurso)
+  if (arvore)
   {
-    resetarValoresDaArvoreCurso(raizCurso->esq);
-    resetarValoresDaArvoreCurso(raizCurso->dir);
-    raizCurso->esq = NULL;
-    raizCurso->dir = NULL;
+    limparNodes(arvore->esq);
+    limparNodes(arvore->dir);
+    arvore->esq = NULL;
+    arvore->dir = NULL;
   }
 }
 
-void restarListaValoresListaCurso(Arvore *arvoreCurso_list)
+void resetarListaValoresArvore(Arvore *arvore_list, int qtd)
 {
-  for (int x = 0; x < QTDCURSOTESTADOS; x++)
+  for (int x = 0; x < qtd; x++)
   {
-    arvoreCurso_list[x].dir = NULL;
-    arvoreCurso_list[x].esq = NULL;
+    arvore_list[x].dir = NULL;
+    arvore_list[x].esq = NULL;
   }
 }
 
-
-void defCursoType(Arvore *cursos_list, TipoDeOrdenacao type)
+void defArvoreListType(Arvore *arvore_list, TipoDeOrdenacao type, int qtd_valores)
 {
-  int vet[QTDCURSOTESTADOS];
+  int vet[qtd_valores];
 
   switch (type)
   {
   case CRESCENTE:
-    vetIntCrescente(vet, QTDCURSOTESTADOS);
+    vetIntCrescente(vet, qtd_valores);
     break;
   case DECRESCENTE:
-    vetIntDecrescente(vet, QTDCURSOTESTADOS);
+    vetIntDecrescente(vet, qtd_valores);
     break;
   case ALEATORIO:
-    vetIntAleatorioSemRepeticao(vet, QTDCURSOTESTADOS);
+    vetIntAleatorioSemRepeticao(vet, qtd_valores);
     break;
   default:
     break;
   }
 
-  for (int i = 0; i < QTDCURSOTESTADOS; i++)
-    defCurso(cursos_list, i, vet[i]);
+  for (int i = 0; i < qtd_valores; i++)
+    defCurso(arvore_list, i, vet[i]);
 }

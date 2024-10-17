@@ -49,52 +49,32 @@ static void tempoDeBuscaNotaDisciplina(EstruturaParaTeste estruturaParaTeste, cl
 //   printf("\n\n");
 // }
 
-static void mediaTempoEmSegundosDivididoPelaQuantidadeDeTeste(clock_t *tempos, double *mediaTempos)
-{
-  clock_t somaTempo = 0;
-  for (int i = 0; i < QTDTESTES; i++)
-    somaTempo += tempos[i];
-
-  *mediaTempos = ((double)somaTempo / (CLOCKS_PER_SEC)) / (QTDTESTES);
-}
-
 static void tempBusca(EstruturaParaTeste estruturaParaTeste, char *titulo)
 {
-  clock_t tempos[QTDTESTES] = {0};
+  clock_t tempos[QTD_TESTES] = {0};
 
-  for (int i = 0; i < QTDTESTES; i++)
+  for (int i = 0; i < QTD_TESTES; i++)
     tempoDeBuscaNotaDisciplina(estruturaParaTeste, &(tempos[i]));
 
   double mediaTempo;
-  mediaTempoEmSegundosDivididoPelaQuantidadeDeTeste(tempos, &mediaTempo);
+  mediaTempoEmSegundos(tempos, &mediaTempo);
   exbirResultado(mediaTempo, titulo);
 }
 
-static void limparNodes(Arvore *arvore)
+static void limparListAluno(ListAluno *alunos)
 {
-  if (arvore)
+  if (alunos)
   {
-    limparNodes(arvore->esq);
-    limparNodes(arvore->dir);
-    arvore->esq = NULL;
-    arvore->dir = NULL;
-  }
-}
-
-static void limparList(ListAluno *aluno)
-{
-  if (aluno)
-  {
-    limparList(aluno->prox);
-    aluno->prox = NULL;
+    limparListAluno(alunos->prox);
+    alunos->prox = NULL;
   }
 }
 
 static void setListaAProcurar(EstruturaParaTeste *estrutura)
 {
+  limparListAluno(estrutura->alunos);
   limparNodes(estrutura->arvoreDisciplina);
   limparNodes(estrutura->arvoreNotas);
-  limparList(estrutura->alunos);
 
   estrutura->arvoreDisciplina = NULL;
   estrutura->arvoreNotas = NULL;
