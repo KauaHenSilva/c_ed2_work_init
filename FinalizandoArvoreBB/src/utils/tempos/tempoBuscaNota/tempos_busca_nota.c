@@ -59,6 +59,11 @@ static void tempBusca(EstruturaParaTeste estruturaParaTeste, char *titulo)
 
   double mediaTempo;
   mediaTempoEmSegundos(tempos, &mediaTempo);
+
+  for (int i = 0; i < QTD_TESTES; i++)
+    printf("%lf,", (((double)tempos[i]) / CLOCKS_PER_SEC));
+  printf("\n");
+
   exbirResultado(mediaTempo, titulo);
 }
 

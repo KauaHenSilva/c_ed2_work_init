@@ -1,6 +1,6 @@
 #pragma once
 
-#define QTD_TESTES 100
+#define QTD_TESTES 30
 #define QTD_CURSO_TESTADOS 1000
 #define QTD_NOTAS_TESTADOS 1000
 #define QTD_ALUNOS_TESTADOS 1000

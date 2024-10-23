@@ -43,6 +43,10 @@ static void tempoInsercionCurses(Arvore *arvoreCursosInserir_list, char *titulo)
   double mediaTempos;
   mediaTempoEmSegundos(tempos, &mediaTempos);
 
+  for (int i = 0; i < QTD_TESTES; i++)
+    printf("%lf,", (((double)tempos[i]) / CLOCKS_PER_SEC));
+  printf("\n");
+
   exbirResultado(mediaTempos, titulo);
 }
 
