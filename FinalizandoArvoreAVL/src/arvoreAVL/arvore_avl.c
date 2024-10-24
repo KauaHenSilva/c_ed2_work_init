@@ -114,7 +114,10 @@ int insertTree(Arvore **raiz, Arvore *new)
       confirm = insertTree(&(*raiz)->dir, new);
     else
       confirm = 0;
-
+  }
+  
+  if (confirm)
+  {
     (*raiz)->altura = altura(*raiz);
     balanceamento(raiz);
   }
@@ -311,7 +314,7 @@ int removerNodeArvore(Arvore **raiz, Info remove)
       else
         confirm = removerNodeArvore(&(*raiz)->dir, remove);
 
-      if (raiz) 
+      if (raiz)
       {
         (*raiz)->altura = altura(*raiz);
         balanceamento(raiz);
