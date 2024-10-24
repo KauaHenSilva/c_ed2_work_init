@@ -9,10 +9,10 @@ static int altura(Arvore *raiz)
   {
     int alturaEsq = altura(raiz->esq);
     int alturaDir = altura(raiz->dir);
-    alturaAtual = (alturaEsq > alturaDir) ? alturaEsq : alturaDir;
+    alturaAtual = ((alturaEsq > alturaDir) ? alturaEsq : alturaDir) + 1;
   }
 
-  return alturaAtual + 1;
+  return alturaAtual;
 }
 
 static int rotacaoDireita(Arvore **raiz)
@@ -114,10 +114,7 @@ int insertTree(Arvore **raiz, Arvore *new)
       confirm = insertTree(&(*raiz)->dir, new);
     else
       confirm = 0;
-  }
 
-  if (confirm)
-  {
     (*raiz)->altura = altura(*raiz);
     balanceamento(raiz);
   }
